@@ -1,0 +1,1013 @@
+## bao.cao (1)
+   cong.viec.ca.nhan = Báo cáo nhiệm vụ cá nhân
+## btn.huy (1)
+   cong.khai = Hủy công khai
+## btn.update (1)
+   cong.khai = Cập nhật công khai
+## calendar.quaterMap (4)
+   quy1 = Quý 1
+   quy2 = Quý 2
+   quy3 = Quý 3
+   quy4 = Quý 4
+## calendar.timeMap (9)
+   giay = Giây
+   gio = Giờ
+   nam = Năm
+   tuNam = Từ năm
+   denNam = Đến năm
+   ngay = Ngày
+   phut = Phút
+   thang = Tháng
+   thu = Thứ
+## chua.co (1)
+   noi.dung.gioi.thieu = Chưa có nội dung giới thiệu
+## comboboxMenu.processMap (11)
+   cho.ky.nhay = Chờ ký nháy
+   chua.ky.nhay = Chưa ký nháy
+   chua.xu.ly = Chưa xử lý
+   da.ky.duyet = Đã ký duyệt
+   da.ky.nhay = Đã ký nháy
+   da.tu.choi = Đã từ chối
+   da.tu.choi.xet.duyet = Đã từ chối trình duyệt
+   da.xet.duyet = Đã trình duyệt
+   tu.choi.ky.nhay = Từ chối ký nháy
+   van.thu.da.tu.choi = Văn thư đã từ chối
+   van.thu.da.xet.duyet = Văn thư đã trình duyệt
+## comboboxMenu.vbxdMap (7)
+   lanh.dao.da.ky.duyet = Lãnh đạo đã ký duyệt
+   lanh.dao.da.tu.choi = Lãnh đạo đã từ chối
+   luong.cong.van.bi.huy = Luồng công văn bị hủy
+   van.thu.chua.xet.duyet = Văn thư chưa trình duyệt
+   van.thu.da.tu.choi = Văn thư đã từ chối
+   van.thu.da.xet.duyet = Văn thư đã trình duyệt
+   lanh.dao.chua.ky.duyet = Lãnh đạo chưa ký duyệt
+## criteria.criteriaMap (5)
+   danh.gia = Đánh giá
+   loai.cong.viec = Loại nhiệm vụ
+   muc.do.hoan.thanh = Mức độ hoàn thành
+   tang.thai.cong.viec = Trạng thái nhiệm vụ
+   ten.nhan.vien = Tên nhân viên
+## croup.croupMap (4)
+   linh.vuc = Ngành
+   nhom.cong.viec = Nhóm nhiệm vụ
+   tien.do.cong.viec = Tiến độ nhiệm vụ
+   trang.thai.cong.viec = Trạng thái nhiệm vụ
+## croupTaskFile.croupAsign (2)
+   ky.tren.file = Ký trên File
+   ky.tren.form = Ký trên Form
+## croupTaskFile.croupTask (5)
+   danh.gia = Đánh giá
+   loai.cong.viec = Loại nhiệm vụ
+   muc.do.hoan.thanh = Mức độ hoàn thành
+   ten.nhan.vien = Tên nhân viên
+   trang.thai.cong.viec = Trạng thái nhiệm vụ
+## croupTaskFile.croupTaskUnfull (4)
+   danh.gia = Đánh giá
+   muc.do.hoan.thanh = Mức độ hoàn thành
+   nhom.cong.viec = Nhóm nhiệm vụ
+   trang.thai.cong.viec = Trạng thái nhiệm vụ
+## currency.unitMap (4)
+   dong = Đồng
+   nghin.dong = Nghìn đồng
+   trieu.dong = Triệu đồng
+   ty.dong = Tỷ đồng
+## danh.gia (2)
+   cong.viec = Đánh giá nhiệm vụ
+   nhan.vien = Đánh giá nhân viên
+## dateType.dateTypeMap (3)
+   ky.tu = Ký tự
+   ngay.gio = Ngày giờ
+   ngay.thang = Ngày tháng
+## digitalSignature.ky (1)
+   simca = ký simCA
+## digitalSignature.xet (1)
+   duyet = trình duyệt
+## document.categorySearching (2)
+   categorySearchingMap.quytrinh.quydinh = Quy trình, quy định
+   categorySearchingMap.tat.ca.van.ban = Tất cả văn bản
+## document.documentAction (2)
+   luu = Lưu
+   luuvagui = Lưu và gửi
+## document.documentAdjacent (3)
+   chon = ---- Tất cả ----
+   van.ban.goc = Văn bản yêu cầu cấp liền kề ban hành
+   van.ban.lien.ke = Văn bản cần ban hành liền kề
+## document.documentCategory (3)
+   chon = --Chọn--
+   cong.van = Công văn
+   thong.tu = Thông tư
+## document.documentCategoryString (2)
+   cong.van = Công văn
+   thong.tu = Thông tư
+## document.documentConsult (2)
+   can.xin.y.kien = Cần xin ý kiến lãnh đạo
+   khong.can.y.kien = Không cần xin ý kiến lãnh đạo
+## document.documentCreatedby (3)
+   chon = --Chọn--
+   cong.van.den = Công văn đến
+   cong.van.toi.tao = Công văn tôi tạo
+## document.documentDState (3)
+   chon = --Chọn--
+   cong.van.den = Công văn đến
+   cong.van.di = Công văn đi
+## document.documentDStateString (2)
+   cong.van.den = Công văn đến
+   cong.van.di = Công văn đi
+## document.documentPublish (4)
+   chua.cong.bo = Chưa công khai
+   da.cong.bo = Đã công khai
+   da.huy.cong.bo = Đã hủy công khai
+   tat.ca = Tất cả
+## document.documentScope (4)
+   chon = --Chọn--
+   don.thu = Đơn thư
+   tap.doan = Công văn đến tập đoàn
+   trung.tam = Công văn đến đơn vị khác
+## document.documentScopeString (2)
+   tap.doan = Tập đoàn
+   trung.tam = Trung tâm
+## document.documentScopedispatch (4)
+   chon = --Chọn--
+   cong.van.den.don.vi.khac = Công văn đến đơn vị khác
+   cong.van.den.tap.doan = Công văn đến tập đoàn
+   don.thu = Đơn thư
+## document.documentStatus (6)
+   bi.tu.choi = Bị từ chối
+   cho.lanh.dao.butphe = Chờ lãnh đạo bút phê
+   chon = --Chọn--
+   chua.xin.lanh.dao.butphe = Chưa xin lãnh đạo bút phê
+   da.phe.duyet = Đã phê duyệt
+   van.ban.khong.can.xin.y.kien = Văn bản không cần xin ý kiến
+## document.documentStatusPriorityLevel (6)
+   binh.thuong = Bình thường
+   chon = --Chọn--
+   khan.cap = Khẩn cấp
+   khong.quan.trong = Không quan trọng
+   rat.thap = Rất thấp
+   thuong.khan = Thượng khẩn
+## document.documentStatusSecurityLevel (5)
+   binh.thuong = Bình thường
+   chon = --Chọn--
+   mat = Mật
+   toi.mat = Tối mật
+   tuyet.mat = Tuyệt mật
+## document.documentTyleString (4)
+   van.ban.hanh.chinh = Văn bản hành chính
+   van.ban.ngoai = Văn bản ngoài
+   van.ban.noi.bo = Văn bản nội bộ
+   van.ban.thi.hanh = Văn bản thi hành
+## document.documentType (6)
+   chon = -- Chọn --
+   van.ban.hanh.chinh = Văn bản hành chính
+   van.ban.ngoai = Văn bản ngoài
+   van.ban.noi.bo = Văn bản nội bộ
+   van.ban.thi.hanh = Văn bản thi hành
+   van.ban.tu.donvi.khac = Văn bản từ đơn vị khác
+## document.documentWrittenProcedures (5)
+   chon = --Chọn--
+   cong.van = Công văn
+   giay.uy.quyen = Giấy ủy quyền
+   quy.che = Qui chế
+   quy.dinh = Qui định
+## document.documentWrittenProceduresString (4)
+   cong.van = Công văn
+   giay.uy.quyen = Giấy ủy quyền
+   quy.che = Qui chế
+   quy.dinh = Qui định
+## document.documentfield (3)
+   van.phong = Văn phòng
+   van.phong.phap.che = Văn bản pháp chế
+   xay.dung = Xây dựng
+## document.informality (1)
+   individual.transfers = Đồng chí chưa chọn cá nhân hoặc nhóm để chuyển
+## document.manualSignature (2)
+   notYetSign = Chưa ký
+   signed = Đã ký
+## document.no (1)
+   reply = Không
+## document.org (7)
+   type.all = ---- Tất cả ----
+   type.inside = Các cơ quan Đảng
+   type.sendInside = Đơn vị gửi trong Cơ quan
+   type.vbdv = Văn bản đơn vị
+   type.vbcn = Văn bản cá nhân
+   type.outside = Các cơ quan khác
+   type.sendOutside = Đơn vị gửi ngoài Cơ quan
+## document.priority (5)
+   priorityLevelMap.binh.thuong = Bình thường
+   priorityLevelMap.khan.cap = Khẩn cấp
+   priorityLevelMap.khong.quan.trongg = Không quan trọng
+   priorityLevelMap.rat.khan.cap = Rất khẩn cấp
+   priorityLevelMap.rat.thap = Rất thấp
+## document.processStatus (4)
+   processingOverdue = Chưa hoàn thành quá hạn
+   processingInTime = Đang xử lý
+   doneOverdue = Hoàn thành quá hạn
+   doneInTime = Hoàn thành đúng hạn
+## document.processType (5)
+   toKnow = Nhận để biết
+   main = Chủ trì
+   coordinate = Phối hợp
+   receiveToKnow = Nhận để biết
+   situation = Nắm tình hình
+## document.recipient (2)
+   individual = Cá nhân
+   org = Đơn vị
+## document.require (1)
+   reply = Có
+## document.search (11)
+   carbonCopy = Văn bản phối hợp (PH)
+   sendTo = Văn bản chủ trì (CT)
+   newDoc = Văn bản chưa xử lý
+   docNotRead = Văn bản chưa đọc
+   docIsRead = Văn bản đã đọc
+   docProcessed = Văn bản đã xử lý
+   docLocked = Văn bản đã khóa
+   docDeleted = Văn bản đã xóa
+   docRecipient.group = Văn bản đến đơn vị
+   docRecipient.staff = Văn bản đến cá nhân
+   toKnow = Nhận để biết (NB)
+## document.securityLevel (5)
+   documentStatusSecurityLevels.binh.thuong = Bình thường
+   documentStatusSecurityLevels.khong.quan.trong = không quan trọng
+   documentStatusSecurityLevels.mat = Mật
+   documentStatusSecurityLevels.toi.mat = Tối mật
+   documentStatusSecurityLevels.tuyet.mat = Tuyệt mật
+## document.status (10)
+   processing.warning = Đang xử lý sắp đến hạn
+   processing = Đang xử lý
+   completed = Đã hoàn thành
+   pendingReception = Chờ tiếp nhận
+   pendingProcessing = Chờ xử lý
+   nearDeadline = Sắp đến hạn
+   needAnswer = Yêu cầu trả lời
+   returned = Bị trả lại
+   overdue = Đã quá hạn
+   inCompleted = Chưa hoàn thành
+## document.transfer (3)
+   toKnow = Nhận để biết
+   carbonCopy = Phối hợp
+   sendTo = Chủ trì
+## document.transferMoney (2)
+   notYetTransfer = Chưa chuyển
+   transferred = Đã chuyển
+## evaluation.isLock (2)
+   isLockMap.dong.chot = Đóng chốt
+   isLockMap.mo.chot = Mở chốt
+## evaluation.type (6)
+   month = Tháng
+   quarter = Quý
+   typeMap.chi.tieu.ne.nep = Chỉ tiêu KPI, nền nếp
+   typeMap.de.xuat.cong.diem = Đề xuất cộng điểm
+   typeMap.tu.cham.diem = Tự chấm điểm
+   year = Năm
+## groupManager.scopeType (2)
+   nhom.ca.nhan = Nhóm cá nhân
+   nhom.don.vi = Nhóm đơn vị
+## gui.kien (1)
+   nghi.de.xuat = Gửi kiến nghị, đề xuất
+## kpi.map (2)
+   chua.phan.hoi = Chưa phản hồi
+   da.phan.hoi = Đã phản hồi
+## kpi.status (3)
+   statusMap.cho.phan.hoi = Chờ phản hồi
+   statusMap.chot.danh.gia = Chốt đánh giá
+   statusMap.dang.nhap = Đang nháp
+## meeting.hasVideoConference (6)
+   co = Có
+   has = Đã có
+   khong = Không
+   none = Chưa có
+   notUse = Không sử dụng
+   use = Có sử dụng
+## meeting.isAutoApprove (2)
+   co = Có
+   khong = Không
+## meeting.label (3)
+   done = Có đủ TB/KL, gán BB họp, giao việc => Hoàn thành
+   notDone = Chưa hoàn thành (Thiếu mục: TB/KL, gán BB họp, giao việc)
+   notDone1 = Chưa hoàn thành (Thiếu mục: giao việc)
+## meeting.meetingResource (3)
+   chon.tat.ca = ---Chọn tất cả---
+   khac = Khác
+   phong.hop.thuoc.quan.ly = Phòng họp thuộc quản lý
+## meeting.meetingRole (6)
+   meetingRoleMap.commander = Tham dự và chỉ đạo
+   meetingRoleMap.chu.tri = Chủ trì
+   meetingRoleMap.chuan.bi = Chuẩn bị
+   meetingRoleMap.tham.du = Tham dự
+   meetingRoleMap.tham.du.chuan.bi = Tham dự, chuẩn bị
+   meetingRoleMap.viet.ket.luan = Viết kết luận
+## meeting.meetingScope (3)
+   meetingScopeMap.cong.ty = Công ty
+   meetingScopeMap.tap.doan = Tập đoàn
+   meetingScopeMap.trung.tam = Trung tâm
+## meeting.recurrence (4)
+   recurrenceMap.hang.nam = Hàng năm
+   recurrenceMap.hang.thang = Hàng tháng
+   recurrenceMap.hang.tuan = Hàng tuần
+   recurrenceMap.khong.theo.dinh.ky = Không theo định kỳ
+## meeting.searchBy (5)
+   map.chon.tat.ca = --- Chọn tất cả ---
+   map.lich.hop.cua.ban.lanh.dao = Lịch họp của lãnh đạo
+   map.lich.hop.cua.toi = Lịch họp tôi tạo
+   map.lich.hop.lanh.dao.don.vi = Lịch họp của lãnh đạo và đơn vị
+   map.lich.hop.toi.tham.gia = Lịch họp tôi tham gia
+## meeting.sendEmailStatus (3)
+   chon.tat.ca = ---- Chọn tất cả ----
+   chua.gui.mail = Chưa gửi mail
+   da.gui.email = Đã gửi mail
+## meeting.state (5)
+   stateMap.cho.duyet = Chờ duyệt
+   stateMap.da.duyet = Đã duyệt
+   stateMap.huy = Hủy
+   stateMap.tu.choi = Từ chối
+   stateMap.xoa = Xóa
+## meeting.type (4)
+   danh.sach.cuoc.hop.co.thanh.phan.tham.gia = Danh sách cuộc họp có thành phần tham gia thuộc đơn vị
+   danh.sach.cuoc.hop.dang.ky = Danh sách cuộc họp đăng ký sử dụng phòng họp của đơn vị
+   danh.sach.cuoc.hop.moi = Danh sách cuộc họp mời lãnh đạo đơn vị tham gia/chủ trì
+   tong.hop.danh.sach.cuoc.hop = Tổng hợp danh sách cuộc họp
+## meeting.typeRoom (3)
+   managedByMe = Phòng họp tôi quản lý
+   typeRoomMap.phong.hop.duoc.quan.ly = Phòng họp được quản lý
+   typeRoomMap.phong.hop.khong.duoc.quan.ly = Phòng họp không được quản lý
+## meetingminutes.conclude (3)
+   label.meeting = Cuộc họp
+   stateMap.meetingOriginal = Cuộc họp từ hệ thống
+   stateMap.meetingOrther = Cuộc họp khác
+## meetingminutes.label (2)
+   from = Từ
+   to = Đến
+## meetingminutes.status (4)
+   statusMap.chua.thuc.hien = Chưa thực hiện
+   statusMap.da.thuc.hien = Đã thực hiện
+   statusMap.dang.thuc.hien = Đang thực hiện
+   statusMap.dong.ket.luan = Đóng kết luận
+## meetingminutes.typeOfRecord (10)
+   typeOfRecordMap.chi.dao = Chỉ đạo
+   typeOfRecordMap.chon.loai.bien.ban = ---- Chọn loại biên bản ----
+   typeOfRecordMap.ket.luan.chuyen.de = Kết luận chuyên đề
+   typeOfRecordMap.ket.luan.giao.ban.nam = Kế hoạch năm
+   typeOfRecordMap.ket.luan.giao.ban.ngay = Kết luận giao ban ngày
+   typeOfRecordMap.ket.luan.giao.ban.quy = Kết luận giao ban quý
+   typeOfRecordMap.ket.luan.giao.ban.thang = Kết luận giao ban tháng
+   typeOfRecordMap.ket.luan.giao.ban.tuan = Kết luận giao ban tuần
+   typeOfRecordMap.ket.luan.so.ket = Kết luận sơ kết
+   typeOfRecordMap.khac = Khác
+## mission.directionMission (3)
+   directionMissionMap.nhiem.vu.giao.di = Nhiệm vụ giao đi
+   directionMissionMap.nhiem.vu.thuc.hien = Nhiệm vụ nhận được
+   directionMissionMap.nhiem.vu.phoi.hop = Nhiệm vụ phối hợp
+## mission.field (40)
+   fieldMap.bong.da = Bóng đá
+   fieldMap.callcenter = Call Center
+   fieldMap.ccare = C.Care
+   fieldMap.co.dien = Cơ điện
+   fieldMap.cong.nghe = Công nghệ
+   fieldMap.cong.van.ngoai = Công văn ngoài
+   fieldMap.dao.tao = Đào tạo
+   fieldMap.dau.tu = Đầu tư
+   fieldMap.dau.tu.tai.chinh = Đầu tư tài chính
+   fieldMap.elling.controlSelling = Selling Control
+   fieldMap.enterprise.customerEnterprise = Enterprise Customer (ECD)
+   fieldMap.hanh.chinh = Hành chính
+   fieldMap.he.thong = Hệ thống
+   fieldMap.investment = Investment
+   fieldMap.it.center = IT Center
+   fieldMap.kcs = KCS
+   fieldMap.ke.hoach = Kế hoạch
+   fieldMap.ke.hoach.hanhchinh = Kế hoạch hành chính
+   fieldMap.khac = Khác
+   fieldMap.kiam.toan.noi.bo = Kiểm toán nội bộ
+   fieldMap.kinh.doanh = Kinh doanh
+   fieldMap.ky.thuat = Kỹ Thuật
+   fieldMap.linh.vuc.khac = Ngành khác
+   fieldMap.network = Network Operation Center (NOC)
+   fieldMap.nganh.chinh.tri = Ngành chính trị
+   fieldMap.nganh.toc.chuc.lao.dong = Ngành tổ chức lao động
+   fieldMap.nhan.su = Nhân Sự
+   fieldMap.phap.che = Pháp chế
+   fieldMap.quan.ly.tai.san = Quản lý tài sản
+   fieldMap.quang.cao.truyen.thong = Quảng cáo & Truyền thông
+   fieldMap.quye.hoach.thiet.ke.toi.uu = Quy hoạch thiết kế tối ưu
+   fieldMap.san.xuat.thiet.bi = Sản xuất thiết bị
+   fieldMap.sang.kien.y.tuong = Sáng kiến ý tưởng
+   fieldMap.tai.chinh = Tài Chính
+   fieldMap.thanh.tra = Thanh Tra
+   fieldMap.truyen.hinh = Truyền hình
+   fieldMap.tryen.dan = Truyền dẫn
+   fieldMap.van.phong = Văn phòng
+   fieldMap.vas = VAS
+   fieldMap.xay.dung = Xây dựng
+## mission.frequencyUpdate (4)
+   mission.frequencyUpdateMap.cap.nhat.theo.ngay = Cập nhật theo ngày
+   mission.frequencyUpdateMap.cap.nhat.theo.quy = Cập nhật theo quý
+   mission.frequencyUpdateMap.cap.nhat.theo.thang = Cập nhật theo tháng
+   mission.frequencyUpdateMap.cap.nhat.theo.tuan = Cập nhật theo tuần
+## mission.hideShow (2)
+   hideShowMap.co.cap.nhat.moi = Có cập nhật mới
+   hideShowMap.tat.ca = Tất cả
+## mission.hideShowMission (4)
+   mission.hideShowMission.chi.huy.giao.viec = Chỉ huy giao việc
+   mission.hideShowMission.chi.huy.nhan.viec = Chỉ huy nhận việc
+   mission.hideShowMission.tro.ly.giao.viec = Trợ lý giao việc
+   mission.hideShowMission.tro.ly.nhan.viec = Trợ lý nhận việc
+## mission.isDocReport (2)
+   isDocReportMap.bang.van.ban = Bằng văn bản
+   isDocReportMap.khong.bat.buoc = Không bắt buộc
+## mission.levelImportant (2)
+   important = Quan trọng
+   normal = Bình thường
+## mission.mapMissionType (2)
+   nhiem.vu.giao.di = Nhiệm vụ giao đi
+   nhiem.vu.thuc.hien = Nhiệm vụ thực hiện
+## mission.missionGroup (4)
+   agreement = Nhiệm vụ/dự án từ TTHT
+   group = Nhiệm vụ đơn vị
+   political = Nhiệm vụ chính trị
+   yearPlan = Kế hoạch năm
+## mission.missionResovleIssueType (2)
+   nhiem.vu.thuong = Nhiệm vụ thường
+   nhiem.vu.xu.ly.kho.khan = Nhiệm vụ xử lý khó khăn
+## mission.periodical (5)
+   monthly = Hàng tháng
+   nonPeridical = Không định kỳ
+   quaterly = Hàng quý
+   daily = Hàng ngày
+   weekly = Hàng tuần
+## mission.referenceType (2)
+   referenceTypeMap.cong.viec.ca.nhan = Nhiệm vụ cá nhân
+   referenceTypeMap.nhiem.vu.don.vi = Nhiệm vụ đơn vị
+## mission.sortBy (5)
+   assignDate = Ngày giao
+   completeDate = Ngày hoàn thành
+   createDate = Ngày tạo
+   orgPerform = Đơn vị chủ trì thực hiện
+   updateDate = Ngày cập nhật
+## mission.sourceType (9)
+   sourceTypeMap.theo.thoathuan.hoptac = Theo thỏa thuận hợp tác
+   sourceTypeMap.defenceDocument = Theo văn bản Quốc phòng
+   sourceTypeMap.govermentDocument = Theo văn bản Chính phủ
+   sourceTypeMap.theo.bien.ban.hop = Theo biên bản họp
+   sourceTypeMap.theo.dinh.huong = Theo định hướng
+   sourceTypeMap.theo.kien.nghi.de.xuat = Theo khó khăn vướng mắc
+   sourceTypeMap.theo.nguon.goc.khac = Theo nguồn gốc khác
+   sourceTypeMap.theo.nhiem.vu.don.vi = Theo nhiệm vụ đơn vị
+   sourceTypeMap.theo.van.ban = Theo văn bản
+## mission.status (32)
+   apprpveStatus.da.hoan.thanh = Đã hoàn thành
+   apprpveStatus.yeu.cau.dong = Đề xuất đóng
+   apprpveStatus.yeu.cau.gia.han = Đề xuất gia hạn
+   da.chuyen = Đã chuyển
+   da.chuyen.export = da_chuyen
+   isCompleteMap.chua.hoan.thanh = Chưa hoàn thành
+   isCompleteMap.hoan.thanh = Hoàn thành
+   statusMap.da.hoan.thanh = Đã hoàn thành
+   statusMap.dang.thuc.hien = Đang thực hiện
+   statusMap.yeu.cau.dong = Đề xuất đóng
+   statusMap.yeu.cau.gia.han = Đề xuất gia hạn
+   statusMapSearch.cham.tien.do = Chậm tiến độ
+   statusMapSearch.cham.tien.do.export = cham_tien_do
+   statusMapSearch.chua.dong = Chưa đóng
+   statusMapSearch.chua.dong.export = chua_dong
+   statusMapSearch.chua.thuc.hien = Chưa thực hiện
+   statusMapSearch.chua.thuc.hien.export = chua_thuc_hien
+   statusMapSearch.da.dong = Đã đóng
+   statusMapSearch.da.dong.export = da_dong
+   statusMapSearch.da.hoan.thanh = Đã hoàn thành
+   statusMapSearch.da.hoan.thanh.export = da_hoan_thanh
+   statusMapSearch.da.ket.thuc = Đã kết thúc
+   statusMapSearch.da.ket.thuc.export = da_ket_thuc
+   statusMapSearch.dang.thuc.hien = Đang thực hiện
+   statusMapSearch.dang.thuc.hien.export = dang_thuc_hien
+   statusMapSearch.not.completed = Không thực hiện được
+   statusMapSearch.due.soon = Sắp đến hạn
+   statusMapSearch.renewed = Đã gia hạn
+   statusMapSearch.yeu.cau.dong = Đề xuất đóng
+   statusMapSearch.yeu.cau.dong.export = yeu_cau_dong
+   statusMapSearch.yeu.cau.gia.han = Đề xuất gia hạn
+   apprpveStatus.nhan.de.biet = Nhận để biết
+## mission.statusProposeDifficult (2)
+   statusProposeDifficultMap.da.xu.ly = Đã xử lý
+   statusProposeDifficultMap.dang.xu.ly = Đang xử lý
+## mission.typeMission (6)
+   typeMissionMap.nhiem.vu.bgd.giao = Nhiệm vụ BGĐ giao
+   typeMissionMap.nhiem.vu.don.vi.dang.ky = Nhiệm vụ đơn vị đăng ký
+   typeMissionMap.nhiem.vu.giao.di = Nhiệm vụ giao đi
+   typeMissionMap.nhiem.vu.phoi.hop = Nhiệm vụ phối hợp
+   typeMissionMap.nhiem.vu.thuc.hien = Nhiệm vụ thực hiện
+   typeMissionMap.nhiem.vu.toi.tao = Nhiệm vụ tôi tạo
+## mission.typeMissionDifficult (2)
+   typeMissionDifficultMap.nhiem.vu.da.giao = Nhiệm vụ đã giao
+   typeMissionDifficultMap.nhiem.vu.duoc.giao = Nhiệm vụ được giao
+## missionProcess.statusApproved (3)
+   statusApprovedMap.cho.phe.duyet = Chờ phê duyệt
+   statusApprovedMap.da.phe.duyet = Đã phê duyệt
+   statusApprovedMap.tu.choi = Từ chối
+## missionRating.approved (4)
+   approvedMap.cho.phe.duyet = Chờ phê duyệt
+   approvedMap.da.phe.duyet = Đã phê duyệt
+   approvedMap.huy = Hủy
+   approvedMap.tuchoi = Từ chối
+## missionRating.approvedSearchMap (5)
+   cho.phe.duyet = Chờ phê duyệt
+   da.phe.duyet = Đã phê duyệt
+   huy = Hủy
+   tat.ca = Tất cả
+   tu.choi = Từ chối
+## missionRating.completedStatus (3)
+   completedStatusMap.cham.tien.do = Chậm tiến độ
+   completedStatusMap.dung.tien.do = Đúng tiến độ
+   completedStatusMap.vuot.tien.do = Vượt tiến độ
+## missionRating.graded (6)
+   gradedMap.kem = Kém
+   gradedMap.kha = Khá
+   gradedMap.tot = Tốt
+   gradedMap.trung.binh = Trung bình
+   gradedMap.xuat.sac = Xuất sắc
+   gradedMap.yeu = Yếu
+## missionRating.isLock (2)
+   isLockMap.dong.khoa = Đống khóa
+   isLockMap.mo.khoa = Mở khóa
+## missionRating.propose (2)
+   chua.trinh = Chưa trình
+   da.trinh = Đã trình
+## missionRating.status (3)
+   statusMap.chua.thuc.hien = Chưa thực hiện
+   statusMap.da.hoan.thanh = Đã hoàn thành
+   statusMap.dang.thuc.hien = Đang thực hiện
+## notificationError.dong (1)
+   chi.da.chuyen.cong.van.thanh.cong = Đồng chí đã chuyển công văn thành công
+## notificationError.ngay (1)
+   bat.dau.lon.hon.ngay.ket.thuc = Ngày bắt đầu lớn hơn ngày kết thúc
+## notificationError.them (1)
+   file.dinh.kem = Thêm file đính kèm
+## orientation.meetingMinutes (1)
+   sourceType.sourceTypeMap.theo.van.ban = Theo văn bản
+## orientation.ratioConfigType (11)
+   ratingOrg = Thang điểm xếp loại đơn vị
+   ratingTask = Tỷ lệ điểm xếp loại công việc
+   ratioConfigTypeMap.chon = ----Chọn----
+   ratioConfigTypeMap.configPointUnit = Tỷ lệ xếp loại đơn vị
+   ratioConfigTypeMap.tieu.chi.danh.gia = Tiêu chí đánh giá nhiệm vụ cá nhân
+   ratioConfigTypeMap.ty.le.diem.danh.gia = Tỷ lệ điểm đánh giá đơn vị
+   ratioConfigTypeMap.ty.le.diem.danh.gia.don.vi = Tỷ lệ điểm đánh giá nhiệm vụ đơn vị
+   ratioConfigTypeMap.ty.le.diem.xep.loai = Tỷ lệ điểm xếp loại
+   ratioConfigTypeMap.ty.le.diem.xep.loai.nv = Tỷ lệ điểm xếp loại nhiệm vụ
+   ratioConfigTypeMap.ty.le.ki = Tỷ lệ KI
+   routines = Tỷ lệ điểm đánh giá nề nếp
+## orientation.sourceType (3)
+   sourceTypeMap.theo.bien.ban.hop = Theo biên bản họp
+   sourceTypeMap.theo.chi.thi = Theo chỉ thị
+   sourceTypeMap.theo.van.ban = Theo văn bản
+## orientationSourceType.orientationSourceTypeMap (4)
+   bien.ban.hop = Biên bản họp
+   chi.thi = Chỉ thị
+   chon.nguon.goc = -- Chọn nguồn gốc --
+   van.ban = Văn bản
+## period.periodMap (5)
+   canam = Nhiệm vụ năm
+   quy1 = Quý 01
+   quy2 = Quý 02
+   quy3 = Quý 03
+   quy4 = Quý 04
+## phe.duyet (1)
+   ke.hoach.thang = Phê duyệt kế hoạch tháng
+## priorityLevel.priorityLevelMap (6)
+   binh.thuong = Bình thường
+   chon = -- Chọn --
+   khan.cap = Khẩn cấp
+   khong.quan.trong = Không quan trọng
+   rat.khan.cap = Rất khẩn cấp
+   rat.thap = Rất thấp
+## privateType.privateTypeMap (2)
+   nhom.dung.chung = Nhóm dùng chung
+   nhom.kin = Nhóm kín
+## quan.ly (1)
+   cong.viec.ca.nhan = Quản lý nhiệm vụ cá nhân
+## rattingKi.month (12)
+   monthMap.thang12 = Tháng 12
+   onthMap.thang1 = Tháng 1
+   onthMap.thang10 = Tháng 10
+   onthMap.thang11 = Tháng 11
+   onthMap.thang2 = Tháng 2
+   onthMap.thang3 = Tháng 3
+   onthMap.thang4 = Tháng 4
+   onthMap.thang5 = Tháng 5
+   onthMap.thang6 = Tháng 6
+   onthMap.thang7 = Tháng 7
+   onthMap.thang8 = Tháng 8
+   onthMap.thang9 = Tháng 9
+## rattingKi.year (7)
+   yearMap.nam2012 = Năm 2012
+   yearMap.nam2013 = Năm 2013
+   yearMap.nam2014 = Năm 2014
+   yearMap.nam2015 = Năm 2015
+   yearMap.nam2016 = Năm 2016
+   yearMap.nam2017 = Năm 2017
+   yearMap.nam2018 = Năm 2018
+## receiver.receiverMap (4)
+   chua.tiep.nhan = Chưa tiếp nhận
+   da.dong = Đã đóng
+   da.tiep.nhan = Đã tiếp nhận
+   tu.choi = Từ chối
+## receiver.receiverMesgMap (3)
+   chua.tiep.nhan = chưa tiếp nhận
+   da.tiep.nhan = đã tiếp nhận
+   da.tu.choi = đã từ chối
+## request.action (8)
+   assgignOrg = Giao cho đơn vị
+   assgignUser = Giao cho cá nhân
+   autoSendHeigher = Tự động gửi lên cấp trên
+   close = Đóng yêu cầu
+   rejectResult = Từ chối kết quả giải quyết
+   send = Gửi yêu cầu
+   sendHeigher = Gửi lên cấp trên
+   solveMyself = Tự giải quyết
+## request.status (10)
+   sent = Đã gửi
+   close = Đã đóng
+   noSend = Chưa gửi
+   noSolve = Chưa giải quyết
+   solved = Đã giải quyết
+   solving = Đang giải quyết
+   statusMap.da.chuyen.cap.tren = Đã chuyển cấp trên
+   statusMap.da.giai.quyet = Đã giải quyết
+   statusMap.da.gui.yeu.cau = Đã gửi yêu cầu
+   sendError = Gửi lỗi
+## requestProcess.action (5)
+   actionMap.cap.nhat.y.kien.chi.dao = Cập nhật ý kiến chỉ đạo
+   actionMap.chuyen.len.cap.tren = Chuyển lên cấp trên
+   actionMap.de.xuat.yeu.cau = Đề xuất yêu cầu
+   actionMap.hoan.thanh.giai.quyet = Hoàn thành giải quyết
+   actionMap.tao.cong.viec = Tạo nhiệm vụ
+## requisitionComment.state (5)
+   signedByLeader = Lãnh đạo đã ký duyệt
+   stateMap.cho.nhan.xet = Chờ nhận xét bổ sung
+   stateMap.da.nhan.xet = Đã nhận xét
+   stateMap.da.nhan.xet.bo.sung = Đã nhận xét bổ sung
+   stateMap.dang.xu.ly = Đang xử lý
+## requisitionFlow.requisitionFlowMap (3)
+   ca.nhan = Cá nhân
+   don.vi = Đơn vị
+   tap.doan = Tập đoàn
+## requisitionProcess.status (8)
+   statusMap.bi.tu.choi = Bị từ chối
+   statusMap.cho.ky.nhay = Chờ ký nháy
+   statusMap.chon = -- Chọn --
+   statusMap.da.ky.duyet = Đã ký duyệt
+   statusMap.da.ky.nhay = Đã ký nháy
+   statusMap.dang.xu.ly = Đang xử lý
+   statusMap.van.thu.chua.xu.ly = Văn thư chưa xử lý
+   statusMap.van.thu.da.duyet = Văn thư đã duyệt
+## requisitionProcess.subType (2)
+   subTypeMap.ky.nhay = Ký nháy
+   subTypeMap.nhan.xet.bo.sung = Nhận xét bổ sung
+## requisitionProcess.type (5)
+   typeMap.ky.duyet = Ký duyệt
+   typeMap.ky.nhay = Ký nháy
+   typeMap.nhan.xet = Nhận xét
+   typeMap.nhan.xet.bo.sung = Nhận xét bổ xung
+   typeMap.xet.duyet = trình duyệt
+## securityLevel.securityLevelMap (6)
+   binh.thuong = Bình thường
+   chon = -- Chọn --
+   khong.quan.trong = Không quan trọng
+   quan.trong = Quan trọng
+   rat.quan.trong = Rất quan trọng
+   rat.thap = Rất thấp
+## signState.chua (1)
+   ky = Chưa ký
+## signState.da (1)
+   ky = Đã ký
+## smsMaster.smsMasterMap (12)
+   bao.cao.ket.qua.dv = Báo kết quả ĐV giao việc đóng hoặc từ chối nhiệm vụ
+   bao.cao.ket.qua.lanh.dao = Báo kết quả lãnh đạo phê duyệt tiến độ CVCN cho nhân viên
+   giao.nhiem.vu = Giao Nhiệm vụ
+   giao.viec.ca.nhan = Giao việc cá nhân
+   ky.phieu.danh.gia = Ký phiếu đánh giá nhiệm vụ cuối tháng
+   ky.phieu.giao.viec = Ký phiếu giao việc đầu tháng
+   thong.bao.lich.hop = Thông báo lịch họp cho thành phần tham gia
+   thong.ke.cong.viec.ca.nhan = Thống kê nhiệm vụ cá nhân
+   thong.ke.nhiem.vu.don.vi = Thống kê nhiệm vụ đơn vị
+   thong.ke.nhiem.vu.dv = Thống kê nhiệm vụ đơn vị cho trợ lý chuyên hướng
+   tu.cham.diem = Tự chấm điểm NVĐV (cho Trợ lý)
+   tu.cham.phe.duyet = Tự chấm và phê duyệt chấm điểm NVĐV (cho lãnh đạo)
+## sourceMap.sourceTypeMap (6)
+   theo.ke.hoach.ca.nhan = Theo kế hoạch cá nhân
+   theo.ke.hoach.cv.phoi.hop = Theo nhiệm vụ phối hợp
+   theo.kien.nghi.de.xuat = Theo khó khăn vướng mắc
+   theo.nguon.goc.khac = Theo nguồn gốc khác
+   theo.nhiem.vu.don.vi = Theo nhiệm vụ đơn vị
+   theo.van.ban = Theo văn bản
+## status.statusInfoMap (2)
+   dang.bi.khoa = Đang bị khóa
+   hoat.dong = Hoạt động
+## status.statusMap (11)
+   bi.tu.choi = Bị từ chối
+   cho.nhan.xet = Chờ nhận xét
+   chon = -- Chọn --
+   chua.trinh.ky = Chưa trình ký
+   da.ban.hanh = Đã ban hành
+   da.huy.trinh.ky = Đã hủy trình ký
+   da.ky.duyet = Đã ký duyệt
+   da.nhan.xet = Đã nhận xét
+   dang.xu.ly = Đã đến, đang xử lý
+   hoat.dong = Hoạt động
+   khong.hoat.dong = Không hoạt động
+## sysMenu.statusInfoMap (2)
+   dang.bi.khoa = Đang bị khóa
+   hoat.dong = Hoạt động
+## sysMenu.statusMap (4)
+   chua.ky.duyet = Chưa ký duyệt
+   da.ky.duyet = Đã ký duyệt
+   tat.ca = Tất cả
+   tu.choi = Từ chối
+## sysUser.action (2)
+   insert = Tạo mới
+   update = Cập nhật trạng thái
+## sysUser.genderMap (4)
+   khong.xac.dinh = Không xác định
+   nam = Nam
+   nu = Nữ
+   none = Không xác định
+## sysUser.simVersion (2)
+   sim12 = SIM CA 1.2
+   sim20 = SIM CA 2.0
+## sysUser.statistics (5)
+   period.statisticsMap.thong.ke.theo = Thống kê theo
+   period.statisticsMap.thong.ke.theo.nam = Thống kê theo năm
+   period.statisticsMap.thong.ke.theo.quy = Thống kê theo quý
+   period.statisticsMap.thong.ke.theo.thang = Thống kê theo tháng
+   period.statisticsMap.thong.ke.theo.tuan = Thống kê theo tuần
+## sysUser.statusInfoMap (3)
+   chon = ------Chọn-------
+   dang.bi.khoa = Đang bị khóa
+   hoat.dong = Hoạt động
+## sysUser.statusMap (6)
+   chon = ---- Chọn trạng thái ----
+   hoat.dong = Hoạt động
+   khong.hoat.dong = Không hoạt động
+   all = Tất cả
+   active = Còn hiệu lực
+   inactive = Không hiệu lực
+## sysUser.template (3)
+   ky.dien.tu = Ký điện tử
+   lich.hop = Lịch họp
+   van.ban = Văn bản
+## sysUser.timconfig (3)
+   timeconfigType.thang.nay = Tháng này
+   timeconfigType.thang.sau = Tháng sau
+   timeconfigType.thang.truoc = Tháng trước
+## sysUser.vhrEmployee (3)
+   khong.xac.dinh = Không xác định
+   nam = Nam
+   nu = Nữ
+## task.commandType (5)
+   commandTypeMap.cong.viec.ca.nhan.de.xuat = Nhiệm vụ cá nhân đề xuất
+   commandTypeMap.cong.viec.da.ban.giao = Nhiệm vụ đã bàn giao
+   commandTypeMap.cong.viec.duoc.giao = Nhiệm vụ được giao
+   commandTypeMap.cong.viec.phoi.hop = Nhiệm vụ phối hợp
+   commandTypeMap.tat.ca = tất cả
+## task.da (1)
+   chuyen = Đã chuyển
+## task.field (21)
+   fieldMap.FIP = Xúc tiến đầu tư nước ngoài
+   fieldMap.chinh.tri = Chính trị
+   fieldMap.cong.nghe.thong.tin = Công nghệ thông tin
+   fieldMap.dao.tao = Đào tạo
+   fieldMap.dau.tu = Đầu tư
+   fieldMap.dau.tu.tai.chinh = Đầu tư tài chính
+   fieldMap.ke.hoach = Kế hoạch
+   fieldMap.kiem.toan.noi.bo = Kiểm toán nội bộ
+   fieldMap.kinh.doanh.vien.thong = Kinh doanh viễn thông
+   fieldMap.ky.thuat.vien.thong = Kỹ thuật viễn thông
+   fieldMap.nghien.cuu.san.xuat = Nghiên cứu sản xuất
+   fieldMap.phap.che = Pháp chế
+   fieldMap.quan.ly = Quản lý
+   fieldMap.quan.ly.tai.san = Quản lý tài sản
+   fieldMap.quang.cao.truyen.thong = Quảng cáo truyền thông
+   fieldMap.tai.chinh.ke.toan = Tài chính kế toán
+   fieldMap.thanh.tra = Thanh tra
+   fieldMap.to.chuc.lao.dong = Tổ chức lao động
+   fieldMap.truyen.hinh = Truyền hình
+   fieldMap.van.phong = Văn phòng
+   fieldMap.xay.dung = Xây dựng
+## task.isClose (2)
+   <stdin>:6: DeprecationWarning: invalid escape sequence '\!'
+<stdin>:6: DeprecationWarning: invalid escape sequence '\:'
+<stdin>:6: DeprecationWarning: invalid escape sequence '\ '
+isCloseMap.chua.dong = Chưa đóng
+   isCloseMap.da.dong = Đã đóng
+## task.isComplete (2)
+   isCompleteMap.chua.hoan.thanh = Chưa hoàn thành
+   isCompleteMap.hoan.thanh = Hoàn thành
+## task.isMajor (2)
+   isMajorMAp.chu.tri = (Chủ trì)
+   isMajorMAp.phoi.hop = (Phối hợp)
+## task.objectType (3)
+   objectTypeMap.cbvn1 = Chỉ huy CQĐV
+   objectTypeMap.cbvn2 = CBNV được đánh giá theo tiêu chuẩn
+   objectTypeMap.cbvn3 = CBNV còn lại
+## task.period (5)
+   periodMap.canam = Năm 2020
+   periodMap.quy1 = Quý 01
+   periodMap.quy2 = Quý 02/2020
+   periodMap.quy3 = Quý 03/2020
+   periodMap.quy4 = Quý 04/2020
+## task.processType (7)
+   processTypeMap.cap.nhat = Cập nhật
+   processTypeMap.chia.nho = Chia nhỏ
+   processTypeMap.chuyen = Chuyển
+   processTypeMap.phe.duyet = Phê duyệt
+   processTypeMap.them.moi = Thêm mới
+   processTypeMap.tu.choi = Từ chối
+   processTypeMap.tu.dong.cap.nhat = Tự động cập nhật
+## task.ratingPoint (6)
+   ratingPointMap.can.co.gang = Cần cố gắng
+   ratingPointMap.dat.yeu.cau = Đạt yêu cầu
+   ratingPointMap.kem = Kém
+   ratingPointMap.kha = Khá
+   ratingPointMap.tot = Tốt
+   ratingPointMap.xuat.sac = Xuất sắc
+## task.state (5)
+   stateMap.ban.nhap = Bản nháp
+   stateMap.phe.duyet = Phê duyệt
+   stateMap.phe.duyet.danh.gia = Phê duyệt đánh giá
+   stateMap.tu.choi = Từ chối
+   stateMap.tu.choi.danh.gia = Từ chối đánh giá
+## task.stateRequisition (3)
+   stateTaskRequisitionMap.chua.phe.duyet = Chưa phê duyệt
+   stateTaskRequisitionMap.phe.duyet = Phê duyệt
+   stateTaskRequisitionMap.tu.choi = Từ chối
+## task.stateRequisitionTmp (4)
+   signDefaultMap.chua.ky = Chưa ký
+   signDefaultMap.da.ky = Đã ký
+   stateRequisitionTmpMap.phe.duyet = Phê duyệt
+   stateRequisitionTmpMap.tu.choi = Từ chối
+## task.status (7)
+   deliveredTask = Đã ký
+   notDeliveredTask = Chưa ký
+   statusMap.cham.tien.do = Chậm tiến độ
+   statusMap.chon = ---- Chọn trạng thái ----
+   statusMap.chua.thuc.hien = Chưa thực hiện
+   statusMap.da.hoan.thanh = Đã hoàn thành
+   statusMap.dang.thuc.hien = Đang thực hiện
+## task.statusAdd (3)
+   statusMap.chua.thuc.hien = Chưa thực hiện
+   statusMap.da.hoan.thanh = Đã hoàn thành
+   statusMap.dang.thuc.hien = Đang thực hiện
+## task.taskAdd (6)
+   group_1 = Nhiệm vụ định tính
+   group_2 = Nhiệm vụ định lượng
+   weight_1 = Mức độ quan trọng và khẩn cấp không cao
+   weight_2 = Mức độ không quan trọng nhưng khẩn cấp
+   weight_3 = Mức độ quan trọng nhưng không khẩn cấp
+   weight_4 = Mức độ quan trọng và khẩn cấp
+## task.taskType (10)
+   contractType.contractAll = Tất cả
+   contractType.contractLabor = Hợp đồng lao động
+   contractType.contractService = Hợp đồng dịch vụ
+   contractType.fileList = Bảng tổng hợp Ki đơn vị
+   contractType.fileListLabor = Bảng tổng hợp Ki đơn vị theo hợp đồng lao động
+   contractType.fileListService = Bảng tổng hợp Ki đơn vị theo hợp đồng dịch vụ
+   taskTypeMap.cong.viec.chuc.nang = Nhiệm vụ chức năng
+   taskTypeMap.cong.viec.dot.xuat = Nhiệm vụ đột xuất
+   taskTypeMap.cong.viec.ne.nep = Nhiệm vụ nề nếp
+   taskTypeMap.cong.viec.thuong.xuyen = Nhiệm vụ thường xuyên
+## task.updateFrequen (3)
+   updateFrequenMap.cap.nhat.theo.ngay = Cập nhật theo ngày
+   updateFrequenMap.cap.nhat.theo.thang = Cập nhật theo tháng
+   updateFrequenMap.cap.nhat.theo.tuan = Cập nhật theo tuần
+## taskRating.completedStatus (3)
+   completedStatusMap.cham.tien.do = Chậm tiến độ
+   completedStatusMap.dung.tien.do = Đúng tiến độ
+   completedStatusMap.vuot.tien.do = Vượt tiến độ
+## taskRating.monthPeriod (12)
+   thang1 = Tháng một
+   thang10 = Tháng mười
+   thang11 = Tháng mười một
+   thang12 = Tháng mười hai
+   thang2 = Tháng hai
+   thang3 = Tháng ba
+   thang4 = Tháng bốn
+   thang5 = Tháng năm
+   thang6 = Tháng sáu
+   thang7 = Tháng bảy
+   thang8 = Tháng tám
+   thang9 = Tháng chín
+## taskRating.ratingQuality (6)
+   can.co.gang = Cần cố gắng
+   dat.yeu.cau = Đạt yêu cầu
+   kem = Kém
+   kha = Khá
+   tot = Tốt
+   xuat.sac = Xuất sắc
+## taskRating.state (10)
+   signed.assignment.chua.ky = Chưa ký
+   signed.assignment.da.ky = Đã ký
+   state.map.chua.phe.duyet = Chưa phê duyệt
+   state.map.da.phe.duyet = Đã phê duyệt
+   state.map.tu.choi.phe.duyet = Đã từ chối
+   stateMap.chua.danh.gia = Chưa đánh giá
+   stateMap.da.danh.gia = Đã đánh giá
+   stateMap.da.phe.duyet = Đã phê duyệt
+   stateMap.tu.choi.danh.gia = Từ chối đánh giá
+   stateMap.tu.choi.phe.duyet = Từ chối phê duyệt
+## taskRating.status (5)
+   evaluatedTask = Đã ký
+   notEvaluatedTask = Chưa ký
+   statusMap.lanh.dao.chot.danh.gia = Lãnh đạo chốt đánh giá
+   statusMap.lanh.dao.danh.gia = Lãnh đạo đánh giá
+   statusMap.nhan.vien.tu.danh.gia = Nhân viên tự đánh giá
+## taskRating.taskApproval (2)
+   chua.phe.duyet = Chưa phê duyệt
+   da.phe.duyet = Đã phê duyệt
+## taskRating.title (2)
+   approve.task = Phê duyệt nhiệm vụ
+   reject.task = Từ chối phê duyệt nhiệm vụ
+## title.update (1)
+   cong.khai = Chỉnh sửa công khai
+## typeOfOrientationSouce.typeOfOrientationMap (4)
+   che.do.ne.nep = Chế độ nề nếp
+   dinh.huong.chien.luoc = Định hướng chiến lược
+   kinh.nghiem = Kinh nghiệm mới
+   nhan.thuc.moi = Nhận thức mới
+## typeOfOrientationSouce.typeOfOrientationSouceMap (3)
+   theo.bien.ban.hop = Theo biên bản họp
+   theo.chi.thi = Theo chỉ thị
+   theo.van.ban = Theo văn bản
+## userOrgMap.type (5)
+   typeMap.cau.hinh.tro.ly.chuyen.huong = Cấu hình trợ lý chuyên hướng
+   typeMap.gan.pham.vi.giao.viec = Gán phạm vi giao việc
+   typeMap.orgCriteria = Chấm điểm đơn vị
+   typeMap.specializeManagement = Cấu hình lãnh đạo chuyên quản
+   typeMap.orgFollow = Cấu hình theo dõi văn bản đơn vị
+## vbbh.vbbhMap (3)
+   da.ban.hanh = Đã ban hành
+   da.ky.duyet = Đã ký duyệt
+   huy.ban.hanh = Hủy ban hành
+## vbdt.vbdtMapFull (8)
+   du.thao = Dự thảo
+   dang.trinh.ky = Đang trình ký
+   bi.tra.lai = Bị trả lại
+   cho.cap.so = Chưa cấp số
+   da.ban.hanh = Đã ban hành
+   da.huy.luong = Đã hủy luồng
+   da.trinh.ky.lai = Đã trình ký lại
+   da.huy.ban.hanh = Hủy ban hành
+## vbkd.vbkdMap (4)
+   cho.ky.duyet = Chờ ký duyệt
+   nguoi.ky.sau.chua.ky = Người ký sau chưa ký
+   da.ky.duyet = Đã ký duyệt
+   da.tu.choi = Đã từ chối
+## vbkdNew.vbkdMap (7)
+   dang.xu.ly = Đang xử lý
+   bi.tu.choi = Bị từ chối
+   da.ky.duyet = Đã ký duyệt
+   da.ban.hanh = Đã ban hành
+   da.huy.luong = Đã hủy luồng
+   da.trinh.ky.lai = Đã trình ký lại
+   huy.ban.hanh = Hủy ban hành
+## vbkn.vbknMap (3)
+   chua.ky.nhay = Chưa ký nháy
+   da.ky.nhay = Đã ký nháy
+   da.tu.choi = Đã từ chối
+## vbnx.vbnxMap (4)
+   cho.nhan.xet.bo.sung = Chờ nhận xét bổ sung
+   da.nhan.xet = Đã nhận xét
+   da.nhan.xet.bo.sung = Đã nhận xét bổ sung
+   dang.xu.ly = Đang xử lý
+## vbtk.vbtkMap (5)
+   bi.tu.choi = Bị từ chối
+   chua.trinh.ky = Chưa trình ký
+   da.ban.hanh = Đã ban hành
+   da.ky.duyet = Đã ký duyệt
+   dang.xu.ly = Đang xử lý
+## vbtk.vbtkMapFull (14)
+   bi.tu.choi = Bị từ chối
+   cho.nhan.xet = Chờ nhận xét
+   chua.trinh.ky = Chưa trình ký
+   da.ban.hanh = Đã ban hành
+   da.huy.ban.hanh = Hủy ban hành
+   da.huy.luong = Đã hủy luồng
+   dang.xin.y.kien = Đang xin ý kiến
+   da.ky.duyet = Đã ký duyệt
+   da.ky.cho.cap.so = Đã ký, chờ cấp số
+   da.nhan.xet = Đã nhận xét
+   da.trinh.ky.lai = Đã trình ký lại
+   da.cap.so = Đã cấp số
+   da.chuyen.cap.so = Đã chuyển cấp số
+   dang.xu.ly = Đang xử lý
+## vbtkNew.vbtkMap (9)
+   bi.tu.choi = Bị từ chối
+   cho.nhan.xet = Chờ nhận xét
+
+   chua.trinh.ky = Chưa trình ký
+   da.ban.hanh = Đã ban hành
+   da.huy.luong = Đã hủy luồng
+   da.ky.duyet = Đã ký duyệt
+   da.nhan.xet = Đã nhận xét
+   dang.xu.ly = Đang xử lý
+   huy.ban.hanh = Hủy ban hành

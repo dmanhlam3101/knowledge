@@ -1,0 +1,8 @@
+# Họp — đặc thù
+
+- **Chủ yếu gen-1**: `MettingResource` (`/Meeting`, biên bản/điểm danh/tài liệu/nhiệm vụ từ họp), `MettingWeek` (`/MettingWeek`, lịch tuần/duyệt lịch/phòng/SMS), `MeetingAssistantAction`, `MeetingConfigAddAction`, `meetingResourceAction`, `meetingApproverAction`, `MeetingWeekAction` → `controler/*` → `MeetingDAO`, `MeetingMinutesDAO`… **gen-2** chỉ có `MeetController` (`/api/meet`: chi tiết theo đơn vị, đồng bộ), `EcabinetController` (kiểm trùng địa điểm), `VoteController` (biểu quyết — 8 endpoint, mẫu gen-2 gọn).
+- Web: `MeetingBusiness` **77 hàm**, 36 VM trong `vm/meeting` (`MeetingVM`, `MeetingAddVM`, `MeetingWeekVM`, `MeetingMinutesVM`, `RollCall*`, `MeetingResource*`…), 6 màn ☠ (`MeetingListVM` ×4 zul — màn danh sách cũ). 6 facade legacy còn dùng nhiều nhất trong các phân hệ (`IMeeting`, `IMeetingMinutes`, `IMeetingAssistant`, `IMeetingFrequency`, `IMeetingComplementReport`, `IVideoConferenceGroup`) → nhiều VM **BE+LEGACY**; đây là phân hệ còn phụ thuộc facade web nặng nhất — sửa dữ liệu họp phải kiểm tra `ban-do.md` mục 4.
+- `voffice.service.url.meeting` trong `application.properties` — BE họp có thể trỏ **server khác** (10.60.110.21) ❓ còn dùng không.
+- Tích hợp ngoài: Cisco/cospace (họp trực tuyến), SmartRoom (bảng phòng họp), `PublicMeetingWeekServlet` (web `http/`) xuất lịch tuần công khai không cần login.
+- Móc với: văn bản (đề xuất họp từ văn bản `DocumentAction.addMeetingRequest`, `updateDocumentMeetingRequestAfterCreateMeeting`), nhiệm vụ (kết luận → `Meeting.addMission`), KPI (báo cáo quân số `MeetingComplementReport`), SMS (`thong.bao.lich.hop`).
+- Nhiều biến thể "lịch": `MettingWeek.getLstMeetingWeek`, `GetListMeeting`, `getMeetingList`, `GetMeetingListByText`, `get3MeetingNearestOnDashboard` — mỗi màn một hàm.
