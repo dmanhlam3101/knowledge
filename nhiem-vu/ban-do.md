@@ -7,7 +7,7 @@
 
 ## 1. Màn hình (web)
 
-Tổng: 61 màn hình, 8 VM không gắn zul trực tiếp.
+Tổng: 62 màn hình, 8 VM không gắn zul trực tiếp.
 
 | Màn hình (.zul) | ViewModel | Gọi BE qua (Business) | Legacy (remote/facade) | Nhãn |
 |---|---|---|---|---|
@@ -64,6 +64,7 @@ Tổng: 61 màn hình, 8 VM không gắn zul trực tiếp.
 | `widgets/popupCreateMission.zul` | `widget.PopupCreateMissionVM` | — | — | — |
 | `widgets/popupMissionDetail.zul` | `vm.mission.MissionDetailVM` | `AgreementBusiness`, `DocumentBusiness`, `MeetingBusiness`, `MissionBusiness` | `ITask` | BE+LEGACY |
 | `widgets/proposePointMissionLookup.zul` | `widget.MissionLookupVM` | `AgreementBusiness`, `CategoryCommonBusiness`, `CommentBusiness`, `DocumentBusiness`, `MeetingBusiness`, `MissionBusiness` | `IMission`, `ITask` | BE+LEGACY |
+| `widgets/select_mission_dialog.zul` | `widget.SelectMissionDialogVM` | `DraftMissionLinkBusiness` | — | BE |
 | `vps/sysRole/rolePermission.zul` | `vps.vm.RolePermissionVM` | — | `ISysRole` | LEGACY |
 | `widgets/mission/sourceLookupAgreement.zul` | `widget.SourceLookupAgreementVM` | `AgreementBusiness` | — | BE |
 | `widgets/mission/sourceLookupAgreementInfo.zul` | `widget.SourceLookupAgreementViewVM` | `AgreementBusiness` | — | BE |
@@ -109,6 +110,18 @@ Cách gọi: `new XxxBusiness(serviceConnection).serveProcessing("a.b", params)`
 | `agreementAction.listAgreementStatus` | `/agreementAction/listAgreementStatus` | `AgreementAction.listAgreementStatus` | gen1 |
 | `agreementAction.listGroupTypes` | `/agreementAction/listGroupTypes` | `AgreementAction.listGroupTypes` | gen1 |
 | `agreementAction.listTaskPriority` | `/agreementAction/listTaskPriority` | `AgreementAction.listTaskPriority` | gen1 |
+
+### DraftMissionLinkBusiness
+
+`web-spring/src/main/java/com/voffice/service/business/DraftMissionLinkBusiness.java`
+
+| Hàm (function key) | Endpoint BE | Controller.method | Gen |
+|---|---|---|---|
+| `api.document-kpi.draft-links` | `/api/document-kpi/draft-links` | `DocumentKpiDraftController.saveDraftLinks` | gen2 |
+| `api.document-kpi.draft-links.inherit` | `/api/document-kpi/draft-links/inherit` | `DocumentKpiDraftController.inheritDraftLinks` | gen2 |
+| `api.document-kpi.draft-links.preview` | `/api/document-kpi/draft-links/preview` | `DocumentKpiDraftController.previewDraftLinks` | gen2 |
+| `mission.api.mission-dashboard.context` | ❓ không tìm thấy endpoint | | |
+| `mission.api.mission-dashboard.missions.search` | ❓ không tìm thấy endpoint | | |
 
 ### MissionBusiness
 
@@ -186,6 +199,15 @@ Cách gọi: `new XxxBusiness(serviceConnection).serveProcessing("a.b", params)`
 | `Meeting.getListOrgPerformInAdvanceSearch` | `/Meeting/getListOrgPerformInAdvanceSearch` | `MettingResource.getListOrgPerformInAdvanceSearch` | gen1 |
 | `api.mission_dashboard.get-assign-mission-charts` | `/api/mission_dashboard/get-assign-mission-charts` | `MissionDashboardController.getAssignMissionCharts` | gen2 |
 | `api.mission_dashboard.get-perform-mission-charts` | `/api/mission_dashboard/get-perform-mission-charts` | `MissionDashboardController.getPerformMissionCharts` | gen2 |
+
+### MissionIntegrationBusiness
+
+`web-spring/src/main/java/com/voffice/service/business/MissionIntegrationBusiness.java`
+
+| Hàm (function key) | Endpoint BE | Controller.method | Gen |
+|---|---|---|---|
+| `mission.api.document-kpi.scope-check` | ❓ không tìm thấy endpoint | | |
+| `mission.api.task-create-detail.catalog-options` | ❓ không tìm thấy endpoint | | |
 
 ### WorkGroupBusiness
 

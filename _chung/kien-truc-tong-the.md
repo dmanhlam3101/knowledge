@@ -28,17 +28,19 @@
 
 Ngoài ra `backend2.0/voffice-lib` (`voffice-core`, `voffice-gencode`) là lib dùng chung / sinh code cho BE gen-2.
 
-### Số liệu (2026-09, từ `_tools/scan.py`)
+### Số liệu (2026-09-30, nhánh `kha_develop`, từ `_tools/scan.py`)
 
 | | Web | BE |
 |---|---|---|
-| Màn hình `.zul` có VM | 626 (49 ☠ trỏ VM không tồn tại) | — |
-| ViewModel | 556 | — |
-| `*Business` (client gọi BE) | 79 class / 790 hàm → 748 nối được endpoint | — |
-| Facade legacy / JPA DAO / entity web | 44 / 85 / 137 | — |
-| Controller / endpoint | — | 145 / 1.733 (gen-1 ≈ 70, gen-2 ≈ 75) |
+| Màn hình `.zul` có VM | 629 (có nhãn ☠ = trỏ VM không tồn tại, xem `ban-do.md` từng phân hệ) | — |
+| ViewModel | 559 | — |
+| `*Business` (client gọi BE) | 81 class / 1.164 hàm → 1.153 nối được endpoint | — |
+| Facade legacy | 44 | — |
+| Controller / endpoint | — | 152 / 1.757 |
 | Logic gen-1 / DAO gen-1 | — | 80 / 156 |
-| Service gen-2 / Repository / Entity | — | 206 / 198 / 192 |
+| Service gen-2 / Repository / Entity | — | 255 / 200 / 192 |
+
+(sửa 2026-09-30: số cũ "790 hàm / 1.733 endpoint" đã lỗi thời.)
 
 Chi tiết: [`ban-do-tong/thong-ke.md`](ban-do-tong/thong-ke.md).
 
@@ -107,7 +109,7 @@ Tính năng mới gần nhất làm hoàn toàn theo gen-2: **Nhắc việc** (`
 ## 7. Bẫy toàn cục
 
 1. **`Text` ≠ `Document`**: `TEXT`/`TextEntity`/`textAction` = văn bản **đang soạn/trình ký** (chưa ban hành); `DOCUMENT`/`DocumentAction` = văn bản **đã có số** (đến hoặc đi đã ban hành). Ban hành = tạo bản ghi DOCUMENT từ TEXT. Xem `thuat-ngu.md`.
-2. **49 màn hình chết**: zul trỏ tới VM đã bị xóa (cả bộ `documentDraft/*` trỏ `vm.admin.requisition.*`). Đừng lấy chúng làm mẫu; danh sách có nhãn ☠ trong `ban-do.md` từng phân hệ.
+2. **Màn hình chết**: zul trỏ tới VM đã bị xóa (vd các popup con `documentDraft/file/*`, `documentDraft_viewDetail.zul`, `signUsbToken.zul`… trỏ `vm.admin.requisition.*`). Đừng lấy chúng làm mẫu; danh sách có nhãn ☠ trong `ban-do.md` từng phân hệ. (sửa 2026-09-30: màn chính `documentDraft/documentDraft.zul` → `vm.documentDraft.DocumentDraftVM` **còn sống**, là màn Dự thảo của menu XỬ LÝ CÔNG VIỆC — `web-spring/src/main/webapp/view/voffice/documentDraft/documentDraft.zul:7`.)
 3. `merge/` ở root workspace là bản gộp cũ — không phải nguồn sự thật. ❓ cần xác nhận mục đích.
 4. Tên gọi trùng lặp: `DocumentController` tồn tại ở cả `voffice/controler` (gen-1 logic) và có `DocController`, `DocInController`, `DocumentInController` ở gen-2. Luôn nêu **package đầy đủ** khi hướng dẫn.
 5. `controler` (thiếu chữ l) là tên package thật của gen-1 — không phải lỗi gõ khi bạn thấy trong tài liệu.

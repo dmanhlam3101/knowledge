@@ -1,54 +1,60 @@
-# Văn bản đi — ví dụ mẫu để copy pattern
+# Văn bản đi (từ cấp số trở đi) — ví dụ mẫu để copy pattern
 
-> Chọn mẫu theo loại việc. Mẫu **gen-2** ưu tiên cho code mới; mẫu **gen-1** chỉ để hiểu/sửa luồng hiện có.
+> Viết lại 2026-09-30. Viết tắt đường dẫn giống `nghiep-vu.md`. Mẫu **gen-2** ưu tiên cho code mới; mẫu **gen-1** để hiểu/sửa luồng hiện có.
+> Mẫu của giai đoạn trước ban hành (thêm hành động lên dự thảo kiểu `forward-to-assign-number`, xin ý kiến) xem `xu-ly-cong-viec/vi-du-mau.md`; ký số xem `ky-so/vi-du-mau.md`; mẫu cũ ngoài phạm vi giữ ở mục G.
+> (sửa 2026-09-30: bản cũ mục C trỏ `requisition_issue_number_view_detail.zul` + `RequisitionViewIssueNumberVM` là màn cấp số — sai, đó là màn xem danh sách số đã cấp; mục B ghi `rejectPublishDocument` gọi `rejectSignDocument`/`cancelPublish` ❓ — thực tế gọi `textAction.cancelDocumentPublish`; mục E gắn `OfficePublishedReplacementService` vào công khai/thay thế — sai, đó là đơn vị ban hành thay thế.)
 
-## A. Thêm một hành động mới lên văn bản đang trình ký (kiểu "chuyển cấp số", "thu hồi", "gia hạn") — mẫu gen-2 đã có trong chính phân hệ này
+## A. Hành động của văn thư trên văn bản chờ cấp số, có popup nhập lý do rồi đổi trạng thái — mẫu "Hủy ban hành / Từ chối cấp số"
 
-**Chuyển sang cấp số** (`forward-to-assign-number`):
+| Tầng | File | Copy phần nào |
+|---|---|---|
+| Nút (chi tiết) | `ZUL/requisition/requisition_viewDetail.zul:4796-4802` (`distroyTab`, `visible="@load(vm.isViewRejectPublish)"`) | Cách gắn nút + cờ hiển thị theo `viewType`/trạng thái |
+| Icon (lưới) | `ZUL/requisition/requisition_search.zul:1330-1336` (`checkViewRejectPromulgate(data) and vm.getVisible(data)`) | Nhớ thêm cả ở lưới — hai chỗ |
+| Cờ hiển thị | RVDVM `checkPublish` :1896-1912; RVM `checkViewRejectPromulgate` :8193-8204 | Điều kiện theo `COMBOBOX_MENU.VBBH.DKD/DBH` |
+| Mở popup | RVDVM `docDestroyTab` :3490-3516 → `ViewUtil.createLookupRejectPublish` (`ViewConstant.java:338`); RVM `doRejectPromulgate` :8311-8324 tái dùng RVDVM | Truyền id qua `args`, nhận kết quả qua `SearchEvent`, refresh `EVENT_QUEUE_HOME_PAGE` + `EVENT_QUEUE_LOOKUP_HIGHLIGHTED` |
+| Popup lý do | `ZUL/requisition/rejectPublish.zul` + `WEB/voffice/vm/requisition/RejectPublishVM.java:59-86` | Validate bắt buộc, `CustomMessageBox` xác nhận |
+| Business | `BIZ/RequisitionBusiness.java:2417-2435` `rejectPublishDocument` → `serveProcessing("textAction.cancelDocumentPublish", params)` | Đóng gói JSON vào 1 tham số |
+| BE | TC `cancelDocumentPublish` :1953-2003 (IDOR + kiểm trạng thái) → `TDAO.cancelDocumentPublish` :4003-4110 | **Luôn** kiểm `validateGetTextDetail` và trạng thái nguồn trước khi đổi |
 
-| Tầng | File |
-|---|---|
-| BE controller | `backend2.0/backendvoffice/src/main/java/com/viettel/office/controller/TextProcessController.java` → `POST /api/text-process/forward-to-assign-number` (`@RequestBody ForwardToAssignNumberDTO`) |
-| BE service | `TextProcessService` / `TextProcessServiceImpl` (`services/impl`) |
-| BE repo/entity | `repositories/jpa/*Text*RepositoryJPA`, `entities/TextEntity`, `TextProcessEntity` ❓ tên chính xác — grep `@Table(name = "TEXT_PROCESS")` |
-| Web business | `RequisitionBusiness` — hàm gọi `"api.text-process.forward-to-assign-number"` |
-| Web VM | `RequisitionVM` — nhánh `viewType == VBKD/VBXD` |
+Popup lý do dạng chung (có file, SMS, chọn người) thì copy `ConfirmInputVM` như `doRejectVBBHWaitForNumber` (RVDVM:5106-5158).
 
-Các hàm cùng nhóm để tham khảo: `rollback-signer/{text-id}` (path variable), `get-next-signers`, `get-next-signers-check-cert`, `get-all-cert-permission`, `validate-update-give-advise`.
+## B. Form cấp số theo sổ (gen-1 + 1 endpoint gen-2)
 
-**Xin ý kiến / giao người tư vấn trên dự thảo** (`TextDraftController`): `/api/text-draft/get-advise`, `assign-adviser`, `give-advise`, `search-text-draft`, `get-text-draft-history` — mẫu cho thao tác có lịch sử.
+`RVDVM.docCreateTab` (:3364-3417) → `ZUL/document/reportSendReceiveDoc/issussDocument.zul` + DLVM:
+- nạp sổ `TextBookBusiness.getTextBooksByOrgIdAndDocType` (DLVM:877-910) → `/textBookAction/getTextBooksByOrgIdAndDocType` → `TBDAO.getTextBooksByOrgIdAndDocType` :1228;
+- số gợi ý `getNextRegisterNumberDataByTextBookId` (DLVM:388-402) → `TBDAO.getNextRegisterNumberByTextBookId` :1064-1124 (trả cả số cấp bù);
+- kiểm trùng gen-2 `DocumentBusiness.isDuplicatedRegisterNumberDocOut` (`BIZ/DocumentBusiness.java:6140-6151`, `serveGetRequest("api.doc-out.is-duplicated-register-number?...")`) → `BE2/controller/DocOutController.java:40-47` → `DocOutServiceImpl.checkDuplicateRegisterNumber` :863 → `BE2/repositories/impl/DocumentRepositoryImpl.java:1905-1950`;
+- lưu `RequisitionBusiness.publishDocument` → `textAction.documentPromulgate` → TC :1685 → `TDAO.updateDocumentPromulgate` :2671 → `TBDAO.updateTextBookNumber` :1355.
 
-## B. Popup nhập lý do rồi đổi trạng thái (mẫu "từ chối ban hành")
+Copy khi: thêm ô/validate vào form cấp số (sửa `validateDoSaves` DLVM:680-772 + `saveDocumentBusiness` :934-1026 + đọc thêm field ở `updateDocumentPromulgate`/`insertDocument`). Kiểm tra mới nên làm theo kiểu endpoint GET gen-2 như `is-duplicated-register-number`.
 
-| Tầng | File |
-|---|---|
-| zul | `web-spring/src/main/webapp/view/voffice/requisition/rejectPublish.zul` |
-| VM | `com.viettel.voffice.vm.requisition.RejectPublishVM` → `requisitionBusiness.rejectPublishDocument(documentReject)` |
-| Business | `RequisitionBusiness.rejectPublishDocument` → gen-1 `textAction.rejectSignDocument` / `DocumentAction.cancelPublish` ❓ (xem ban-do mục 2) |
+## C. Hộp việc nhiều tab, lazy-load, mỗi tab một màn con — mẫu `RequisitionVbbhVM`
 
-Dùng làm mẫu cho: thu hồi văn bản, hủy luồng có lý do, trả lại kèm ghi chú.
+`ZUL/requisition/requisition_vbbh.zul` (tabbox + `include` + `custom-attributes tabType`) + VBBHVM `loadTabContent` :208-284 (chỉ set `src` khi tab được chọn, truyền `setDynamicProperty("view", "8")`, `pageSize`, `passCbxPaging`), đồng bộ tab qua `EventQueues.lookup("vbbhTabChange")` (:103-145), ghi trace `FeatureCodes.DOCUMENT_OUT_PUBLISH_*` (:294-304). Màn con đọc `tabType` bằng `viewComp.getParent().getAttribute("tabType")` (RVM:784-801; DOVM:690-701).
 
-## C. Cấp số theo sổ
+Copy khi: thêm tab mới vào VBBH (thêm `<tab>` + `<tabpanel>` + biến `tabNSrc` + nhánh `loadTabContent` + `FeatureCodes` + nhánh đọc `tabType` ở VM con + nút tab trong `requisition_search.zul:56-80`).
 
-`requisition/requisition_issue_number_view_detail.zul` + `RequisitionViewIssueNumberVM` (`vm/requisition`) → `TextBookBusiness.getNextRegisterNumberByTextBookId` (`textBookAction`, gen-1) + `AnswerDocumentBusiness`. Danh sách sổ theo người/đơn vị/loại: `getAllTextBooksOfUserByOrgForDocOut*`.
+## D. SQL hộp việc có phân quyền dữ liệu + cấu hình đơn vị — mẫu `TSDAO.getLstTextSign(PUBLISHED_SIGN)`
 
-## D. Ký số từ web
+TSDAO:3164-4100: lấy danh sách đơn vị từ phân quyền dữ liệu `dataPermissionsService.getListOrgByPermissionData("REVIEW_PROMULGATE_DATA", userId)` (:3178-3184), đọc `SYSTEM_PARAMETER` (`TYPE_NOT_PROMULGATE`, `ORG_HAVE_DOC_MANAGER`), dựng bản đếm và bản danh sách riêng, `ROW_NUMBER() OVER (PARTITION BY t.text_id …)` khử trùng lặp do join `TEXT_PROCESS`/`TEXT_MARK`. Mẫu tách service gọn hơn: `BE1/database/dao/document/search/DocumentSearchOutService.java` (text block Java, `UNION` theo phạm vi).
 
-`requisition/signUsbToken.zul` + `RequisitionSignVM` ❓ (VM thật trong `vm/requisition`) → `RequisitionBusiness` gọi `Sign.SignSoftHashMutiFile` / `Sign.SignCloudCA` / `Sign.SignTextByCASIM` → cập nhật `textAction.updateDatabaseSign`. Chi tiết ở `ky-so/vi-du-mau.md`.
+Copy khi: thêm hộp việc/bộ lọc cho văn thư. Code mới nên viết dạng `DocumentSearchOutService` (hoặc gen-2 repository) thay vì chèn tiếp vào `TextSearchDAO`.
 
-## E. Ban hành & công khai
+## E. Đóng dấu đơn vị (xin dấu → đóng dấu → từ chối/hủy)
 
-- Ban hành: `RequisitionVM` (viewType VBBH) → `RequisitionBusiness` `textAction.documentPromulgate` → gen-1 `TextController` → tạo `DOCUMENT` (`DocumentDAO`), gửi người nhận (`TEXT_RECEIVER`), liên thông (`CONNECT_DOCUMENT`).
-- Công khai/thay thế: `document/documentPublish/*.zul` + `DocumentPublishVM`, `DocumentPublishReplaceVM`, `DocumentPublishViewDetailVM` → `DocumentPublishBusiness` (`DocumentAction.publish`, `cancelPublish`, `editPublicationInformation`, `DocumentPublishAction.actionSearchDocPublish`, `getListDocAlter`).
+- Xin dấu: RVDVM `askForSeal` :10057-10074 → popup `WEB/voffice/widget/PopupAskForSealVM.java` → `textAction.askForSeal` → TC :6146 → `TDAO.askForSeal` :6563.
+- Đóng dấu: RVDVM `doApproveMark` :10165-10291 (ConfirmSign → USB token / CloudCA với `VIEW_TYPE.VBDD`) → BE `SignUtils` nhánh `MARK_TYPE` (:2641-2700) → `TDAO.approveMarkDefault` :8402.
+- Từ chối: RVDVM `doRejectMark` :10128-10161 → TC :6227 → `TDAO.rejectMark` :6605.
+- Hủy: RVDVM `doRollBackDDDV` :11042 → TC `rollBackDauDonVi` :6812.
 
-## F. Cặp trình ký (gom nhiều văn bản cho lãnh đạo ký một lượt)
+Copy khi: thêm loại dấu mới (dùng `GROUP_ID`/`GROUP_TYPE`, cấu hình `IMAGE_ORG`) — nhớ bản sao ở ~15 VM văn bản (`dac-thu.md` bẫy 19).
 
-`requisition/file/requisitionFile*.zul` + `RequisitionFileVM`, `RequisitionFileUpdateVM`, `RequisitionFileDetailVM`, `RequisitionFileChangeSignerVM` → `RequisitionFileBusiness` → gen-1 `signBriefcaseAction.*` (`SignBriefcaseAction`).
+## F. Công khai văn bản
 
-## G. Báo cáo
+`ZUL/document/documentPublish/document_publish.zul` + `DocumentPublishVM` (danh sách) / `popupPublishVB*.zul` + `DocumentPublishViewDetailVM` → `BIZ/DocumentPublishBusiness.java` (`DocumentPublishAction.actionSearchDocPublish`; `DocumentAction.publish` :465, `editPublicationInformation` :586, `cancelPublish` :608, `editTmpPublicationInformation` :396) → `BE1/controler/DocumentController.java` :1360/:2065/:2306/:1847 → `DocumentDAO.publishDocument` :1594 → `manuallyPublishV2` :1876 / `cancelPublish` :2461 → `DOCUMENT_PUBLISHED`, `DOCUMENT_SCOPE_REF`. Chọn văn bản thay thế: `document_publish_replace.zul` + `DocumentPublishReplaceVM` (lưu ý bẫy 12 — hiện không được lưu).
 
-`requisition/requisitionReport.zul` + `RequisitionReportVM` → `RequisitionBusiness` `TextReportAction.reportRequisiton`, `ReportTextProcessingTime`, `ReportTextRejectionCount`; xuất file qua `com.viettel.util.exporter`.
+## G. Mẫu cũ ngoài phạm vi "từ cấp số trở đi" (giữ nguyên từ bản trước, CHƯA rà lại — chờ phân hệ phù hợp nhận)
 
-## H. Tìm kiếm nâng cao văn bản đi
-
-`document/orgFollower/orgFollowerDocOut.zul` + `DocumentSendSearchVM` (`vm/document`) — kết hợp `SearchSolrBusiness` (toàn văn) + `TextBookBusiness` + `AnswerDocumentBusiness`.
+- **Cặp trình ký** (gom nhiều văn bản cho lãnh đạo ký một lượt): `requisition/file/requisitionFile*.zul` + `RequisitionFileVM`, `RequisitionFileUpdateVM`, `RequisitionFileDetailVM`, `RequisitionFileChangeSignerVM` → `RequisitionFileBusiness` → gen-1 `signBriefcaseAction.*` (`SignBriefcaseAction`).
+- **Báo cáo văn bản trình ký**: `requisition/requisitionReport.zul` + `RequisitionReportVM` → `RequisitionBusiness` `TextReportAction.reportRequisiton`, `ReportTextProcessingTime`, `ReportTextRejectionCount`; xuất file qua `com.viettel.util.exporter`.
+- **Tìm kiếm nâng cao văn bản đi**: `document/orgFollower/orgFollowerDocOut.zul` + `DocumentSendSearchVM` (`vm/document`) — kết hợp `SearchSolrBusiness` (toàn văn) + `TextBookBusiness` + `AnswerDocumentBusiness`.

@@ -116,6 +116,7 @@
    "view/voffice/document/orgFollowerDocIn/orgFollowerDocIn.zul": "com.viettel.voffice.vm.document.OrgFollowerDocInVM",
    "view/voffice/document/orgFollowerDocIn/orgFollowerDocIn_org.zul": "com.viettel.voffice.vm.document.OrgFollowerDocInOrgSearchVM",
    "view/voffice/document/orgFollowerDocIn/orgFollowerDocIn_person.zul": "com.viettel.voffice.vm.document.OrgFollowerDocInPersonSearchVM",
+   "view/voffice/document/process/draft_list_popup.zul": "com.viettel.voffice.vm.document.DraftListPopupVM",
    "view/voffice/document/process/popupCommentProcess.zul": "com.viettel.voffice.vm.document.PopupCompleteDocumentVM",
    "view/voffice/document/process/popupCompleteProcess.zul": "com.viettel.voffice.vm.document.PopupCompleteDocumentVM",
    "view/voffice/document/process/popupNoteDetail.zul": "com.viettel.voffice.vm.document.PopupNoteDetailVM",
@@ -194,7 +195,7 @@
    "view/voffice/documentDraft/documentDraftFlowDiagram.zul": "com.viettel.voffice.vm.admin.requisition.FlowChartVM",
    "view/voffice/documentDraft/documentDraftReport.zul": "com.viettel.voffice.vm.admin.requisition.RequisitionReportVM",
    "view/voffice/documentDraft/documentDraft_update_process.zul": "com.viettel.voffice.vm.admin.requisition.RequisitionUpdateProcessVM",
-   "view/voffice/documentDraft/documentDraft_viewDetail.zul": "com.viettel.voffice.vm.admin.requisition.RequisitionViewDetailVM",
+   "view/voffice/documentDraft/documentDraft_viewDetail.zul": "com.viettel.voffice.vm.requisition.RequisitionViewDetailVM",
    "view/voffice/documentDraft/rejectPublish.zul": "com.viettel.voffice.vm.admin.requisition.RejectPublishVM",
    "view/voffice/documentDraft/signatureImageSelector.zul": "com.viettel.voffice.vm.admin.requisition.SignatureImageSelectorVM",
    "view/voffice/documentDraft/signUsbToken.zul": "com.viettel.voffice.vm.admin.requisition.RequisitionSignVM",
@@ -353,6 +354,7 @@
    "view/voffice/notice/notice.zul": "com.viettel.voffice.vm.notice.NoticeVM",
    "view/voffice/notice/noticeContentEdit.zul": "com.viettel.voffice.vm.notice.NoticeContentEditVM",
    "view/voffice/notice/notice_detail.zul": "com.viettel.voffice.vm.notice.NoticeDetailVM",
+   "view/voffice/okr/okr.zul": "com.viettel.voffice.vm.okr.OkrVM",
    "view/voffice/orientation/orientation.zul": "com.viettel.voffice.vm.orientation.OrientationVM",
    "view/voffice/orientation/orientationPP.zul": "com.viettel.voffice.vm.orientation.OrientationVM",
    "view/voffice/pageIntroduction/pageIntroduction.zul": "com.viettel.voffice.vm.pageIntroduction.PageIntroductionVM",
@@ -525,6 +527,7 @@
    "view/voffice/widgets/requestLookup.zul": "com.viettel.voffice.widget.RequestLookupVM",
    "view/voffice/widgets/requisitionDocumentLookup.zul": "com.viettel.voffice.vm.document.DocumentVM",
    "view/voffice/widgets/securityPdfViewer.zul": "com.viettel.voffice.widget.SecurityPdfViewerVM",
+   "view/voffice/widgets/select_mission_dialog.zul": "com.viettel.voffice.widget.SelectMissionDialogVM",
    "view/voffice/widgets/sourceLibraryDocument.zul": "com.viettel.voffice.widget.SourceLibraryDocumentVM",
    "view/voffice/widgets/sourceLookupDocument.zul": "com.viettel.voffice.widget.SourceLookupDocumentVM",
    "view/voffice/widgets/sourceLookupDocument2.zul": "com.viettel.voffice.widget.SourceLookupDocumentVM2",
@@ -1787,6 +1790,9 @@
    "view/voffice/versionControl/versionControl_add.zul": [
     "/view/voffice/widgets/selectDocumentDraftFile.zul"
    ],
+   "view/voffice/widgets/approveSubmissionFormPopup.zul": [
+    "/view/voffice/widgets/selectSubFile.zul"
+   ],
    "view/voffice/widgets/confirmSign.zul": [
     "/view/voffice/widgets/selectSubFile.zul"
    ],
@@ -1809,6 +1815,9 @@
    ],
    "view/voffice/widgets/popupViewReport.zul": [
     "/view/voffice/templateReport/writeReport.zul"
+   ],
+   "view/voffice/widgets/rejectSubmissionFormPopup.zul": [
+    "/view/voffice/widgets/selectSubFile.zul"
    ],
    "view/voffice/widgets/securityPdfViewer.zul": [
     "/view/widgets/cbxOrgMark.zul",
@@ -3494,6 +3503,15 @@
      "view/widgets/template/document/templateInputDoc_add.zul"
     ]
    },
+   "com.viettel.voffice.vm.document.DraftListPopupVM": {
+    "path": "web-spring/src/main/java/com/viettel/voffice/vm/document/DraftListPopupVM.java",
+    "business": [],
+    "remote": [],
+    "extends": null,
+    "zul": [
+     "view/voffice/document/process/draft_list_popup.zul"
+    ]
+   },
    "com.viettel.voffice.vm.document.ExtSignViewDetailVM": {
     "path": "web-spring/src/main/java/com/viettel/voffice/vm/document/ExtSignViewDetailVM.java",
     "business": [],
@@ -3640,7 +3658,9 @@
    },
    "com.viettel.voffice.vm.document.PopupViewFlowVM": {
     "path": "web-spring/src/main/java/com/viettel/voffice/vm/document/PopupViewFlowVM.java",
-    "business": [],
+    "business": [
+     "AnswerDocumentBusiness"
+    ],
     "remote": [],
     "extends": "SecurityVM",
     "zul": [
@@ -3730,6 +3750,7 @@
      "DocumentBusiness",
      "DocumentRequestBusiness",
      "EnterpriseBusiness",
+     "MissionIntegrationBusiness",
      "SearchSolrBusiness"
     ],
     "remote": [],
@@ -3747,9 +3768,12 @@
      "DocumentRequestBusiness",
      "EnterpriseBusiness",
      "MissionBusiness",
+     "MissionIntegrationBusiness",
      "SearchSolrBusiness"
     ],
-    "remote": [],
+    "remote": [
+     "ISysOrganization"
+    ],
     "extends": "SecurityVM",
     "zul": [
      "view/voffice/document/transferDoc/transferDoc_flow_multi.zul"
@@ -3767,6 +3791,7 @@
      "GraspSituationBusiness",
      "MeetingAssistantBusiness",
      "MissionBusiness",
+     "MissionIntegrationBusiness",
      "RequisitionBusiness",
      "SearchSolrBusiness",
      "VhrEmployeeBusiness"
@@ -3912,6 +3937,7 @@
     "path": "web-spring/src/main/java/com/viettel/voffice/vm/documentDraft/DocumentDraftViewDetailVM.java",
     "business": [
      "DocumentBusiness",
+     "DraftMissionLinkBusiness",
      "EnterpriseBusiness",
      "RequisitionBusiness",
      "SearchSolrBusiness",
@@ -3930,6 +3956,7 @@
      "BriefBusiness",
      "CategoryCommonBusiness",
      "DocumentPublishBusiness",
+     "DraftMissionLinkBusiness",
      "EnterpriseBusiness",
      "HomeBusiness",
      "NotificationBusiness",
@@ -5332,6 +5359,15 @@
      "view/voffice/notice/notice.zul"
     ]
    },
+   "com.viettel.voffice.vm.okr.OkrVM": {
+    "path": "web-spring/src/main/java/com/viettel/voffice/vm/okr/OkrVM.java",
+    "business": [],
+    "remote": [],
+    "extends": "SecurityVM",
+    "zul": [
+     "view/voffice/okr/okr.zul"
+    ]
+   },
    "com.viettel.voffice.vm.orientation.OrientationVM": {
     "path": "web-spring/src/main/java/com/viettel/voffice/vm/orientation/OrientationVM.java",
     "business": [
@@ -5708,6 +5744,7 @@
     ],
     "extends": "SecurityVM",
     "zul": [
+     "view/voffice/documentDraft/documentDraft_viewDetail.zul",
      "view/voffice/requisition/requisition_issue_number_view_detail.zul",
      "view/voffice/requisition/requisition_viewDetail.zul"
     ]
@@ -7507,6 +7544,17 @@
     "extends": "SimpleCommonVM",
     "zul": []
    },
+   "com.viettel.voffice.widget.SelectMissionDialogVM": {
+    "path": "web-spring/src/main/java/com/viettel/voffice/widget/SelectMissionDialogVM.java",
+    "business": [
+     "DraftMissionLinkBusiness"
+    ],
+    "remote": [],
+    "extends": "CommonLookupVM",
+    "zul": [
+     "view/voffice/widgets/select_mission_dialog.zul"
+    ]
+   },
    "com.viettel.voffice.widget.SelectRoleVM": {
     "path": "web-spring/src/main/java/com/viettel/voffice/widget/SelectRoleVM.java",
     "business": [],
@@ -8291,17 +8339,6 @@
     ],
     "missing": true
    },
-   "com.viettel.voffice.vm.admin.requisition.RequisitionViewDetailVM": {
-    "path": null,
-    "business": [],
-    "remote": [],
-    "extends": null,
-    "zul": [
-     "view/voffice/documentDraft/documentDraft_viewDetail.zul",
-     "view/voffice/documentDraft/advancedSearch/advancedSearchDocument_viewDetail.zul"
-    ],
-    "missing": true
-   },
    "com.viettel.voffice.vm.admin.requisition.RejectPublishVM": {
     "path": null,
     "business": [],
@@ -8340,6 +8377,16 @@
     "extends": null,
     "zul": [
      "view/voffice/documentDraft/transferCommentSigner.zul"
+    ],
+    "missing": true
+   },
+   "com.viettel.voffice.vm.admin.requisition.RequisitionViewDetailVM": {
+    "path": null,
+    "business": [],
+    "remote": [],
+    "extends": null,
+    "zul": [
+     "view/voffice/documentDraft/advancedSearch/advancedSearchDocument_viewDetail.zul"
     ],
     "missing": true
    },
@@ -8592,6 +8639,7 @@
     "functions": [
      "Files.downloadDocumentReplyAttach",
      "answerDocumentAction.cancelDocumentReply",
+     "answerDocumentAction.getCreatedDrafts",
      "answerDocumentAction.getListAnswerDocument",
      "answerDocumentAction.getListGroupReceiverRequestResponse",
      "answerDocumentAction.getListReplyDocument",
@@ -8761,9 +8809,6 @@
      "api.vhr-employee.get-employees-preside-by-org",
      "api.vhr-employee.get-org-manager-list",
      "api.vhr-employee.get-org-manager-list-for-consideration",
-     "api.vhr-org.get-doc-manager-transfer-children",
-     "api.vhr-org.get-doc-manager-transfer-org-ids",
-     "api.vhr-org.get-doc-manager-transfer-scope",
      "api.vhr-org.get-list-org-level-one",
      "api.vhr-org.get-list-org-parent-child-level-once",
      "api.vhr-org.get-org-child-leader",
@@ -8967,6 +9012,7 @@
      "DocumentAction.updateDocumentMeetingRequestAfterCreateMeeting",
      "DocumentAction.updateDocumentProcessing",
      "DocumentAction.updateDocumentProposal",
+     "DocumentAction.updateDuplicateReceivedDocument",
      "DocumentAction.updateIsForwardByDocumentId",
      "DocumentAction.updateIsForwardByDocumentIdMultiTransfer",
      "DocumentAction.updateMeetingStatus",
@@ -9123,6 +9169,16 @@
      "api.document-types.get-orgs-by-doc-type-id",
      "api.document-types.granted-doc-type-to-orgs",
      "api.document-types.search"
+    ]
+   },
+   "DraftMissionLinkBusiness": {
+    "path": "web-spring/src/main/java/com/voffice/service/business/DraftMissionLinkBusiness.java",
+    "functions": [
+     "api.document-kpi.draft-links",
+     "api.document-kpi.draft-links.inherit",
+     "api.document-kpi.draft-links.preview",
+     "mission.api.mission-dashboard.context",
+     "mission.api.mission-dashboard.missions.search"
     ]
    },
    "EnterpriseBusiness": {
@@ -9445,6 +9501,13 @@
      "api.mission_dashboard.get-perform-mission-charts"
     ]
    },
+   "MissionIntegrationBusiness": {
+    "path": "web-spring/src/main/java/com/voffice/service/business/MissionIntegrationBusiness.java",
+    "functions": [
+     "mission.api.document-kpi.scope-check",
+     "mission.api.task-create-detail.catalog-options"
+    ]
+   },
    "NotificationBusiness": {
     "path": "web-spring/src/main/java/com/voffice/service/business/NotificationBusiness.java",
     "functions": [
@@ -9453,7 +9516,8 @@
      "NotificationAction.getNotifications",
      "NotificationAction.searchNotification",
      "NotificationAction.updateIsRead",
-     "NotificationAction.updateIsReadByObjectID"
+     "NotificationAction.updateIsReadByObjectID",
+     "NotificationAction.updateIsReadListNotification"
     ]
    },
    "OrientationBusiness": {
@@ -9612,9 +9676,11 @@
      "Sign.SignSoftAttachMutiFile",
      "Sign.SignSoftAttachMutiFileBrief",
      "Sign.SignSoftAttachMutiFileDoc",
+     "Sign.SignSoftAttachMutiFilePosition",
      "Sign.SignSoftHashMutiFile",
      "Sign.SignSoftHashMutiFileBrief",
      "Sign.SignSoftHashMutiFileDoc",
+     "Sign.SignSoftHashMutiFilePosition",
      "Sign.SignTextByCASIM",
      "Sign.updateDatabaseAfterMark",
      "Sign.updateViewComment",
@@ -9727,7 +9793,9 @@
      "textAction.rejectSignDocByVTAction",
      "textAction.rejectSignDocument",
      "textAction.rejectSignText",
+     "textAction.rejectSignTextVBBHWaitForNumber",
      "textAction.restoreDocument",
+     "textAction.returnCreatorTextByVtPromulgate",
      "textAction.rollBackDauDonVi",
      "textAction.saveTextExplanation",
      "textAction.searchText",
@@ -12229,6 +12297,21 @@
      "CaSupplierService"
     ]
    },
+   "CatalogAccessController": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/controller/CatalogAccessController.java",
+    "gen": "gen2",
+    "base": "/api/catalog-access",
+    "endpoints": [
+     {
+      "verb": "GET",
+      "path": "/api/catalog-access/role-codes",
+      "method": "getRoleCodes"
+     }
+    ],
+    "deps": [
+     "PartyMasterDataService"
+    ]
+   },
    "CategoryCommonController": {
     "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/controller/CategoryCommonController.java",
     "gen": "gen2",
@@ -14223,6 +14306,71 @@
      "UserDAO"
     ]
    },
+   "PartyCategoryController": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/controller/PartyCategoryController.java",
+    "gen": "gen2",
+    "base": "/api/category-common",
+    "endpoints": [
+     {
+      "verb": "GET",
+      "path": "/api/category-common/party-inherited",
+      "method": "getInheritedCategories"
+     }
+    ],
+    "deps": [
+     "PartyMasterDataService"
+    ]
+   },
+   "PartyOrgController": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/controller/PartyOrgController.java",
+    "gen": "gen2",
+    "base": "/api/party-org",
+    "endpoints": [
+     {
+      "verb": "GET",
+      "path": "/api/party-org/tree",
+      "method": "getTree"
+     },
+     {
+      "verb": "GET",
+      "path": "/api/party-org/effective-tree",
+      "method": "getEffectiveTree"
+     },
+     {
+      "verb": "GET",
+      "path": "/api/party-org/{parentId}/children",
+      "method": "getChildren"
+     },
+     {
+      "verb": "GET",
+      "path": "/api/party-org/{organizationId}/descendant-ids",
+      "method": "getDescendantIds"
+     },
+     {
+      "verb": "GET",
+      "path": "/api/party-org/{organizationId}",
+      "method": "getOrganization"
+     }
+    ],
+    "deps": [
+     "PartyMasterDataService"
+    ]
+   },
+   "PartyPositionController": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/controller/PartyPositionController.java",
+    "gen": "gen2",
+    "base": "/api/position",
+    "endpoints": [
+     {
+      "verb": "GET",
+      "path": "/api/position/party",
+      "method": "getPartyPositions"
+     }
+    ],
+    "deps": [
+     "PartyMasterDataService"
+    ]
+   },
    "PersonalCategoryController": {
     "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/controller/PersonalCategoryController.java",
     "gen": "gen2",
@@ -15465,21 +15613,6 @@
       "method": "findByOrgParentId"
      },
      {
-      "verb": "POST",
-      "path": "/api/vhr-org/get-doc-manager-transfer-scope",
-      "method": "getDocManagerTransferScope"
-     },
-     {
-      "verb": "POST",
-      "path": "/api/vhr-org/get-doc-manager-transfer-children",
-      "method": "getDocManagerTransferChildren"
-     },
-     {
-      "verb": "POST",
-      "path": "/api/vhr-org/get-doc-manager-transfer-org-ids",
-      "method": "getDocManagerTransferOrgIds"
-     },
-     {
       "verb": "GET",
       "path": "/api/vhr-org/get-org-leader",
       "method": "getOrgLeader"
@@ -15523,11 +15656,6 @@
       "verb": "POST",
       "path": "/api/vhr-org/get-list-org-and-child-all-level",
       "method": "getListOrgAndChildAllLevel"
-     },
-     {
-      "verb": "POST",
-      "path": "/api/vhr-org/get-vhr-org-by-condition",
-      "method": "getVhrOrgByCondition"
      }
     ],
     "deps": [
@@ -15782,6 +15910,78 @@
      "ShareOrgService"
     ]
    },
+   "DocumentKpiController": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/DocumentKpiController.java",
+    "gen": "gen2",
+    "base": "/api/document-kpi",
+    "endpoints": [
+     {
+      "verb": "POST",
+      "path": "/api/document-kpi/catalog-options",
+      "method": "catalogOptions"
+     },
+     {
+      "verb": "POST",
+      "path": "/api/document-kpi/transfer-scope",
+      "method": "transferScope"
+     }
+    ],
+    "deps": [
+     "DocumentKpiTransferService"
+    ]
+   },
+   "DocumentKpiDraftController": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/DocumentKpiDraftController.java",
+    "gen": "gen2",
+    "base": "/api/document-kpi",
+    "endpoints": [
+     {
+      "verb": "GET",
+      "path": "/api/document-kpi/draft-links",
+      "method": "getDraftLinks"
+     },
+     {
+      "verb": "GET",
+      "path": "/api/document-kpi/draft-links/preview",
+      "method": "previewDraftLinks"
+     },
+     {
+      "verb": "POST",
+      "path": "/api/document-kpi/draft-links",
+      "method": "saveDraftLinks"
+     },
+     {
+      "verb": "POST",
+      "path": "/api/document-kpi/draft-links/inherit",
+      "method": "inheritDraftLinks"
+     }
+    ],
+    "deps": [
+     "DraftMissionLinkService"
+    ]
+   },
+   "DraftMetadataController": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/DraftMetadataController.java",
+    "gen": "gen2",
+    "base": "/api/document-kpi",
+    "endpoints": [
+     {
+      "verb": "POST",
+      "path": "/api/document-kpi/draft-metadata/batch",
+      "method": "getDraftMetadataBatch"
+     },
+     {
+      "verb": "POST",
+      "path": "/api/document-kpi/draft-text-detail",
+      "method": "getDraftTextDetail"
+     }
+    ],
+    "deps": [
+     "CommonDataBaseDaoVO2",
+     "DraftMetadataService",
+     "TextController"
+    ]
+   },
    "AgreementAction": {
     "path": "backend2.0/backendvoffice/src/main/java/com/viettel/voffice/action/AgreementAction.java",
     "gen": "gen1",
@@ -15902,6 +16102,11 @@
     "gen": "gen1",
     "base": "/answerDocumentAction",
     "endpoints": [
+     {
+      "verb": "POST",
+      "path": "/answerDocumentAction/getCreatedDrafts",
+      "method": "getCreatedDrafts"
+     },
      {
       "verb": "POST",
       "path": "/answerDocumentAction/getListGroupReceiverRequestResponse",
@@ -17082,6 +17287,11 @@
      },
      {
       "verb": "POST",
+      "path": "/DocumentAction/getDocumentDetailMobile",
+      "method": "getDocumentDetailMobile"
+     },
+     {
+      "verb": "POST",
       "path": "/DocumentAction/tickProcessedDoc",
       "method": "tickProcessedDoc"
      },
@@ -17389,6 +17599,11 @@
       "verb": "POST",
       "path": "/DocumentAction/updateDocReceiveMap",
       "method": "updateDocReceiveMap"
+     },
+     {
+      "verb": "POST",
+      "path": "/DocumentAction/updateDuplicateReceivedDocument",
+      "method": "updateDuplicateReceivedDocument"
      },
      {
       "verb": "POST",
@@ -19629,6 +19844,11 @@
       "verb": "POST",
       "path": "/NotificationAction/searchNotification",
       "method": "searchNotification"
+     },
+     {
+      "verb": "POST",
+      "path": "/NotificationAction/updateIsReadListNotification",
+      "method": "updateIsReadListNotification"
      }
     ],
     "deps": [
@@ -20034,6 +20254,16 @@
       "verb": "POST",
       "path": "/Sign/SignSoftAttachMutiFile",
       "method": "signSoftAttachMutiFile"
+     },
+     {
+      "verb": "POST",
+      "path": "/Sign/SignSoftHashMutiFilePosition",
+      "method": "hashMutiFilePosition"
+     },
+     {
+      "verb": "POST",
+      "path": "/Sign/SignSoftAttachMutiFilePosition",
+      "method": "signSoftAttachMutiFilePosition"
      },
      {
       "verb": "POST",
@@ -21162,6 +21392,16 @@
      },
      {
       "verb": "POST",
+      "path": "/textAction/returnCreatorTextByVtPromulgate",
+      "method": "returnCreatorTextByVtPromulgate"
+     },
+     {
+      "verb": "POST",
+      "path": "/textAction/rejectSignTextVBBHWaitForNumber",
+      "method": "rejectSignTextVBBHWaitForNumber"
+     },
+     {
+      "verb": "POST",
       "path": "/textAction/markDocumentByOrg",
       "method": "markDocumentByOrg"
      },
@@ -22067,6 +22307,8 @@
      "CommonControler",
      "CommonDataBaseDaoVO2",
      "DocumentDAO",
+     "DocumentDraftPermissionService",
+     "TextSearchDAO",
      "UserDAO"
     ],
     "tables": []
@@ -22260,6 +22502,7 @@
      "CommonDataBaseDaoVO2",
      "DocOrgRepublishDAO",
      "DocumentSignDAO",
+     "DraftLifecycleEventService",
      "TextDAO"
     ],
     "tables": []
@@ -22305,6 +22548,7 @@
      "DocumentInListRequestRepositoryJPA",
      "DocumentInStaffDAO",
      "DocumentInStaffRepositoryJPA",
+     "DocumentKpiTransferService",
      "DocumentLeaderCommentRepositoryJPA",
      "DocumentLibraryDAO",
      "DocumentProposalDAO",
@@ -22344,6 +22588,7 @@
      "VhrEmployeeService"
     ],
     "tables": [
+     "DOCUMENT_IN_GROUP",
      "FILES_ATTACHMENT"
     ]
    },
@@ -22393,6 +22638,8 @@
      "DocumentProcessRepositoryJPA",
      "DocumentRepositoryJPA",
      "DocumentSignDAO",
+     "DraftLifecycleEventService",
+     "DraftMissionLinkService",
      "ExtAppEntityRepositoryJPA",
      "ExtShareConfigServiceImpl",
      "FileAttachmentJPA",
@@ -22939,6 +23186,7 @@
      "DocumentRepositoryJPA",
      "DocumentSearchInService",
      "DocumentSignDAO",
+     "DraftLifecycleEventService",
      "ElasticDocumentService",
      "EmpCloudCADAO",
      "EmpCloudCAService",
@@ -23203,6 +23451,7 @@
      "CommonControler",
      "CommonDataBaseDaoVO2",
      "ConfigParameterDAO",
+     "DraftLifecycleEventService",
      "EmpCloudCADAO",
      "FileEncryptMapRepository",
      "LogTranstionSignDAO",
@@ -23425,6 +23674,17 @@
     "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/DocumentCopyService.java",
     "gen": "gen2",
     "deps": [],
+    "native_queries": 0,
+    "tables": []
+   },
+   "DocumentDraftPermissionService": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/DocumentDraftPermissionService.java",
+    "gen": "gen2",
+    "deps": [
+     "DocumentProcessRepositoryJPA",
+     "DocumentRepositoryJPA",
+     "UserRoleRepositoryJPA"
+    ],
     "native_queries": 0,
     "tables": []
    },
@@ -23677,6 +23937,13 @@
    },
    "OfficePublishedReplacementService": {
     "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/OfficePublishedReplacementService.java",
+    "gen": "gen2",
+    "deps": [],
+    "native_queries": 0,
+    "tables": []
+   },
+   "PartyMasterDataService": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/PartyMasterDataService.java",
     "gen": "gen2",
     "deps": [],
     "native_queries": 0,
@@ -24044,6 +24311,360 @@
     "native_queries": 0,
     "tables": []
    },
+   "DocumentKpiConstants": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/DocumentKpiConstants.java",
+    "gen": "gen2",
+    "deps": [],
+    "native_queries": 0,
+    "tables": []
+   },
+   "DocumentKpiMissionClient": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/DocumentKpiMissionClient.java",
+    "gen": "gen2",
+    "deps": [
+     "RestClient"
+    ],
+    "native_queries": 0,
+    "tables": []
+   },
+   "DocumentKpiTransferService": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/DocumentKpiTransferService.java",
+    "gen": "gen2",
+    "deps": [],
+    "native_queries": 0,
+    "tables": []
+   },
+   "DocumentKpiTransferServiceImpl": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/DocumentKpiTransferServiceImpl.java",
+    "gen": "gen2",
+    "deps": [
+     "DocumentDAO",
+     "DocumentInGroupRepositoryJPA",
+     "DocumentInStaffRepositoryJPA",
+     "DocumentKpiMissionClient"
+    ],
+    "native_queries": 0,
+    "tables": []
+   },
+   "DraftLifecycleConstants": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/DraftLifecycleConstants.java",
+    "gen": "gen2",
+    "deps": [],
+    "native_queries": 0,
+    "tables": []
+   },
+   "DraftLifecycleEventService": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/DraftLifecycleEventService.java",
+    "gen": "gen2",
+    "deps": [],
+    "native_queries": 0,
+    "tables": []
+   },
+   "DraftLifecycleMissionClient": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/DraftLifecycleMissionClient.java",
+    "gen": "gen2",
+    "deps": [
+     "RestClient"
+    ],
+    "native_queries": 0,
+    "tables": []
+   },
+   "DraftMetadataConstants": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/DraftMetadataConstants.java",
+    "gen": "gen2",
+    "deps": [],
+    "native_queries": 0,
+    "tables": []
+   },
+   "DraftMetadataRepository": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/DraftMetadataRepository.java",
+    "gen": "gen2",
+    "deps": [],
+    "native_queries": 1,
+    "tables": [
+     "DOCUMENT",
+     "TEXT"
+    ]
+   },
+   "DraftMetadataService": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/DraftMetadataService.java",
+    "gen": "gen2",
+    "deps": [],
+    "native_queries": 0,
+    "tables": []
+   },
+   "DraftMetadataServiceImpl": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/DraftMetadataServiceImpl.java",
+    "gen": "gen2",
+    "deps": [
+     "DraftMetadataRepository",
+     "TextDAO"
+    ],
+    "native_queries": 0,
+    "tables": []
+   },
+   "DraftMissionLinkRepository": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/DraftMissionLinkRepository.java",
+    "gen": "gen2",
+    "deps": [],
+    "native_queries": 9,
+    "tables": [
+     "DOCUMENT_IN_GROUP",
+     "DOCUMENT_IN_LIST_REQUEST",
+     "DOCUMENT_IN_STAFF",
+     "MISSION",
+     "SOURCE_MAP",
+     "TEXT"
+    ]
+   },
+   "DraftMissionLinkService": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/DraftMissionLinkService.java",
+    "gen": "gen2",
+    "deps": [],
+    "native_queries": 0,
+    "tables": []
+   },
+   "DraftMissionLinkServiceImpl": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/DraftMissionLinkServiceImpl.java",
+    "gen": "gen2",
+    "deps": [
+     "DraftMissionLinkRepository",
+     "TextRepositoryJPA"
+    ],
+    "native_queries": 0,
+    "tables": []
+   },
+   "KpiTransferInput": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/KpiTransferInput.java",
+    "gen": "gen2",
+    "deps": [
+     "List<DocumentKpiCandidate>",
+     "Long"
+    ],
+    "native_queries": 0,
+    "tables": []
+   },
+   "MissionServiceClientConfig": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/MissionServiceClientConfig.java",
+    "gen": "gen2",
+    "deps": [],
+    "native_queries": 0,
+    "tables": []
+   },
+   "DocumentKpiCandidate": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/dto/DocumentKpiCandidate.java",
+    "gen": "gen2",
+    "deps": [],
+    "native_queries": 0,
+    "tables": []
+   },
+   "DocumentKpiCatalogOptionsResponse": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/dto/DocumentKpiCatalogOptionsResponse.java",
+    "gen": "gen2",
+    "deps": [],
+    "native_queries": 0,
+    "tables": []
+   },
+   "DocumentKpiCreateRequest": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/dto/DocumentKpiCreateRequest.java",
+    "gen": "gen2",
+    "deps": [],
+    "native_queries": 0,
+    "tables": []
+   },
+   "DocumentKpiCreateResponse": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/dto/DocumentKpiCreateResponse.java",
+    "gen": "gen2",
+    "deps": [],
+    "native_queries": 0,
+    "tables": []
+   },
+   "DocumentKpiFileRef": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/dto/DocumentKpiFileRef.java",
+    "gen": "gen2",
+    "deps": [],
+    "native_queries": 0,
+    "tables": []
+   },
+   "DocumentKpiRecipientResult": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/dto/DocumentKpiRecipientResult.java",
+    "gen": "gen2",
+    "deps": [],
+    "native_queries": 0,
+    "tables": []
+   },
+   "DocumentKpiResult": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/dto/DocumentKpiResult.java",
+    "gen": "gen2",
+    "deps": [],
+    "native_queries": 0,
+    "tables": []
+   },
+   "DocumentKpiScopeCheckRequest": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/dto/DocumentKpiScopeCheckRequest.java",
+    "gen": "gen2",
+    "deps": [],
+    "native_queries": 0,
+    "tables": []
+   },
+   "DocumentKpiScopeCheckResponse": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/dto/DocumentKpiScopeCheckResponse.java",
+    "gen": "gen2",
+    "deps": [],
+    "native_queries": 0,
+    "tables": []
+   },
+   "DocumentKpiScopeItemResult": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/dto/DocumentKpiScopeItemResult.java",
+    "gen": "gen2",
+    "deps": [],
+    "native_queries": 0,
+    "tables": []
+   },
+   "DraftAvailability": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/dto/DraftAvailability.java",
+    "gen": "gen2",
+    "deps": [],
+    "native_queries": 0,
+    "tables": []
+   },
+   "DraftLifecycleEventRequest": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/dto/DraftLifecycleEventRequest.java",
+    "gen": "gen2",
+    "deps": [],
+    "native_queries": 0,
+    "tables": []
+   },
+   "DraftLifecycleEventResponse": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/dto/DraftLifecycleEventResponse.java",
+    "gen": "gen2",
+    "deps": [],
+    "native_queries": 0,
+    "tables": []
+   },
+   "DraftLinkInheritRequest": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/dto/DraftLinkInheritRequest.java",
+    "gen": "gen2",
+    "deps": [],
+    "native_queries": 0,
+    "tables": []
+   },
+   "DraftLinkInheritResponse": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/dto/DraftLinkInheritResponse.java",
+    "gen": "gen2",
+    "deps": [],
+    "native_queries": 0,
+    "tables": []
+   },
+   "DraftLinkSaveRequest": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/dto/DraftLinkSaveRequest.java",
+    "gen": "gen2",
+    "deps": [],
+    "native_queries": 0,
+    "tables": []
+   },
+   "DraftLinkSaveResponse": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/dto/DraftLinkSaveResponse.java",
+    "gen": "gen2",
+    "deps": [],
+    "native_queries": 0,
+    "tables": []
+   },
+   "DraftLinkSource": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/dto/DraftLinkSource.java",
+    "gen": "gen2",
+    "deps": [],
+    "native_queries": 0,
+    "tables": []
+   },
+   "DraftLinkViewResponse": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/dto/DraftLinkViewResponse.java",
+    "gen": "gen2",
+    "deps": [],
+    "native_queries": 0,
+    "tables": []
+   },
+   "DraftMetadataBatchRequest": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/dto/DraftMetadataBatchRequest.java",
+    "gen": "gen2",
+    "deps": [],
+    "native_queries": 0,
+    "tables": []
+   },
+   "DraftMetadataBatchResponse": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/dto/DraftMetadataBatchResponse.java",
+    "gen": "gen2",
+    "deps": [],
+    "native_queries": 0,
+    "tables": []
+   },
+   "DraftMetadataItem": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/dto/DraftMetadataItem.java",
+    "gen": "gen2",
+    "deps": [],
+    "native_queries": 0,
+    "tables": []
+   },
+   "DraftMissionLinkDTO": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/dto/DraftMissionLinkDTO.java",
+    "gen": "gen2",
+    "deps": [],
+    "native_queries": 0,
+    "tables": []
+   },
+   "DraftTextDetailRequest": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/dto/DraftTextDetailRequest.java",
+    "gen": "gen2",
+    "deps": [],
+    "native_queries": 0,
+    "tables": []
+   },
+   "KpiCatalogOptionItem": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/dto/KpiCatalogOptionItem.java",
+    "gen": "gen2",
+    "deps": [],
+    "native_queries": 0,
+    "tables": []
+   },
+   "KpiCatalogOptionsRequest": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/dto/KpiCatalogOptionsRequest.java",
+    "gen": "gen2",
+    "deps": [],
+    "native_queries": 0,
+    "tables": []
+   },
+   "KpiScopeItem": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/dto/KpiScopeItem.java",
+    "gen": "gen2",
+    "deps": [],
+    "native_queries": 0,
+    "tables": []
+   },
+   "MissionCatalogOptionItem": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/dto/MissionCatalogOptionItem.java",
+    "gen": "gen2",
+    "deps": [],
+    "native_queries": 0,
+    "tables": []
+   },
+   "MissionLifecycleResult": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/dto/MissionLifecycleResult.java",
+    "gen": "gen2",
+    "deps": [],
+    "native_queries": 0,
+    "tables": []
+   },
+   "DraftLifecycleEventServiceImpl": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/impl/DraftLifecycleEventServiceImpl.java",
+    "gen": "gen2",
+    "deps": [
+     "DraftLifecycleMissionClient",
+     "TextDAO",
+     "TextRepositoryJPA"
+    ],
+    "native_queries": 0,
+    "tables": []
+   },
    "AdminSystemServiceImpl": {
     "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/impl/AdminSystemServiceImpl.java",
     "gen": "gen2",
@@ -24349,6 +24970,7 @@
     "gen": "gen2",
     "deps": [
      "AttachRepositoryJPA",
+     "DocumentDAO",
      "DocumentRepository",
      "FileEncryptMapJPA",
      "FileEncryptMapRepository",
@@ -24880,6 +25502,15 @@
     "gen": "gen2",
     "deps": [
      "SystemParameterDAO"
+    ],
+    "native_queries": 0,
+    "tables": []
+   },
+   "PartyMasterDataServiceImpl": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/impl/PartyMasterDataServiceImpl.java",
+    "gen": "gen2",
+    "deps": [
+     "NamedParameterJdbcTemplate"
     ],
     "native_queries": 0,
     "tables": []
@@ -26304,6 +26935,8 @@
      "BRIEF",
      "CV_PRIORITY",
      "DOCUMENT",
+     "DOCUMENT_IN_LIST_REQUEST",
+     "DOCUMENT_PROCESS",
      "DOCUMENT_TYPE",
      "FILES_ATTACHMENT",
      "LOG_TRANSTION_SIGN",
@@ -27532,6 +28165,7 @@
      "CONNECT_DOCUMENT",
      "CV_PRIORITY",
      "DOCUMENT",
+     "DOCUMENT_IN_LIST_REQUEST",
      "DOCUMENT_IN_STAFF",
      "DOCUMENT_TYPE",
      "FILES_ATTACHMENT",
@@ -28461,6 +29095,14 @@
    "WorkGroupRepositoryJPA": {
     "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/repositories/jpa/WorkGroupRepositoryJPA.java",
     "entity": "WorkGroupEntity"
+   },
+   "DraftMetadataRepository": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/DraftMetadataRepository.java",
+    "entity": "TextEntity"
+   },
+   "DraftMissionLinkRepository": {
+    "path": "backend2.0/backendvoffice/src/main/java/com/viettel/office/services/document_kpi/DraftMissionLinkRepository.java",
+    "entity": "SourceMapEntity"
    }
   },
   "entity": {
@@ -29288,6 +29930,10 @@
     "AnswerDocumentAction",
     "cancelDocumentReply"
    ],
+   "answerDocumentAction.getCreatedDrafts": [
+    "AnswerDocumentAction",
+    "getCreatedDrafts"
+   ],
    "answerDocumentAction.getListAnswerDocument": [
     "AnswerDocumentAction",
     "getListAnswerDocument"
@@ -29779,18 +30425,6 @@
    "api.vhr-employee.get-org-manager-list-for-consideration": [
     "VhrEmployeeController",
     "getLeadByListOrgIds"
-   ],
-   "api.vhr-org.get-doc-manager-transfer-children": [
-    "VhrOrgController",
-    "getDocManagerTransferChildren"
-   ],
-   "api.vhr-org.get-doc-manager-transfer-org-ids": [
-    "VhrOrgController",
-    "getDocManagerTransferOrgIds"
-   ],
-   "api.vhr-org.get-doc-manager-transfer-scope": [
-    "VhrOrgController",
-    "getDocManagerTransferScope"
    ],
    "api.vhr-org.get-list-org-level-one": [
     "VhrOrgController",
@@ -30456,6 +31090,10 @@
     "IndexController",
     "redirect"
    ],
+   "DocumentAction.updateDuplicateReceivedDocument": [
+    "DocumentAction",
+    "updateDuplicateReceivedDocument"
+   ],
    "DocumentAction.updateIsForwardByDocumentId": [
     "DocumentAction",
     "updateIsForwardByDocumentId"
@@ -30937,6 +31575,20 @@
     "DocumentTypeController",
     "search"
    ],
+   "api.document-kpi.draft-links": [
+    "DocumentKpiDraftController",
+    "saveDraftLinks"
+   ],
+   "api.document-kpi.draft-links.inherit": [
+    "DocumentKpiDraftController",
+    "inheritDraftLinks"
+   ],
+   "api.document-kpi.draft-links.preview": [
+    "DocumentKpiDraftController",
+    "previewDraftLinks"
+   ],
+   "mission.api.mission-dashboard.context": null,
+   "mission.api.mission-dashboard.missions.search": null,
    "CM.checkPromulgation": [
     "CMResource",
     "checkPromulgation"
@@ -31839,6 +32491,8 @@
     "MissionDashboardController",
     "getPerformMissionCharts"
    ],
+   "mission.api.document-kpi.scope-check": null,
+   "mission.api.task-create-detail.catalog-options": null,
    "NotificationAction.countNotificationUnread": [
     "NotificationAction",
     "countNotificationUnread"
@@ -31862,6 +32516,10 @@
    "NotificationAction.updateIsReadByObjectID": [
     "NotificationAction",
     "updateIsReadByObjectID"
+   ],
+   "NotificationAction.updateIsReadListNotification": [
+    "NotificationAction",
+    "updateIsReadListNotification"
    ],
    "Orientation.addOrEditOrientation": [
     "OrientationAction",
@@ -32251,6 +32909,10 @@
     "SignResource",
     "signSoftAttachMutiFileDoc"
    ],
+   "Sign.SignSoftAttachMutiFilePosition": [
+    "SignResource",
+    "signSoftAttachMutiFilePosition"
+   ],
    "Sign.SignSoftHashMutiFile": [
     "SignResource",
     "hashMutiFile"
@@ -32262,6 +32924,10 @@
    "Sign.SignSoftHashMutiFileDoc": [
     "SignResource",
     "hashMutiFileDoc"
+   ],
+   "Sign.SignSoftHashMutiFilePosition": [
+    "SignResource",
+    "hashMutiFilePosition"
    ],
    "Sign.SignTextByCASIM": [
     "SignResource",
@@ -32704,9 +33370,17 @@
     "TextAction",
     "rejectSignText"
    ],
+   "textAction.rejectSignTextVBBHWaitForNumber": [
+    "TextAction",
+    "rejectSignTextVBBHWaitForNumber"
+   ],
    "textAction.restoreDocument": [
     "TextAction",
     "restoreDocument"
+   ],
+   "textAction.returnCreatorTextByVtPromulgate": [
+    "TextAction",
+    "returnCreatorTextByVtPromulgate"
    ],
    "textAction.rollBackDauDonVi": [
     "TextAction",

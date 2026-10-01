@@ -7,7 +7,7 @@
 
 ## 1. Màn hình (web)
 
-Tổng: 78 màn hình, 3 VM không gắn zul trực tiếp.
+Tổng: 79 màn hình, 3 VM không gắn zul trực tiếp.
 
 | Màn hình (.zul) | ViewModel | Gọi BE qua (Business) | Legacy (remote/facade) | Nhãn |
 |---|---|---|---|---|
@@ -28,12 +28,12 @@ Tổng: 78 màn hình, 3 VM không gắn zul trực tiếp.
 | `category/categoryGroup/categoryGroup.zul` | `vm.category.CategoryGroupVM` | `CategoryCommonBusiness`, `CategoryGroupBusiness` | — | BE |
 | `code/codeMaster.zul` | `vm.code.CodeMasterVM` | — | `ICodeMaster` | LEGACY |
 | `config/configBackList.zul` | `vm.config.ConfigBackListVM` | `ConfigBusiness` | — | BE |
-| `config/docAutoSendDocumentAdd_popup.zul` | `vm.config.DocumentProcessAutoSendConfigPopupVM` | `DocumentProcessTermBusiness`, `RequisitionBusiness` | — | BE |
-| `config/docAutoSendDocumentConfig.zul` | `vm.config.DocumentProcessAutoSendConfigVM` | `DocumentProcessTermBusiness`, `RequisitionBusiness` | — | BE |
 | `config/docProcessTermConfig.zul` | `vm.config.DocumentProcessTermConfigVM` | `DocumentProcessTermBusiness`, `RequisitionBusiness` | — | BE |
 | `config/docProcessTermConfigAdd_popup.zul` | `vm.config.DocumentProcessTermConfigPopupVM` | `DocumentProcessTermBusiness`, `RequisitionBusiness` | — | BE |
 | `config/notifyToNextSigner.zul` | `vm.config.NotifyToNextSignerVM` | `ConfigBusiness` | — | BE |
 | `configPersonal/proposal.zul` | `vm.config.ProposalVM` | `ProposalBusiness` | — | BE |
+| `document/transferDoc/transferContentDoc.zul` | `widget.SysMenuLookupVM` | — | `ISysMenu` | LEGACY |
+| `documentDraft/configDocManager.zul` | `vps.vm.ConfigDocManagerVM` | — | — | — |
 | `document_type/document_type.zul` | `vm.document.DocumentTypeVM` | `DocumentTypeBusiness` | — | BE |
 | `feedback/feedback.zul` | `vm.feedback.FeedbackVM` | `FeedbackBusiness` | — | BE |
 | `feedback/feedback_send.zul` | `vm.feedback.PopupSendFeedbackVM` | `FeedbackBusiness` | — | BE |
@@ -56,6 +56,7 @@ Tổng: 78 màn hình, 3 VM không gắn zul trực tiếp.
 | `position/popup_position.zul` | `vm.position.PopupPositionVM` | `PositionBusiness` | — | BE |
 | `position/position.zul` | `vm.position.PositionVM` | `PositionBusiness` | — | BE |
 | `privateShortcut/privateShortcut.zul` | `widget.PrivateShortcutVM` | — | `IPrivateShortcut` | LEGACY |
+| `requisition/configDocManager.zul` | `vps.vm.ConfigDocManagerVM` | — | — | — |
 | `survey/survey.zul` | `vm.survey.SurveyAdminVM` | — | `ISurvey` | LEGACY |
 | `versionControl/versionControl_viewDetail.zul` | `vm.versionControl.VersionControlViewDetailVM` | `BriefBusiness`, `ConnectDocumentBusiness`, `DocumentBusiness`, `DocumentHistoryLogBusiness`, `EnterpriseBusiness`, `FlowBusiness`, `SearchSolrBusiness`, `TagDictionaryBusiness`, `TextBookBusiness`, `WOPIBusiness` | `IRequisition`, `ISysOrganization` | BE+LEGACY |
 | `widgets/pageIntroduction_viewDetail.zul` | `vm.pageIntroduction.PageIntroductionVM` | — | `IPageIntroduction` | LEGACY |
@@ -373,28 +374,6 @@ Cách gọi: `new XxxBusiness(serviceConnection).serveProcessing("a.b", params)`
 | Verb | Path | Method |
 |---|---|---|
 | POST | `/api/feature-traces/complete` | `complete` |
-
-</details>
-
-### ImageOrgAction (gen1) — base `/imageOrgAction`, 7 endpoint
-
-`backend2.0/backendvoffice/src/main/java/com/viettel/voffice/action/ImageOrgAction.java`
-
-- Logic (gen-1 `controler/`): `ImageOrgController`
-- DAO (SQL thuần): `CommonDataBaseDaoVO2`, `ImageOrgDAO`
-- Bảng (ước lượng từ SQL/@Table): `BRIEF_MARK`, `IMAGE`, `IMAGE_ORG`, `IMAGE_ORG_CONFIG`, `TEXT_MARK`, `VHR_ORG`
-
-<details><summary>Endpoint</summary>
-
-| Verb | Path | Method |
-|---|---|---|
-| POST | `/imageOrgAction/addImageOrg` | `addImageOrg` |
-| POST | `/imageOrgAction/addConfigImage` | `addConfigImage` |
-| POST | `/imageOrgAction/getConfigImage` | `getConfigImage` |
-| POST | `/imageOrgAction/uploadImageOrg` | `uploadImageOrg` |
-| POST | `/imageOrgAction/getOrgMarkList` | `getOrgMarkList` |
-| POST | `/imageOrgAction/findByConditionImageOrg` | `findByConditionImageOrg` |
-| POST | `/imageOrgAction/getLstImageOther` | `getLstImageOther` |
 
 </details>
 
@@ -903,6 +882,55 @@ Cách gọi: `new XxxBusiness(serviceConnection).serveProcessing("a.b", params)`
 
 </details>
 
+### PartyCategoryController (gen2) — base `/api/category-common`, 1 endpoint
+
+`backend2.0/backendvoffice/src/main/java/com/viettel/office/controller/PartyCategoryController.java`
+
+- Service: `PartyMasterDataService`, `PartyMasterDataServiceImpl`
+- Bảng (ước lượng từ SQL/@Table): —
+
+<details><summary>Endpoint</summary>
+
+| Verb | Path | Method |
+|---|---|---|
+| GET | `/api/category-common/party-inherited` | `getInheritedCategories` |
+
+</details>
+
+### PartyOrgController (gen2) — base `/api/party-org`, 5 endpoint
+
+`backend2.0/backendvoffice/src/main/java/com/viettel/office/controller/PartyOrgController.java`
+
+- Service: `PartyMasterDataService`, `PartyMasterDataServiceImpl`
+- Bảng (ước lượng từ SQL/@Table): —
+
+<details><summary>Endpoint</summary>
+
+| Verb | Path | Method |
+|---|---|---|
+| GET | `/api/party-org/tree` | `getTree` |
+| GET | `/api/party-org/effective-tree` | `getEffectiveTree` |
+| GET | `/api/party-org/{parentId}/children` | `getChildren` |
+| GET | `/api/party-org/{organizationId}/descendant-ids` | `getDescendantIds` |
+| GET | `/api/party-org/{organizationId}` | `getOrganization` |
+
+</details>
+
+### PartyPositionController (gen2) — base `/api/position`, 1 endpoint
+
+`backend2.0/backendvoffice/src/main/java/com/viettel/office/controller/PartyPositionController.java`
+
+- Service: `PartyMasterDataService`, `PartyMasterDataServiceImpl`
+- Bảng (ước lượng từ SQL/@Table): —
+
+<details><summary>Endpoint</summary>
+
+| Verb | Path | Method |
+|---|---|---|
+| GET | `/api/position/party` | `getPartyPositions` |
+
+</details>
+
 ### PersonalTreatmentStatusController (gen2) — base `/api/personal-treatment-status`, 3 endpoint
 
 `backend2.0/backendvoffice/src/main/java/com/viettel/office/controller/PersonalTreatmentStatusController.java`
@@ -975,7 +1003,7 @@ Cách gọi: `new XxxBusiness(serviceConnection).serveProcessing("a.b", params)`
 
 </details>
 
-### VhrOrgController (gen2) — base `/api/vhr-org`, 17 endpoint
+### VhrOrgController (gen2) — base `/api/vhr-org`, 13 endpoint
 
 `backend2.0/backendvoffice/src/main/java/com/viettel/office/controller/VhrOrgController.java`
 
@@ -992,9 +1020,6 @@ Cách gọi: `new XxxBusiness(serviceConnection).serveProcessing("a.b", params)`
 | GET | `/api/vhr-org/get-list-org` | `getListVhrOrg` |
 | GET | `/api/vhr-org/get-focus-tree` | `getFocusTree` |
 | GET | `/api/vhr-org/get-list-org-parent-child-level-once` | `findByOrgParentId` |
-| POST | `/api/vhr-org/get-doc-manager-transfer-scope` | `getDocManagerTransferScope` |
-| POST | `/api/vhr-org/get-doc-manager-transfer-children` | `getDocManagerTransferChildren` |
-| POST | `/api/vhr-org/get-doc-manager-transfer-org-ids` | `getDocManagerTransferOrgIds` |
 | GET | `/api/vhr-org/get-org-leader` | `getOrgLeader` |
 | GET | `/api/vhr-org/get-org-child-leader` | `findOrgChildLeader` |
 | GET | `/api/vhr-org/get-org-kpi` | `getOrgKpi` |
@@ -1004,7 +1029,6 @@ Cách gọi: `new XxxBusiness(serviceConnection).serveProcessing("a.b", params)`
 | GET | `/api/vhr-org/get-list-child-all-level` | `getListChildAllLevel` |
 | GET | `/api/vhr-org/get-info-org` | `getVhrOrgInfo` |
 | POST | `/api/vhr-org/get-list-org-and-child-all-level` | `getListOrgAndChildAllLevel` |
-| POST | `/api/vhr-org/get-vhr-org-by-condition` | `getVhrOrgByCondition` |
 
 </details>
 

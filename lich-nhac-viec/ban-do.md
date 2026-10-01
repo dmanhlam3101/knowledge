@@ -74,6 +74,7 @@ Cách gọi: `new XxxBusiness(serviceConnection).serveProcessing("a.b", params)`
 | `NotificationAction.searchNotification` | `/NotificationAction/searchNotification` | `NotificationAction.searchNotification` | gen1 |
 | `NotificationAction.updateIsRead` | `/NotificationAction/updateIsRead` | `NotificationAction.updateIsRead` | gen1 |
 | `NotificationAction.updateIsReadByObjectID` | `/NotificationAction/updateIsReadByObjectID` | `NotificationAction.updateIsReadByObjectID` | gen1 |
+| `NotificationAction.updateIsReadListNotification` | `/NotificationAction/updateIsReadListNotification` | `NotificationAction.updateIsReadListNotification` | gen1 |
 
 ### OrientationBusiness
 
@@ -118,7 +119,7 @@ Cách gọi: `new XxxBusiness(serviceConnection).serveProcessing("a.b", params)`
 
 ## 3. BE — Controller → logic / service → DAO / repository → bảng
 
-### NotificationAction (gen1) — base `/NotificationAction`, 6 endpoint
+### NotificationAction (gen1) — base `/NotificationAction`, 7 endpoint
 
 `backend2.0/backendvoffice/src/main/java/com/viettel/voffice/action/NotificationAction.java`
 
@@ -137,6 +138,7 @@ Cách gọi: `new XxxBusiness(serviceConnection).serveProcessing("a.b", params)`
 | POST | `/NotificationAction/updateIsRead` | `updateIsRead` |
 | POST | `/NotificationAction/updateIsReadByObjectID` | `updateIsReadByObjectID` |
 | POST | `/NotificationAction/searchNotification` | `searchNotification` |
+| POST | `/NotificationAction/updateIsReadListNotification` | `updateIsReadListNotification` |
 
 </details>
 

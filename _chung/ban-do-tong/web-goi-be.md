@@ -19,6 +19,7 @@
 | `AgreementBusiness` | `agreementAction.listTaskPriority` | `/agreementAction/listTaskPriority` | `AgreementAction.listTaskPriority` | gen1 |
 | `AnswerDocumentBusiness` | `Files.downloadDocumentReplyAttach` | `/Files/downloadDocumentReplyAttach` | `FileService.downloadDocumentReplyAttach` | gen1 |
 | `AnswerDocumentBusiness` | `answerDocumentAction.cancelDocumentReply` | `/answerDocumentAction/cancelDocumentReply` | `AnswerDocumentAction.cancelDocumentReply` | gen1 |
+| `AnswerDocumentBusiness` | `answerDocumentAction.getCreatedDrafts` | `/answerDocumentAction/getCreatedDrafts` | `AnswerDocumentAction.getCreatedDrafts` | gen1 |
 | `AnswerDocumentBusiness` | `answerDocumentAction.getListAnswerDocument` | `/answerDocumentAction/getListAnswerDocument` | `AnswerDocumentAction.getListAnswerDocument` | gen1 |
 | `AnswerDocumentBusiness` | `answerDocumentAction.getListGroupReceiverRequestResponse` | `/answerDocumentAction/getListGroupReceiverRequestResponse` | `AnswerDocumentAction.getListGroupReceiverRequestResponse` | gen1 |
 | `AnswerDocumentBusiness` | `answerDocumentAction.getListReplyDocument` | `/answerDocumentAction/getListReplyDocument` | `AnswerDocumentAction.getListReplyDocument` | gen1 |
@@ -146,9 +147,6 @@
 | `CommonBusiness` | `api.vhr-employee.get-employees-preside-by-org` | `/api/vhr-employee/get-employees-preside-by-org` | `VhrEmployeeController.getVhrEmployeePresideByOrganizationId` | gen2 |
 | `CommonBusiness` | `api.vhr-employee.get-org-manager-list` | `/api/vhr-employee/get-org-manager-list` | `VhrEmployeeController.getEmployeeById` | gen2 |
 | `CommonBusiness` | `api.vhr-employee.get-org-manager-list-for-consideration` | `/api/vhr-employee/get-org-manager-list-for-consideration` | `VhrEmployeeController.getLeadByListOrgIds` | gen2 |
-| `CommonBusiness` | `api.vhr-org.get-doc-manager-transfer-children` | `/api/vhr-org/get-doc-manager-transfer-children` | `VhrOrgController.getDocManagerTransferChildren` | gen2 |
-| `CommonBusiness` | `api.vhr-org.get-doc-manager-transfer-org-ids` | `/api/vhr-org/get-doc-manager-transfer-org-ids` | `VhrOrgController.getDocManagerTransferOrgIds` | gen2 |
-| `CommonBusiness` | `api.vhr-org.get-doc-manager-transfer-scope` | `/api/vhr-org/get-doc-manager-transfer-scope` | `VhrOrgController.getDocManagerTransferScope` | gen2 |
 | `CommonBusiness` | `api.vhr-org.get-list-org-level-one` | `/api/vhr-org/get-list-org-level-one` | `VhrOrgController.getListOrgLevelOne` | gen2 |
 | `CommonBusiness` | `api.vhr-org.get-list-org-parent-child-level-once` | `/api/vhr-org/get-list-org-parent-child-level-once` | `VhrOrgController.findByOrgParentId` | gen2 |
 | `CommonBusiness` | `api.vhr-org.get-org-child-leader` | `/api/vhr-org/get-org-child-leader` | `VhrOrgController.findOrgChildLeader` | gen2 |
@@ -315,6 +313,7 @@
 | `DocumentBusiness` | `DocumentAction.updateDocumentMeetingRequestAfterCreateMeeting` | `/DocumentAction/updateDocumentMeetingRequestAfterCreateMeeting` | `DocumentAction.updateDocumentMeetingRequestAfterCreateMeeting` | gen1 |
 | `DocumentBusiness` | `DocumentAction.updateDocumentProcessing` | `/DocumentAction/updateDocumentProcessing` | `DocumentAction.updateDocumentProcessing` | gen1 |
 | `DocumentBusiness` | `DocumentAction.updateDocumentProposal` | `/DocumentAction/updateDocumentProposal` | `IndexController.redirect` | gen2 |
+| `DocumentBusiness` | `DocumentAction.updateDuplicateReceivedDocument` | `/DocumentAction/updateDuplicateReceivedDocument` | `DocumentAction.updateDuplicateReceivedDocument` | gen1 |
 | `DocumentBusiness` | `DocumentAction.updateIsForwardByDocumentId` | `/DocumentAction/updateIsForwardByDocumentId` | `DocumentAction.updateIsForwardByDocumentId` | gen1 |
 | `DocumentBusiness` | `DocumentAction.updateIsForwardByDocumentIdMultiTransfer` | `/DocumentAction/updateIsForwardByDocumentIdMultiTransfer` | `DocumentAction.updateIsForwardByDocumentIdMultiTransfer` | gen1 |
 | `DocumentBusiness` | `DocumentAction.updateMeetingStatus` | `/DocumentAction/updateMeetingStatus` | `DocumentAction.updateMeetingStatus` | gen1 |
@@ -436,6 +435,11 @@
 | `DocumentTypeBusiness` | `api.document-types.get-orgs-by-doc-type-id` | `/api/document-types/get-orgs-by-doc-type-id` | `DocumentTypeController.getOrganizationIdsByDocTypeId` | gen2 |
 | `DocumentTypeBusiness` | `api.document-types.granted-doc-type-to-orgs` | `/api/document-types/granted-doc-type-to-orgs` | `DocumentTypeController.grantedDocTypeToOrgs` | gen2 |
 | `DocumentTypeBusiness` | `api.document-types.search` | `/api/document-types/search` | `DocumentTypeController.search` | gen2 |
+| `DraftMissionLinkBusiness` | `api.document-kpi.draft-links` | `/api/document-kpi/draft-links` | `DocumentKpiDraftController.saveDraftLinks` | gen2 |
+| `DraftMissionLinkBusiness` | `api.document-kpi.draft-links.inherit` | `/api/document-kpi/draft-links/inherit` | `DocumentKpiDraftController.inheritDraftLinks` | gen2 |
+| `DraftMissionLinkBusiness` | `api.document-kpi.draft-links.preview` | `/api/document-kpi/draft-links/preview` | `DocumentKpiDraftController.previewDraftLinks` | gen2 |
+| `DraftMissionLinkBusiness` | `mission.api.mission-dashboard.context` | `/mission/api/mission-dashboard/context` | ❓ |  |
+| `DraftMissionLinkBusiness` | `mission.api.mission-dashboard.missions.search` | `/mission/api/mission-dashboard/missions/search` | ❓ |  |
 | `EnterpriseBusiness` | `CM.checkPromulgation` | `/CM/checkPromulgation` | `CMResource.checkPromulgation` | gen1 |
 | `EnterpriseBusiness` | `CM.copyToTmpFolder` | `/CM/copyToTmpFolder` | `CMResource.copyToTmpFolder` | gen1 |
 | `EnterpriseBusiness` | `CM.createSignDocument` | `/CM/createSignDocument` | `IndexController.redirect` | gen2 |
@@ -671,12 +675,15 @@
 | `MissionChartBusiness` | `Meeting.getListOrgPerformInAdvanceSearch` | `/Meeting/getListOrgPerformInAdvanceSearch` | `MettingResource.getListOrgPerformInAdvanceSearch` | gen1 |
 | `MissionChartBusiness` | `api.mission_dashboard.get-assign-mission-charts` | `/api/mission_dashboard/get-assign-mission-charts` | `MissionDashboardController.getAssignMissionCharts` | gen2 |
 | `MissionChartBusiness` | `api.mission_dashboard.get-perform-mission-charts` | `/api/mission_dashboard/get-perform-mission-charts` | `MissionDashboardController.getPerformMissionCharts` | gen2 |
+| `MissionIntegrationBusiness` | `mission.api.document-kpi.scope-check` | `/mission/api/document-kpi/scope-check` | ❓ |  |
+| `MissionIntegrationBusiness` | `mission.api.task-create-detail.catalog-options` | `/mission/api/task-create-detail/catalog-options` | ❓ |  |
 | `NotificationBusiness` | `NotificationAction.countNotificationUnread` | `/NotificationAction/countNotificationUnread` | `NotificationAction.countNotificationUnread` | gen1 |
 | `NotificationBusiness` | `NotificationAction.getNotice` | `/NotificationAction/getNotice` | `NotificationAction.getNotice` | gen1 |
 | `NotificationBusiness` | `NotificationAction.getNotifications` | `/NotificationAction/getNotifications` | `NotificationAction.getNotifications` | gen1 |
 | `NotificationBusiness` | `NotificationAction.searchNotification` | `/NotificationAction/searchNotification` | `NotificationAction.searchNotification` | gen1 |
 | `NotificationBusiness` | `NotificationAction.updateIsRead` | `/NotificationAction/updateIsRead` | `NotificationAction.updateIsRead` | gen1 |
 | `NotificationBusiness` | `NotificationAction.updateIsReadByObjectID` | `/NotificationAction/updateIsReadByObjectID` | `NotificationAction.updateIsReadByObjectID` | gen1 |
+| `NotificationBusiness` | `NotificationAction.updateIsReadListNotification` | `/NotificationAction/updateIsReadListNotification` | `NotificationAction.updateIsReadListNotification` | gen1 |
 | `OrientationBusiness` | `Meeting.getListFileAttachment` | `/Meeting/getListFileAttachment` | `MettingResource.getListFileAttachment` | gen1 |
 | `OrientationBusiness` | `Meeting.getListOrganizationsAssign` | `/Meeting/getListOrganizationsAssign` | `MettingResource.getListOrganizationsAssign` | gen1 |
 | `OrientationBusiness` | `Meeting.getMissionByMeetingId` | `/Meeting/getMissionByMeetingId` | `MettingResource.getMissionByMeetingId` | gen1 |
@@ -780,9 +787,11 @@
 | `RequisitionBusiness` | `Sign.SignSoftAttachMutiFile` | `/Sign/SignSoftAttachMutiFile` | `SignResource.signSoftAttachMutiFile` | gen1 |
 | `RequisitionBusiness` | `Sign.SignSoftAttachMutiFileBrief` | `/Sign/SignSoftAttachMutiFileBrief` | `SignResource.signSoftAttachMutiFileBrief` | gen1 |
 | `RequisitionBusiness` | `Sign.SignSoftAttachMutiFileDoc` | `/Sign/SignSoftAttachMutiFileDoc` | `SignResource.signSoftAttachMutiFileDoc` | gen1 |
+| `RequisitionBusiness` | `Sign.SignSoftAttachMutiFilePosition` | `/Sign/SignSoftAttachMutiFilePosition` | `SignResource.signSoftAttachMutiFilePosition` | gen1 |
 | `RequisitionBusiness` | `Sign.SignSoftHashMutiFile` | `/Sign/SignSoftHashMutiFile` | `SignResource.hashMutiFile` | gen1 |
 | `RequisitionBusiness` | `Sign.SignSoftHashMutiFileBrief` | `/Sign/SignSoftHashMutiFileBrief` | `SignResource.hashMutiFileBrief` | gen1 |
 | `RequisitionBusiness` | `Sign.SignSoftHashMutiFileDoc` | `/Sign/SignSoftHashMutiFileDoc` | `SignResource.hashMutiFileDoc` | gen1 |
+| `RequisitionBusiness` | `Sign.SignSoftHashMutiFilePosition` | `/Sign/SignSoftHashMutiFilePosition` | `SignResource.hashMutiFilePosition` | gen1 |
 | `RequisitionBusiness` | `Sign.SignTextByCASIM` | `/Sign/SignTextByCASIM` | `SignResource.signTextByCASIM` | gen1 |
 | `RequisitionBusiness` | `Sign.updateDatabaseAfterMark` | `/Sign/updateDatabaseAfterMark` | `SignResource.updateDatabaseAfterMark` | gen1 |
 | `RequisitionBusiness` | `Sign.updateViewComment` | `/Sign/updateViewComment` | `SignResource.updateViewComment` | gen1 |
@@ -895,7 +904,9 @@
 | `RequisitionBusiness` | `textAction.rejectSignDocByVTAction` | `/textAction/rejectSignDocByVTAction` | `TextAction.rejectSignDocByVTAction` | gen1 |
 | `RequisitionBusiness` | `textAction.rejectSignDocument` | `/textAction/rejectSignDocument` | `TextAction.rejectSignDocument` | gen1 |
 | `RequisitionBusiness` | `textAction.rejectSignText` | `/textAction/rejectSignText` | `TextAction.rejectSignText` | gen1 |
+| `RequisitionBusiness` | `textAction.rejectSignTextVBBHWaitForNumber` | `/textAction/rejectSignTextVBBHWaitForNumber` | `TextAction.rejectSignTextVBBHWaitForNumber` | gen1 |
 | `RequisitionBusiness` | `textAction.restoreDocument` | `/textAction/restoreDocument` | `TextAction.restoreDocument` | gen1 |
+| `RequisitionBusiness` | `textAction.returnCreatorTextByVtPromulgate` | `/textAction/returnCreatorTextByVtPromulgate` | `TextAction.returnCreatorTextByVtPromulgate` | gen1 |
 | `RequisitionBusiness` | `textAction.rollBackDauDonVi` | `/textAction/rollBackDauDonVi` | `TextAction.rollBackDauDonVi` | gen1 |
 | `RequisitionBusiness` | `textAction.saveTextExplanation` | `/textAction/saveTextExplanation` | `TextAction.saveTextExplanation` | gen1 |
 | `RequisitionBusiness` | `textAction.searchText` | `/textAction/searchText` | `TextAction.searchText` | gen1 |

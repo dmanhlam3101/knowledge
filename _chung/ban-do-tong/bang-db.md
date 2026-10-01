@@ -155,7 +155,7 @@
 | `SecurityTypeLanguageEntity` | `SECURITY_TYPE_LANGUAGE` | he-thong | `SecurityTypeLanguageRepositoryJPA` |
 | `SmsBlackListEntity` | `SMS_BLACK_LIST` | lich-nhac-viec | `SmsBlackListRepositoryJPA` |
 | `SmsMasterEntity` | `SMS_MASTER` | lich-nhac-viec | `SmsMasterRepositoryJPA` |
-| `SourceMapEntity` | `SOURCE_MAP` | he-thong | `SourceMapRepositoryJPA` |
+| `SourceMapEntity` | `SOURCE_MAP` | he-thong | `DraftMissionLinkRepository`, `SourceMapRepositoryJPA` |
 | `StaffImageSignEntity` | `STAFF_IMAGE_SIGN` | ky-so | `StaffImageSignJPA` |
 | `StaffInCvGroupEntity` | `STAFF_IN_CV_GROUP` | he-thong | `StaffInCvGroupRepositoryJPA` |
 | `StatusEntity` | `STATUS` | he-thong | `StatusRepositoryJPA` |
@@ -174,11 +174,11 @@
 | `TextAttachEntity` | `TEXT_ATTACH` | _chung | `TextAttachRepositoryJPA` |
 | `TextBookEntity` | `TEXT_BOOK` | van-ban/so-van-ban | `TextBookRepositoryJPA` |
 | `TextChatEntity` | `TEXT_CHAT` | _chung | `TextChatRepositoryJPA` |
-| `TextCheckSpellsEntity` | `TEXT_CHECK_SPELLS` | van-ban/di | `TextCheckSpellsRepositoryJPA` |
-| `TextDraftEntity` | `TEXT_DRAFT` | van-ban/di | `TextDraftRepositoryJPA` |
-| `TextDraftFileEntity` | `TEXT_DRAFT_FILE` | van-ban/di | `TextDraftFileRepositoryJPA` |
-| `TextDraftHistoryEntity` | `TEXT_DRAFT_HISTORY` | van-ban/di | `TextDraftHistoryRepositoryJPA` |
-| `TextEntity` | `TEXT` | van-ban/di | `TextRepositoryJPA` |
+| `TextCheckSpellsEntity` | `TEXT_CHECK_SPELLS` | xu-ly-cong-viec | `TextCheckSpellsRepositoryJPA` |
+| `TextDraftEntity` | `TEXT_DRAFT` | xu-ly-cong-viec | `TextDraftRepositoryJPA` |
+| `TextDraftFileEntity` | `TEXT_DRAFT_FILE` | xu-ly-cong-viec | `TextDraftFileRepositoryJPA` |
+| `TextDraftHistoryEntity` | `TEXT_DRAFT_HISTORY` | xu-ly-cong-viec | `TextDraftHistoryRepositoryJPA` |
+| `TextEntity` | `TEXT` | van-ban/di | `DraftMetadataRepository`, `TextRepositoryJPA` |
 | `TextProcessEntity` | `TEXT_PROCESS` | van-ban/di | `TextProcessRepositoryJPA` |
 | `TextProcessHistoryEntity` | `TEXT_PROCESS_HISTORY` | van-ban/di | `TextProcessRepositoryHistoryJPA` |
 | `TextReceiverGroupDetailEntity` | `TEXT_RECEIVER_GROUP_DETAIL` | van-ban/di | — |
@@ -295,14 +295,14 @@
 | `ReminderReply` | `REMINDER_REPLIES` | lich-nhac-viec |
 | `Request` | `REQUEST` | phieu-trinh |
 | `RequestEmail` | `REQUEST_EMAIL` | phieu-trinh |
-| `Requisition` | `REQUISITION` | van-ban/di |
-| `RequisitionComment` | `REQUISITION_COMMENT` | van-ban/di |
-| `RequisitionDoc` | `REQUISITION_DOC` | van-ban/di |
-| `RequisitionFile` | `REQUISITION_FILE` | van-ban/di |
+| `Requisition` | `REQUISITION` | xu-ly-cong-viec |
+| `RequisitionComment` | `REQUISITION_COMMENT` | xu-ly-cong-viec |
+| `RequisitionDoc` | `REQUISITION_DOC` | xu-ly-cong-viec |
+| `RequisitionFile` | `REQUISITION_FILE` | ky-so |
 | `RequisitionFlow` | `REQUISITION_FLOW` | van-ban/luong-xu-ly |
 | `RequisitionFlowDetail` | `REQUISITION_FLOW_DETAIL` | van-ban/luong-xu-ly |
-| `RequisitionProcess` | `REQUISITION_PROCESS` | van-ban/di |
-| `RequisitionReceiver` | `REQUISITION_RECEIVER` | van-ban/di |
+| `RequisitionProcess` | `REQUISITION_PROCESS` | xu-ly-cong-viec |
+| `RequisitionReceiver` | `REQUISITION_RECEIVER` | xu-ly-cong-viec |
 | `ResovleIssue` | `RESOVLE_ISSUE` | he-thong |
 | `RoleMenu` | `ROLE_MENU` | he-thong |
 | `RolePermission` | `ROLE_PERMISSION` | nhiem-vu |
@@ -482,7 +482,7 @@
 | `TextBookDAO` | `DATA_SOURCE`, `DOCUMENT`, `DOCUMENT_IN_GROUP`, `DOCUMENT_RECEIVE_MAP`, `DOCUMENT_TYPE`, `FILTERED_DATA`, `HAS_DEFAULT`, `SYSDATE`, `TEXT`, `TEXTBOOK_DOC`, `TEXT_BOOK`, `TEXT_BOOK_NUMBER`, `TEXT_BOOK_SHARE`, `TEXT_PROCESS`, `USER_ROLE`, `VHR_ORG`, `WAITING_NUMBER_BOOK` |
 | `TextCheckSpellDAO` | `ATTACH`, `TEXT`, `TEXT_ATTACH`, `TEXT_ATTACH_OTHER`, `TEXT_CHECK_SPELLS`, `USER_ROLE` |
 | `TextCommonDAO` | `DOCUMENT`, `DOCUMENT_PUBLISHED_TMP`, `STAFF`, `STAFF_GROUP_ROLE`, `TEXT_BOOK`, `TEXT_BOOK_NUMBER`, `TEXT_BOOK_SHARE`, `TEXT_MANUAL_NUMBER`, `TEXT_MAX_NUMBER`, `TEXT_PROCESS`, `USER_ROLE` |
-| `TextDAO` | `AREA`, `ATTACH`, `ATTACH_SAVEBEFORE`, `AUTO_DIGSIG_TRANSACTION`, `BRIEF_FILES_ATTACHMENT`, `BRIEF_MARK`, `CATEGORY_COMMON`, `CONNECT_DOCUMENT`, `CV_PRIORITY`, `DOCUMENT`, `DOCUMENT_IN_STAFF`, `DOCUMENT_TYPE`, `FILES_ATTACHMENT`, `FILES_COMMENT_SIGN`, `IMAGE_ORG`, `MARK_ATTACH_HISTORY`, `MARK_LOCATION`, `MEETING`, `MEETING_MINUTES`, `NODE_ACTION`, `POSITION`, `SECURITY_TYPE`, `SOURCE_MAP`, `STAFF`, `STAFFGROUP`, `STAFF_GROUP_ROLE`, `STAFF_IMAGE_SIGN`, `TEXT`, `TEXT_ATTACH`, `TEXT_ATTACH_BASE`, `TEXT_ATTACH_OTHER`, `TEXT_CHAIN`, `TEXT_EXPLANATION`, `TEXT_EXPLANATION_ATTACH`, `TEXT_MARK`, `TEXT_PROCESS`, `TEXT_PROCESS_FILES`, `TEXT_PROCESS_HISTORY`, `TEXT_PROCESS_PARTNER`, `TEXT_RECEIVER`, `TEXT_SIGN_LOCATION`, `TEXT_SIGN_NEXT`, `TEXT_TEXT_ATTACH`, `USER_ROLE`, `VHR_EMPLOYEE`, `VHR_ORG` |
+| `TextDAO` | `AREA`, `ATTACH`, `ATTACH_SAVEBEFORE`, `AUTO_DIGSIG_TRANSACTION`, `BRIEF_FILES_ATTACHMENT`, `BRIEF_MARK`, `CATEGORY_COMMON`, `CONNECT_DOCUMENT`, `CV_PRIORITY`, `DOCUMENT`, `DOCUMENT_IN_LIST_REQUEST`, `DOCUMENT_IN_STAFF`, `DOCUMENT_TYPE`, `FILES_ATTACHMENT`, `FILES_COMMENT_SIGN`, `IMAGE_ORG`, `MARK_ATTACH_HISTORY`, `MARK_LOCATION`, `MEETING`, `MEETING_MINUTES`, `NODE_ACTION`, `POSITION`, `SECURITY_TYPE`, `SOURCE_MAP`, `STAFF`, `STAFFGROUP`, `STAFF_GROUP_ROLE`, `STAFF_IMAGE_SIGN`, `TEXT`, `TEXT_ATTACH`, `TEXT_ATTACH_BASE`, `TEXT_ATTACH_OTHER`, `TEXT_CHAIN`, `TEXT_EXPLANATION`, `TEXT_EXPLANATION_ATTACH`, `TEXT_MARK`, `TEXT_PROCESS`, `TEXT_PROCESS_FILES`, `TEXT_PROCESS_HISTORY`, `TEXT_PROCESS_PARTNER`, `TEXT_RECEIVER`, `TEXT_SIGN_LOCATION`, `TEXT_SIGN_NEXT`, `TEXT_TEXT_ATTACH`, `USER_ROLE`, `VHR_EMPLOYEE`, `VHR_ORG` |
 | `TextEditHistoryDAO` | `ATTACH`, `ATTACH_TEMPLATE`, `FILES_ATTACHMENT`, `TEXT`, `TEXT_ATTACH`, `TEXT_ATTACH_BASE`, `TEXT_EDIT_HISTORY` |
 | `TextFileCommentDAO` | `ATTACH`, `FILES_ATTACHMENT`, `TEXT_ATTACH`, `TEXT_ATTACH_OTHER`, `TEXT_NOTE` |
 | `TextMarkSyncDAO` | `AREA`, `ATTACH`, `AUTO_DIGSIG_TRANSACTION`, `DOCUMENT`, `DOCUMENT_TYPE`, `STAFF`, `TEXT`, `TEXT_MARK_SYNC`, `TEXT_PROCESS` |
@@ -493,7 +493,7 @@
 | `TextReceiverDAO` | `TEXT_RECEIVER` |
 | `TextReceiverGroupDAO` | `CV_GROUP`, `TEXT_RECEIVER_GROUP` |
 | `TextReportDAO` | `AREA`, `AUTO_DIGSIG_TRANSACTION`, `CV_PRIORITY`, `DOCUMENT_TYPE`, `SECURITY_TYPE`, `STAFF`, `STAFFGROUP`, `STAFF_GROUP_ROLE`, `TEXT`, `TEXT_PROCESS`, `TEXT_SIGN_NEXT`, `USER_ROLE`, `VHR_EMPLOYEE`, `VHR_ORG` |
-| `TextSearchDAO` | `ATTACH`, `ATTACH_TEMPLATE`, `BRIEF`, `CV_PRIORITY`, `DOCUMENT`, `DOCUMENT_TYPE`, `FILES_ATTACHMENT`, `LOG_TRANSTION_SIGN`, `NODE_ACTION`, `POSITION`, `SEARCH_TEXT_DRAFT`, `SECURITY_TYPE`, `STAFF`, `STAFFGROUP`, `STAFF_GROUP_ROLE`, `STAFF_IMAGE_SIGN`, `SUBMISSION_FORM`, `SUBMISSION_MAP`, `SYSTEM_PARAMETER`, `SYS_ROLE`, `TEXT`, `TEXT_ASSISTANT_CONFIG`, `TEXT_ATTACH`, `TEXT_ATTACH_BASE`, `TEXT_ATTACH_OTHER`, `TEXT_BOOK`, `TEXT_DRAFT`, `TEXT_DRAFT_HISTORY`, `TEXT_MARK`, `TEXT_PROCESS`, `TEXT_PROCESS_HISTORY`, `TEXT_SIGN_NEXT`, `USER_ROLE`, `VHR_EMPLOYEE`, `VHR_ORG` |
+| `TextSearchDAO` | `ATTACH`, `ATTACH_TEMPLATE`, `BRIEF`, `CV_PRIORITY`, `DOCUMENT`, `DOCUMENT_IN_LIST_REQUEST`, `DOCUMENT_PROCESS`, `DOCUMENT_TYPE`, `FILES_ATTACHMENT`, `LOG_TRANSTION_SIGN`, `NODE_ACTION`, `POSITION`, `SEARCH_TEXT_DRAFT`, `SECURITY_TYPE`, `STAFF`, `STAFFGROUP`, `STAFF_GROUP_ROLE`, `STAFF_IMAGE_SIGN`, `SUBMISSION_FORM`, `SUBMISSION_MAP`, `SYSTEM_PARAMETER`, `SYS_ROLE`, `TEXT`, `TEXT_ASSISTANT_CONFIG`, `TEXT_ATTACH`, `TEXT_ATTACH_BASE`, `TEXT_ATTACH_OTHER`, `TEXT_BOOK`, `TEXT_DRAFT`, `TEXT_DRAFT_HISTORY`, `TEXT_MARK`, `TEXT_PROCESS`, `TEXT_PROCESS_HISTORY`, `TEXT_SIGN_NEXT`, `USER_ROLE`, `VHR_EMPLOYEE`, `VHR_ORG` |
 | `TextSignDAO` | `ATTACH`, `ATTACH_HISTORY`, `ATTACH_SAVEBEFORE`, `ATTACH_TEMPLATE`, `BRIEF_FILES_ATTACHMENT`, `BRIEF_MARK`, `DOCUMENT_TYPE`, `FILES_ATTACHMENT`, `FILES_COMMENT_SIGN`, `MARK_ATTACH_HISTORY`, `STAFF_GROUP_ROLE`, `TEXT`, `TEXT_ASSISTANT_CONFIG`, `TEXT_ATTACH`, `TEXT_MARK`, `TEXT_PROCESS`, `TEXT_PROCESS_FILES`, `TEXT_PROCESS_HISTORY`, `TEXT_SIGN_LOCATION`, `TEXT_SIGN_NEXT`, `VHR_EMPLOYEE`, `VHR_ORG` |
 | `TimeConfigDAO` | `TIME_CONFIG` |
 | `UserActivityLogDAO` | `USER_ACTIVITY_LOG` |

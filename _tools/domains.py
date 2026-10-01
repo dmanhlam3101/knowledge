@@ -9,7 +9,9 @@ import re
 
 DOMAINS = {
     'van-ban/den':          'Văn bản đến',
-    'van-ban/di':           'Văn bản đi (dự thảo → trình ký → cấp số → ban hành)',
+    'xu-ly-cong-viec':      'Xử lý công việc – giai đoạn TRƯỚC ban hành: dự thảo → xin ý kiến → trình ký → ký/phê duyệt → trả lại/từ chối (menu XỬ LÝ CÔNG VIỆC)',
+    'van-ban/di':           'Văn bản đi – từ cấp số trở đi: cấp số → ban hành → văn bản ban hành → thu hồi/hủy',
+    'van-ban/chuyen-van-ban': 'Chuyển văn bản – mọi luồng chuyển (đến: chuyển xử lý; đi: chuyển sau ban hành; tự động chuyển; giới hạn chuyển)',
     'van-ban/luong-xu-ly':  'Luồng xử lý / luồng ký',
     'van-ban/so-van-ban':   'Sổ văn bản',
     'van-ban/lien-thong':   'Liên thông văn bản (trục, VOConnect, cơ quan ngoài)',
@@ -31,6 +33,20 @@ DOMAINS = {
 # (regex, domain)  – khớp đầu tiên thắng
 RULES = [
     # ---- tên riêng khó đoán (đặt trước để thắng các quy tắc chung)
+    # xếp lại theo rà soát module xu-ly-cong-viec (2026-09-30)
+    (r'documentsigncontroller|documentsignservice|documentsignaction|textprocesscontroller|textprocessservice|textfilecontroller', 'xu-ly-cong-viec'),
+    # xếp lại theo rà soát module van-ban/di (2026-10-01): cấp số thật = issussDocument.zul + DocumentLookUpVM
+    (r'requisition_issue_number|requisition_vbbh|rejectpublish|documentpublishaction|textmarksync|issussdocument|documentlookupvm|documentoutvm|/documentout|popupvb_issue_number|popupaskforseal', 'van-ban/di'),
+    (r'orgfollowerdocout', 'van-ban/quan-ly-chung'),
+    (r'confirmsigndocumentdraft|popupselectrequisitionforsubmission', 'phieu-trinh'),
+    (r'requisition/file/|requisitionfile|documentdraftfile|signusbtoken|signatureimageselector|p12cert|certmanagement|imagesign|image-sign|imageorgaction', 'ky-so'),
+    (r'requisitionreport|textreport', 'kpi-danh-gia'),
+    (r'submitforconsideration|documentproposalvm', 'van-ban/den'),
+    (r'advancedsearchdocument|documentsendsearch', 'van-ban/quan-ly-chung'),
+    (r'configdocmanager', 'he-thong'),
+    (r'transfercontentdoc', 'he-thong'),
+    (r'transferdoc/viewlisthistory|documentloginfovm', 'van-ban/quan-ly-chung'),
+    (r'docautosenddocument|documentprocessautosendconfig|documentprocesstermconfigaction|documentrequestconfigdao|popupviewflow|popupmovelist|documentlookupmovelist', 'van-ban/chuyen-van-ban'),
     (r'proposalbusiness|proposalvm|requestcontroller|requestemail|\brequest\.java', 'phieu-trinh'),
     (r'agreechart|missionchart', 'nhiem-vu'),
     (r'taskfacade|\bitask\b', 'cong-viec'),
@@ -50,7 +66,11 @@ RULES = [
     (r'requisitionflow|flowmanager|flow-manager|/vm/flow/|/flow/|documentprocessterm|flowbusiness', 'van-ban/luong-xu-ly'),
     (r'textbook|bookdoc|bookdispatch|text-book', 'van-ban/so-van-ban'),
     (r'connectdocument|voconnect|/hook|goverment|docorgrepublish|textmarksync|textsync|/api/text$|migrateddoc|migratedocument|/migrate/', 'van-ban/lien-thong'),
-    (r'requisition|documentdraft|textaction|textcontroller|textdao|text-draft|text-process|textprocess|textdraft|textfile|textsign|textreport|textcheckspell|textcommon|textsearch|documentpublish|issuedocument|doc-out|docout|submitforconsideration|signusbtoken|documentpublishedtmp|autodigitalsign|historychangesign|/vm/text', 'van-ban/di'),
+    # chuyển văn bản: gom mọi luồng chuyển (đến + đi) vào 1 phân hệ riêng
+    (r'transferdoc|transfer-doc|transferdocument|documenttransfer|transferbriefdoc|transferfinancedoc|configlimittransfer|limittransfer|popuptransfererror|multitypeobjectlookup', 'van-ban/chuyen-van-ban'),
+    # trước ban hành (menu XỬ LÝ CÔNG VIỆC): dự thảo, trình ký, ký/phê duyệt, cho ý kiến
+    (r'requisition|documentdraft|text-draft|textdraft|textcheckspell|textsign|historychangesign', 'xu-ly-cong-viec'),
+    (r'textaction|textcontroller|textdao|text-process|textprocess|textfile|textcommon|textsearch|documentpublish|issuedocument|doc-out|docout|documentpublishedtmp|autodigitalsign|/vm/text', 'van-ban/di'),
     (r'docin|documentin|document-in|inputdoc|transferdoc|orgfollowerdocin|answerdoc|docleadercomment|documentsearchreceive|/document/process|documentreceive|reportsendreceivedoc|requesttoschedulemeetingdoc', 'van-ban/den'),
     (r'documenthandover|dochandover|documentscope|documenttype|document-types|documentinformality|documentcopy|documenthistorylog|document-history|documentkpi|document/|documentaction|documentbusiness|documentcontroller|documentdao|doccontroller|/api/doc$|/api/doc/|docservice|documentrequest|documentservice|documentsign|correctdocument|viewdoc|seachdoc|managerdoc|editdoc|keydoc|supervisiondoc|answerdocument|documentchat|doc-chat|answerdocumentaction|internaldocument|documentproposal|documentfacade|idocument\b|savepersonaldoc|personaldoccategory|personal-category', 'van-ban/quan-ly-chung'),
     # ---- phiếu trình

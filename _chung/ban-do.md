@@ -7,7 +7,7 @@
 
 ## 1. Màn hình (web)
 
-Tổng: 95 màn hình, 12 VM không gắn zul trực tiếp.
+Tổng: 93 màn hình, 12 VM không gắn zul trực tiếp.
 
 | Màn hình (.zul) | ViewModel | Gọi BE qua (Business) | Legacy (remote/facade) | Nhãn |
 |---|---|---|---|---|
@@ -39,7 +39,6 @@ Tổng: 95 màn hình, 12 VM không gắn zul trực tiếp.
 | `widgets/organizationSelector.zul` | `widget.OrganizationSelectorVM` | `RequisitionBusiness` | — | BE |
 | `widgets/pdfViewer.zul` | `widget.PdfViewerVM` | — | — | — |
 | `widgets/pdfViewerFile.zul` | `widget.PdfViewerFileVM` | — | — | — |
-| `widgets/popupAskForSeal.zul` | `widget.PopupAskForSealVM` | — | — | — |
 | `widgets/popupChooseOrg.zul` | `widget.PopupChosseOrgVM` | — | — | — |
 | `widgets/popupCreateTask.zul` | `widget.PopupCreateMissionVM` | — | — | — |
 | `widgets/popupDetailEmp.zul` | `vps.vm.SysUserVM` | `DocumentProcessTermBusiness`, `FlowBusiness`, `ImageOrgBusiness`, `RequisitionBusiness` | `ISysUser` | BE+LEGACY |
@@ -88,7 +87,6 @@ Tổng: 95 màn hình, 12 VM không gắn zul trực tiếp.
 | `widgets/createWorkLookup.zul` | `widget.WorkLookupVM` | — | — | — |
 | `widgets/flowHistoryLookup.zul` | `widget.FlowHistoryLookupVM` | `FlowBusiness` | — | BE |
 | `widgets/mainMenuTree.zul` | `widget.MainMenuTreeVM` | — | `ISysMenu` | LEGACY |
-| `widgets/multiTypeObjectLookup.zul` | `widget.MultiTypeObjectLookupVM` | `ConnectDocumentBusiness` | `ISysOrganization` | BE+LEGACY |
 | `widgets/noteBook.zul` | `widget.NoteBookVM` | `MeetingBusiness` | — | BE |
 | `widgets/objectSignLookup2.zul` | `widget.ObjectSignLookupVM2` | — | — | ☠ VM không tồn tại |
 | `widgets/popupAddCert.zul` | `widget.PopupAddCertVM` | `RequisitionBusiness` | — | BE |
@@ -163,9 +161,6 @@ Cách gọi: `new XxxBusiness(serviceConnection).serveProcessing("a.b", params)`
 | `api.vhr-employee.get-employees-preside-by-org` | `/api/vhr-employee/get-employees-preside-by-org` | `VhrEmployeeController.getVhrEmployeePresideByOrganizationId` | gen2 |
 | `api.vhr-employee.get-org-manager-list` | `/api/vhr-employee/get-org-manager-list` | `VhrEmployeeController.getEmployeeById` | gen2 |
 | `api.vhr-employee.get-org-manager-list-for-consideration` | `/api/vhr-employee/get-org-manager-list-for-consideration` | `VhrEmployeeController.getLeadByListOrgIds` | gen2 |
-| `api.vhr-org.get-doc-manager-transfer-children` | `/api/vhr-org/get-doc-manager-transfer-children` | `VhrOrgController.getDocManagerTransferChildren` | gen2 |
-| `api.vhr-org.get-doc-manager-transfer-org-ids` | `/api/vhr-org/get-doc-manager-transfer-org-ids` | `VhrOrgController.getDocManagerTransferOrgIds` | gen2 |
-| `api.vhr-org.get-doc-manager-transfer-scope` | `/api/vhr-org/get-doc-manager-transfer-scope` | `VhrOrgController.getDocManagerTransferScope` | gen2 |
 | `api.vhr-org.get-list-org-level-one` | `/api/vhr-org/get-list-org-level-one` | `VhrOrgController.getListOrgLevelOne` | gen2 |
 | `api.vhr-org.get-list-org-parent-child-level-once` | `/api/vhr-org/get-list-org-parent-child-level-once` | `VhrOrgController.findByOrgParentId` | gen2 |
 | `api.vhr-org.get-org-child-leader` | `/api/vhr-org/get-org-child-leader` | `VhrOrgController.findOrgChildLeader` | gen2 |
