@@ -20,8 +20,7 @@ knowledge/
 │   ├── thanh-phan-dung-chung.md widget, lookup, tiện ích web dùng chung — tìm trước khi viết mới
 │   ├── huong-dan-ra-soat-nghiep-vu.md  KHUNG BÀI CHUẨN + quy tắc viết / rà soát tri thức (đọc trước khi sửa bài)
 │   ├── cach-lam-chuan/          CÔNG THỨC: thêm tính năng mới, thêm API BE, thêm màn hình web, sửa code cũ, thêm trường
-│   ├── checklist-lam-ro-yeu-cau.md  BỘ CÂU HỎI làm rõ yêu cầu mới (11 nhóm, văn phòng điện tử) — dùng cho BA + skill ba-assistant
-│   ├── mau-dau-ra/              MẪU xuất kết quả: hướng dẫn kỹ thuật; giải pháp BA → trỏ sang docs/templates/ba-spec.template.md
+│   ├── mau-dau-ra/              MẪU xuất kết quả: hướng dẫn kỹ thuật; giải pháp BA → trỏ sang ../templates/ (bộ BA)
 │   ├── cau-hoi-mo.md            SINH TỰ ĐỘNG: gom câu hỏi mục 7.1 của mọi phân hệ (_tools/questions.py)
 │   ├── cau-hoi-dot-2026-10.md   phiếu câu hỏi gom từ mục 7.1 + 5 quyết định chung (trả lời dần khi làm tính năng liên quan; _tools/gom_cau_hoi.py)
 │   ├── bao-cao-dot-viet-lai-2026-10.md  báo cáo tổng hợp đợt viết lại 2026-09-29 → 10-02
@@ -87,16 +86,10 @@ Cách đọc tham chiếu:
 - Lỗi nghi vấn / thiếu kiểm tra / code chết chỉ ghi ở `dac-thu.md` (mục "lỗi hệ thống — ghi nhận"), không ghi thành câu hỏi.
 - Cấu hình bí mật (mật khẩu, khóa, token, địa chỉ máy chủ) chỉ ghi **tên khóa** — "(có khai — không ghi giá trị)".
 
-## Dành cho BA — viết nghiệp vụ cùng AI mà không cần biết sâu hệ thống
+## Dành cho BA
 
-1. Đọc `tom-tat.md` của phân hệ (5–10 phút) để biết hệ thống đang làm gì — không cần mở `nghiep-vu.md`.
-2. Viết **phiếu ý tưởng** 1 trang (muốn gì · ai dùng · vì sao · một tình huống thật · kết quả mong muốn) — mục 0 của
-   `docs/templates/ba-spec.template.md`.
-3. Gọi skill **`ba-assistant`** (Claude Code): AI tra tri thức dựng hiện trạng, hỏi lại các câu cần làm rõ bằng lời
-   nghiệp vụ (từ `_chung/checklist-lam-ro-yeu-cau.md` + mục 10 `tom-tat.md`), BA trả lời, AI điền đủ 13 mục — mẫu ghi rõ
-   mục nào BA viết 🟦, mục nào AI điền 🟩, mục nào AI đề xuất → BA chốt 🟨.
-4. `/ba-review` chấm chính thức + đối chiếu code → đạt thì mở CR.
-5. Câu trả lời nào làm rõ **hệ thống hiện tại** được cập nhật ngược vào `knowledge/` (mục 7.2 của phân hệ).
+Bộ mẫu, checklist và **quy trình từng bước** (kể cả vòng kiểm tra lặp đến khi DEV làm được) nằm ngay cạnh thư mục
+này: `../README.md` (`AI Analysis/ba/`). Trong `knowledge/`, BA chỉ cần đọc `tom-tat.md` của phân hệ.
 
 ## Cách dùng khi nhận một yêu cầu
 
@@ -108,7 +101,7 @@ Cách đọc tham chiếu:
 2. **Đọc file của phân hệ đó** (`tom-tat` → `nghiep-vu` → `dac-thu` → `ban-do` → `vi-du-mau`). Yêu cầu xuyên phân hệ thì đọc thêm phân hệ liên quan (theo bảng "KHÔNG gồm").
 3. **Đọc `_chung/cach-lam-chuan/`** đúng loại việc (thêm API / thêm màn hình / sửa legacy / thêm trường).
 4. **Mở code thật** theo đường dẫn trong `ban-do.md` và `vi-du-mau.md` để xác nhận trước khi kết luận.
-5. **Xuất kết quả:** đặc tả nghiệp vụ theo `docs/templates/ba-spec.template.md` (mẫu duy nhất, khớp chuẩn chấm `/ba-review`) + hướng dẫn kỹ thuật theo `_chung/mau-dau-ra/huong-dan-ky-thuat.md`.
+5. **Xuất kết quả:** đặc tả nghiệp vụ theo `../templates/01-dac-ta-yeu-cau.md` (hoặc `02-yeu-cau-nho.md`) + hướng dẫn kỹ thuật theo `_chung/mau-dau-ra/huong-dan-ky-thuat.md`.
 6. **Sau khi làm xong**: cập nhật `nghiep-vu.md`/`dac-thu.md` nếu có tri thức mới; chạy lại `_tools` nếu thêm class/màn hình.
 
 ## Từ khóa → phân hệ
