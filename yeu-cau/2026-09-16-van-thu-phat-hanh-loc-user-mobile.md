@@ -243,6 +243,18 @@ Nguyên tắc:
 
 ---
 
+## 8b. Màn DỰ THẢO — nơi nhận cá nhân dự kiến (dùng lại y hệt)
+
+Cùng API, cùng cách gọi như mục 2–6, chỉ khác **`builtOrgId` = đơn vị gốc của người đang đăng nhập** (`VHR_EMPLOYEE.ORGANIZATION_ID`), không phải đơn vị ban hành, và **không** cần xét 5 điều kiện ở mục 1:
+
+```
+scope = POST get-doc-manager-transfer-scope { builtOrgId: <đơn vị gốc của user> }
+cây cá nhân : gốc = scope.userRootOrg, lọc con theo scope.userOrgIds
+ô tìm nhanh : getListUser(..., lstGroupId = scope.userOrgIds, onlyParentGroup:"1", checkListGroup:true)
+bấm 1 node  : org-ids { builtOrgId: <đơn vị gốc>, orgId: node } → getListUser(...)
+```
+Kết quả: người của đơn vị gốc + con cháu; đơn vị gốc là VPUB thì thêm người của chính UBND tỉnh. Phần chọn **đơn vị** ở dự thảo không đổi.
+
 ## 9. Checklist test
 
 1. Văn thư Sở A, màn Văn bản ban hành (Đã cấp số) → chọn người nhận:
