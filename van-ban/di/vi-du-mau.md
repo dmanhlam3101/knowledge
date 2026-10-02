@@ -2,7 +2,7 @@
 
 > Viết lại 2026-09-30. Viết tắt đường dẫn giống `nghiep-vu.md`. Mẫu **gen-2** ưu tiên cho code mới; mẫu **gen-1** để hiểu/sửa luồng hiện có.
 > Mẫu của giai đoạn trước ban hành (thêm hành động lên dự thảo kiểu `forward-to-assign-number`, xin ý kiến) xem `xu-ly-cong-viec/vi-du-mau.md`; ký số xem `ky-so/vi-du-mau.md`; mẫu cũ ngoài phạm vi giữ ở mục G.
-> (sửa 2026-09-30: bản cũ mục C trỏ `requisition_issue_number_view_detail.zul` + `RequisitionViewIssueNumberVM` là màn cấp số — sai, đó là màn xem danh sách số đã cấp; mục B ghi `rejectPublishDocument` gọi `rejectSignDocument`/`cancelPublish` ❓ — thực tế gọi `textAction.cancelDocumentPublish`; mục E gắn `OfficePublishedReplacementService` vào công khai/thay thế — sai, đó là đơn vị ban hành thay thế.)
+> (sửa 2026-09-30: bản cũ mục C trỏ `requisition_issue_number_view_detail.zul` + `RequisitionViewIssueNumberVM` là màn cấp số — sai, đó là màn xem danh sách số đã cấp; mục B ghi `rejectPublishDocument` gọi `rejectSignDocument`/`cancelPublish` (?) — thực tế gọi `textAction.cancelDocumentPublish`; mục E gắn `OfficePublishedReplacementService` vào công khai/thay thế — sai, đó là đơn vị ban hành thay thế.)
 
 ## A. Hành động của văn thư trên văn bản chờ cấp số, có popup nhập lý do rồi đổi trạng thái — mẫu "Hủy ban hành / Từ chối cấp số"
 

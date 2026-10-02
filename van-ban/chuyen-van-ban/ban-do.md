@@ -7,13 +7,15 @@
 
 ## 1. Màn hình (web)
 
-Tổng: 17 màn hình, 0 VM không gắn zul trực tiếp.
+Tổng: 19 màn hình, 0 VM không gắn zul trực tiếp.
 
 | Màn hình (.zul) | ViewModel | Gọi BE qua (Business) | Legacy (remote/facade) | Nhãn |
 |---|---|---|---|---|
 | `config/docAutoSendDocumentAdd_popup.zul` | `vm.config.DocumentProcessAutoSendConfigPopupVM` | `DocumentProcessTermBusiness`, `RequisitionBusiness` | — | BE |
 | `config/docAutoSendDocumentConfig.zul` | `vm.config.DocumentProcessAutoSendConfigVM` | `DocumentProcessTermBusiness`, `RequisitionBusiness` | — | BE |
 | `document/process/popupViewFlowDetail.zul` | `vm.document.PopupViewFlowDetailVM` | `DocumentBusiness` | — | BE |
+| `document/process/viewFlow.zul` | `vm.document.PopupViewFlowVM` | `AnswerDocumentBusiness` | — | BE |
+| `document/process/viewFlow_v2.zul` | `vm.document.PopupViewFlowVM` | `AnswerDocumentBusiness` | — | BE |
 | `document/reportSendReceiveDoc/popUpMoveList.zul` | `vm.document.DocumentLookUpMoveList` | `DocumentBusiness` | — | BE |
 | `document/transferDoc/configLimitTransfer.zul` | `vm.document.ConfigLimitTransferVM` | — | — | — |
 | `document/transferDoc/popupTransferError.zul` | `vm.document.PopupTransferErrorVM` | — | — | — |

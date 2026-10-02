@@ -98,8 +98,9 @@ public class XxxBusiness extends Business {
 | Việc | Ở đâu | Mẫu |
 |---|---|---|
 | Menu | `SYS_MENU` (SQL), URL = `/view/voffice/<domain>/xxx.zul` | `backend2.0/backendvoffice/sql/19122025_add_row_sys_menu.sql` |
-| Gán menu cho vai trò | `SYS_ROLE` ↔ menu ❓ (bảng map — hỏi admin) | |
-| Nhãn đa ngôn ngữ | `common_voffice_vi.properties` (+ `_en`), key `voffice.<domain>.label.*` | reminder hiện hard-code tiếng Việt ❓ |
+| Gán menu cho vai trò | bảng **`ROLE_MENU`** (màn quản trị `roleMenu.zul` / `RoleMenuVM`); nếu chỉ mở cho một số đơn vị thì thêm `ORG_SYS_MENU` — **danh sách trắng**: chèn một dòng là mọi đơn vị khác mất menu | `he-thong` NV-09, NV-10, `dac-thu.md` bẫy 6–7; mẫu script `SQL/20250725_insert_menu_category_group.sql` (sửa 2026-10-02) |
+| Nhãn đa ngôn ngữ | `common_voffice_vi.properties` (+ `_en`), key `voffice.<domain>.label.*` | Nhắc việc đang **ghi cứng tiếng Việt** trong zul / VM — đừng chép phần này (`lich-nhac-viec/dac-thu.md` mục 1) |
+| Quyền nút | Điều kiện hiển thị viết trong VM (`visible="@load(vm.isXxx)"`), đặt ở **cả** màn chi tiết lẫn lưới nếu nút có ở hai nơi; BE không kiểm người gọi | kiến trúc tổng thể mục 5, bẫy 6 |
 | Tra cứu đơn vị/người dùng trong màn | Dùng `iCommon.findById(SysOrganization.class, id)` / lookup widget sẵn có — đây là **ngoại lệ legacy được chấp nhận** cho tra cứu danh mục (reminder cũng dùng) | `ReminderVM.postViewInitialized` |
 | Mở từ màn hình khác với tham số | `ZkUtil.getParameter("...")` + `LookupUtil.showDialog(...)` | `DocumentViewDetailVM` mở `reminder_add_modal.zul` |
 | Reload màn cha sau khi lưu | `EventQueues.lookup(AppConstants.EVENT_QUEUE.EVENT_QUEUE_HOME_PAGE, true).publish(...)` | |
@@ -110,4 +111,5 @@ public class XxxBusiness extends Business {
 - Màn hình mở được từ menu với vai trò thường (không phải admin).
 - Tìm kiếm + phân trang + thêm + sửa + xóa mềm hoạt động; F5 không lỗi (VM khởi tạo lại từ tham số).
 - Không có `Delegate.getService(...)` mới ngoài `ICommonVoffice`/`ISysOrganization`/`ISysUser` cho tra cứu.
-- `scan.py` thấy zul → VM → Business → endpoint nối đủ (không ❓ trong `ban-do.md`).
+- `scan.py` thấy zul → VM → Business → endpoint nối đủ (không còn dấu hỏi "chưa nối" trong `ban-do.md`).
+- Thêm dòng `SYS_MENU` **và** `ROLE_MENU`; người có vai trò được gán thấy menu (kiểm `ORG_SYS_MENU` nếu menu giới hạn đơn vị).

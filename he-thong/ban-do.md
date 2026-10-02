@@ -7,7 +7,7 @@
 
 ## 1. Màn hình (web)
 
-Tổng: 79 màn hình, 3 VM không gắn zul trực tiếp.
+Tổng: 81 màn hình, 3 VM không gắn zul trực tiếp.
 
 | Màn hình (.zul) | ViewModel | Gọi BE qua (Business) | Legacy (remote/facade) | Nhãn |
 |---|---|---|---|---|
@@ -32,6 +32,8 @@ Tổng: 79 màn hình, 3 VM không gắn zul trực tiếp.
 | `config/docProcessTermConfigAdd_popup.zul` | `vm.config.DocumentProcessTermConfigPopupVM` | `DocumentProcessTermBusiness`, `RequisitionBusiness` | — | BE |
 | `config/notifyToNextSigner.zul` | `vm.config.NotifyToNextSignerVM` | `ConfigBusiness` | — | BE |
 | `configPersonal/proposal.zul` | `vm.config.ProposalVM` | `ProposalBusiness` | — | BE |
+| `document/reportSendReceiveDoc/reportContentSendReceiveDoc.zul` | `widget.SysMenuLookupVM` | — | `ISysMenu` | LEGACY |
+| `document/reportSendReceiveDoc/reportSendReceiveDoc.zul` | `vps.vm.SysMenuVM` | — | `ISysMenu` | LEGACY |
 | `document/transferDoc/transferContentDoc.zul` | `widget.SysMenuLookupVM` | — | `ISysMenu` | LEGACY |
 | `documentDraft/configDocManager.zul` | `vps.vm.ConfigDocManagerVM` | — | — | — |
 | `document_type/document_type.zul` | `vm.document.DocumentTypeVM` | `DocumentTypeBusiness` | — | BE |

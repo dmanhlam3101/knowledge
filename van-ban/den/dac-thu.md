@@ -1,45 +1,76 @@
-# Văn bản đến — đặc thù, bẫy
+# Văn bản đến — đặc thù, bẫy, lỗi hệ thống ghi nhận
 
-## Tình trạng kỹ thuật: lai gen-1 / gen-2 rõ rệt nhất hệ thống
+> Viết lại từ code `kha_develop` ngày 2026-10-01. Viết tắt đường dẫn / VM như `nghiep-vu.md` (WEB, ZUL, BIZ, BE1, BE2; DPRVM, DPPVM, DPDVM, DOAVM, DRTVM, DRVM, DRKVM, DSVM, OFVM, DVDVM, PCDVM, PRDVM, DPOOL; DC, DA, DDAO, DSRC, DSIS, DISI, DICT, DLCS, DB).
 
-| Phần | Tầng |
-|---|---|
-| CRUD, tìm kiếm, chuyển, đếm, xuất | gen-1 `DocumentAction` (104 endpoint) → `controler/DocumentController` → `DocumentDAO`, `DocumentInStaff*`, `AnswerDocumentDAO`… |
-| Trả lời văn bản | gen-1 `answerDocumentAction` |
-| Bàn giao | gen-1 `DocumentHandoverAction` |
-| Hạn xử lý, tự động chuyển | gen-1 `documentProcessTermConfig` |
-| **Hoàn thành, trả lại, trùng số, file mã hóa, trạng thái staff/group, node luồng** | **gen-2** `DocInController` (`/api/doc-in`, 28 endpoint) |
-| Bút phê | gen-2 `DocLeaderCommentController` |
-| Thống kê tiến độ theo user, nhóm CV | gen-2 `DocumentInController` (`/api/document-in`) |
-| Người/nhóm bước tiếp theo theo luồng | gen-2 `FlowManagerController` (`/api/flow-manager/doc-in/*`, 17 hàm) |
-| Báo cáo ngày, mẫu văn bản, đồng bộ | gen-2 `DocController` (`/api/doc`) |
-| Tìm kiếm văn bản nhận (tối ưu) | gen-1 `DocumentSearchReceive*` — có tài liệu `PERFORMANCE_OPTIMIZATION_DOCUMENTATION_DocumentSearchReceive.md` |
-| Web | `vm/document/*` (73 VM) — `DocumentBusiness` **178 hàm**, gọi cả gen-1 lẫn gen-2; `DocumentViewDetailVM` là màn chi tiết dùng chung đến/đi, nhúng nhắc việc, công việc, họp |
+## 1. Tình trạng kỹ thuật: lai gen-1 / gen-2
 
-Quy tắc chọn tầng khi sửa: **hành động mới → gen-2 `DocInController`** (đây là nơi tính năng gần đây được thêm: `complete-document`, `return-document`, `check-completion-reminders`, `update-status-dis-proposal`). Tìm kiếm/danh sách → vẫn gen-1 (đã tối ưu, đừng viết lại).
+| Phần | Tầng | Nguồn |
+|---|---|---|
+| Danh sách mọi hộp việc, đếm widget | **gen-1** `DocumentAction.searchReceive` / `countDocument` → `DocumentSearchReceiveController` → `DocumentSearchInService` (SQL ghép chuỗi, ~3.000 dòng) — có tài liệu tối ưu `backend2.0/backendvoffice/PERFORMANCE_OPTIMIZATION_DOCUMENTATION_DocumentSearchReceive.md`, có route thử nghiệm `searchReceiveV2` (DA:291-302) | DSRC:217-376 |
+| Tiếp nhận, hủy tiếp nhận, nhập / sửa / xóa văn bản, chi tiết, đọc | **gen-1** `DocumentAction` → `DocumentController` → `DocumentDAO` (chi tiết gọi lại service gen-2 để tính `actions` — DDAO:5965-5990) | NV-03…NV-06 |
+| Hoàn thành, trả lại, luồng nhận được thao tác, đổi trạng thái dòng, kiểm trùng | **gen-2** `DocInController` (`/api/doc-in`) → `DocInServiceImpl` (JPA) | NV-08, NV-09 |
+| Cho ý kiến | **gen-2** `DocLeaderCommentController` → `DocLeaderCommentServiceImpl` | NV-07 |
+| Đánh dấu đọc hàng loạt | **gen-2 viết trong lớp gen-1**: `DocumentAction.updateReadingStatusV2` (`@RequestBody`) → `DocumentController.updateReadingStatusV2` dùng `*RepositoryJPA` | DC:14597-14623 |
+| Thống kê tiến độ theo người | `/api/document-in/get-documents-processing-stats-by-user` (controller ở gói gen-1 `BE1/controler/DocumentInController.java`, service gen-2 `BE2/services/impl/DocumentInServiceImpl.java`, DAO gen-1 `DocumentInDAO`) | NV-14 |
+| Web | 8 VM hộp việc 8.000–13.000 dòng/VM, mỗi VM **chứa luôn form nhập/sửa văn bản** (`includeAdd` → `doc_in_add.zul`) và nhân bản gần như toàn bộ logic; popup thao tác dùng chung `PopupCompleteDocumentVM` (3 zul) | 1.2 của `nghiep-vu.md` |
 
-## Bẫy
+Quy tắc chọn tầng khi sửa: **thao tác đổi trạng thái dòng nhận** (hoàn thành, trả lại, kiểu mới) → gen-2 `DocInServiceImpl` (mẫu: `completeDocument`, `returnDocument`); **điều kiện một hộp việc** → `DocumentSearchInService.searchIn` gen-1 (đừng viết lại — đã tối ưu, nhiều nhánh văn thư / cá nhân / theo sổ); **nút hiện hay ẩn ở chi tiết** → bộ lọc `filterDocumentsFor*` trong `DocInServiceImpl` (dùng chung cho chi tiết và popup) rồi mới tới DVDVM.
 
-1. **`DocumentViewDetailVM` là hub**: sửa chi tiết văn bản ảnh hưởng cả văn bản đi đã ban hành, hồ sơ, nhắc việc, công việc, họp. Grep `DocumentViewDetailVM` trước khi sửa.
-2. **Hai bảng giao việc**: `DOCUMENT_IN_STAFF` (cá nhân) và `DOCUMENT_IN_GROUP` (đơn vị/nhóm) — trạng thái phải cập nhật **cả hai** (`update-status-document-in-staff` + `update-status-document-in-group`); lỗi thường gặp là chỉ cập nhật một.
-3. **Luồng văn bản đến** không hard-code: người bước tiếp theo lấy từ `flow-manager/doc-in/get-users-next-step*`. Thêm loại người nhận = sửa cấu hình luồng, không sửa VM.
-4. Nhiều phiên bản tìm kiếm: `search`, `searchDocumentIn`, `searchReceive`, `searchReceiveGroupByTextBook`, `searchReceiveWithProcessingStatsByUser`, `getDocumentListVof2` — mỗi màn dùng một hàm; đổi cột hiển thị phải sửa đúng hàm màn đó dùng.
-5. `getTextIdByDocId` / `getTextIdByDocumentId`: liên kết ngược `DOCUMENT → TEXT` (văn bản đi gốc). Văn bản đến nhập tay không có `TEXT_ID`.
-6. Văn bản tài chính (`searchFinancial`, `exportFinanceText`, `sendFinanceTextToStaff`, `FINANCIAL_DOCUMENT_TYPE_ID_KEY`) là nhánh riêng có phân quyền `financialRecordsRoles` (menu HỒ SƠ TÀI CHÍNH).
-7. Màn hình ☠ trong phân hệ: xem nhãn trong `ban-do.md` (`DocumentReceviceVM`, `AssignMoveListVM`, `DocumentBookVM`… không tồn tại) — chức năng thật nằm ở VM khác cùng thư mục.
-8. `12032026_yc_16_tacdong.sql` — một yêu cầu (YC16) có "tác động" DB gần đây ❓ nội dung gì; đọc file trước khi đụng bảng liên quan.
-9. **`STAFFID_VOF2`/`GROUPID_VOF2` (`DOCUMENT_IN_STAFF`) và `STAFF_ID_VOF2`/`GROUP_ID_VOF2` (`DOCUMENT_IN_GROUP`) là NGƯỜI GỬI**, không phải người nhận — cùng lấy từ `userVof2` của người bấm chuyển (`DocumentDAO.sendDocumentToGroup`), nên mọi dòng sinh ra trong một lượt chuyển (cả cá nhân lẫn đơn vị) đều mang cùng cặp giá trị này. Người nhận nằm ở `RECEIVERID_VOF2`/`RECEIVER_GROUPID_VOF2` (staff) và `RECEIVER_GROUP_ID_VOF2` (group). **Đừng dùng cặp cột này để gom người nhận** — xem mục 12.
-10. **Đánh dấu đã đọc tách 2 đường**: cá nhân đọc → `DOCUMENT_IN_STAFF.CONFIRM_TIME`; **văn thư** đọc bản gửi đơn vị → `DOCUMENT_IN_GROUP.CONFIRM_TIME` (chỉ chạy khi `listSecretaryVhrOrg` không rỗng — `DocumentController.updateReadingStatus`). Web **không có `documentInStaffId` cho dòng mức đơn vị** (query group select thẳng `null documentInStaffId`; query chi tiết lọc theo `receiverid_vof2` của người đăng nhập, không khớp thì rơi vào `nvl(..., text_id)` trả về **TEXT_ID của bảng khác**) ⇒ mọi logic phía web neo theo `documentInStaffId` sẽ **không chạy khi văn thư là người thao tác**.
-11. `DOCUMENT_IN_GROUP.STAFF_ID_VOF2` là **chuỗi** còn `DOCUMENT_IN_STAFF.STAFFID_VOF2` là **số** — so sánh trực tiếp gây implicit `TO_NUMBER` (mất index, `ORA-01722` nếu có dữ liệu không phải số). Dùng `TO_CHAR(...)` ở phía số.
-12. **Gom "tất cả người nhận của một lần chuyển" thì dùng `DOCUMENT_PROCESS.PARENT_ID`**, không dùng `STAFFID_VOF2`/`GROUPID_VOF2` (mục 9, 11). Con trực tiếp của dòng cha: cá nhân có `IN_STAFF_ID` (→ `DOCUMENT_IN_STAFF`), đơn vị có `IN_GROUP_ID` (→ `DOCUMENT_IN_GROUP`); cá nhân **bên trong** đơn vị nhận là **cháu** (`PARENT_ID` trỏ dòng đơn vị — `DocumentDAO.java:9817-9820`), nên "đơn vị đã đọc" = `CONFIRM_TIME` của chính dòng `DOCUMENT_IN_GROUP`. Lưu ý: `PARENT_ID` **không tách được các bản ghi nhận trong cùng một lần chuyển** (nhiều người nhận của 1 lần bấm Chuyển đều là con của cùng 1 node cha) — **đây không phải vấn đề khi cần phân biệt các luồng nhận khác nhau của cùng một người**: đã xác nhận bằng code (`DocumentDAO.getDocumentProcessByDocumentInGroupIdOrDocumentInStaffId`, dòng 9752, gọi tại dòng 8208/9619) rằng khi tạo `DOCUMENT_PROCESS` cho lượt chuyển mới, node cha được resolve theo **đúng `documentInStaffId`/`documentInGroupId` nguồn cụ thể** (truyền từ `DocumentBusiness.transferDocument`, `web-spring/.../DocumentBusiness.java:1632`) — một người có 2 luồng nhận (2 đơn vị) sẽ có 2 node cha khác nhau, cây tách biệt hoàn toàn theo luồng. Nhiều luồng không tạo `DOCUMENT_PROCESS` hoặc để `PARENT_ID = NULL` (phát hành cũ, `sendDocumentToStaff`, `AnswerDocumentDAO`) ⇒ logic dựa trên cây process sẽ không chạy ở đó.
-13. **Kiểm tra "luồng này đã chuyển giao chủ trì cho ai chưa"** (vd. để ẩn nút Hoàn thành khi đã chuyển tiếp `SEND_TYPE=TO`): dùng `DocInServiceImpl.hasActiveDelegatedLead(documentId, inStaffId, inGroupId)` — đi từ luồng cụ thể qua `findDocumentProcessIdByInStaffId/InGroupId` rồi quét toàn bộ cây con (`findChildDocumentProcessesByDocumentIdAndProcessId`, nhiều cấp) tìm bản ghi `SEND_TYPE=TO` còn ở trạng thái hoạt động (`PENDING/PROCESSED/REJECTED`). Tính on-the-fly, không lưu cờ, nên tự đúng ngay cả với dữ liệu cũ và tự cập nhật khi luồng chủ trì đó bị thu hồi/trả lại. Dùng trong `filterDocumentsForComplete` (ẩn ở danh sách) và đầu `completeDocument` (chặn ở API, không chỉ ẩn UI).
+## 2. Bẫy
 
-## Yêu cầu hay gặp → hướng
+1. **`DocumentViewDetailVM` là hub** dùng chung văn bản đến / đi / hồ sơ / nhắc việc / công việc / họp — sửa chi tiết văn bản ảnh hưởng nhiều phân hệ. Nút ở chi tiết = `actions` do BE tính (DDAO:5965-6011) **rồi bị ghi đè theo `ARG_MENU`** (DVDVM:1209-1240, 1893-1901): muốn đổi điều kiện nút phải sửa **cả hai** chỗ.
+2. **Hai bảng dòng nhận** `DOCUMENT_IN_STAFF` (cá nhân) và `DOCUMENT_IN_GROUP` (đơn vị) — mọi thao tác đổi trạng thái phải xử lý cả hai nhánh (xem `DISI.completeDocument` :297-453, `returnDocument` :956-1011). Một người có thể có nhiều dòng nhận cho cùng văn bản (nhiều đơn vị, cá nhân + văn thư) → popup thao tác luôn cho **chọn luồng**.
+3. **Logic nhân bản ở 8+ VM hộp việc** — sửa một chỗ phải sửa tất cả: `visibleBtnReturn` (DPPVM:9588-9598, DVDVM:1622-1637, DSVM:8682, …), `checkIfDocPendingProcessAllForDocManager` (DPRVM:10198-10210, DPPVM:12670-12680, DRVM:8532-8545 — **so cả mã menu lẫn tên menu** với khóa i18n "Văn bản chờ xử lý"), `doDeleteDocument` (hủy tiếp nhận / xóa — DPPVM:4924-4965, DOAVM:4504-4520, `DocumentInVM.java:3353`), kiểm `isPresideExceedLimit` (DPRVM:3523, DPPVM:3862, DPDVM:3667, DOAVM:3493, DSVM:3143, `OrgFollowerDocInOrgSearchVM.java:3091`), mở popup chuyển (`ARG_CONFIG_AUTO_TRANSFER` — CVB mẫu 3).
+4. **Đổi tab con = đóng tab, mở tab mới** với mã menu (3 mã dựng cứng `31745273536/7/8` — DPPVM:11791-11812). Mã `31745273536` có thật trong DB DEV với tên "Văn bản chờ xử lý" nhưng là hộp *Đã trả lại*. Đổi `SYS_MENU` có thể làm hỏng điều hướng tab.
+5. **Hộp 20 và 29 cùng `STATUS = 6`**, chỉ khác vế so sánh người gửi / người nhận (DSIS:580-606, 1373-1460). Nhãn "Đề nghị trả lại" ≠ "chờ duyệt": trả lại có hiệu lực ngay.
+6. **Vai trò khi lan trạng thái không thống nhất**: hoàn thành coi "chính" là `SEND_TYPE = 1` (`isToSendType = TO` — DISI:558, 589, 806, 837), còn trả lại coi "chính" là **mọi vai trò khác Phối hợp** (`isToSendType = !CC` — DISI:1058, 1090, 1158, 1178) → Nhận để biết trả lại thì kéo người gửi về "Bị trả lại" và thu hồi nhánh, nhưng Nhận để biết hoàn thành thì không lan lên.
+7. **BE bỏ qua im lặng dòng đơn vị** khi người gọi không phải văn thư đơn vị nhận (hoàn thành DISI:395-397, trả lại :996-998) — API vẫn trả `true`, web báo "lưu thành công".
+8. **Đọc ≠ xử lý**: đọc chỉ ghi `CONFIRM_TIME` (DDAO:7180-7240; DC:14597-14623); hộp Đã xử lý tự coi là đã đọc (`setIsRead(1)` cho 4/5 — DDAO:4930-4934). Trả lại / bị trả lại cũng ghi `CONFIRM_TIME` (DISI:1040, 1069, 1322, 1332) → tỉ lệ "đã đọc" bị tính cả các dòng này.
+9. **`STAFFID_VOF2`/`GROUPID_VOF2` (`DOCUMENT_IN_STAFF`) và `STAFF_ID_VOF2`/`GROUP_ID_VOF2` (`DOCUMENT_IN_GROUP`) là NGƯỜI GỬI**, không phải người nhận — cùng lấy từ người bấm chuyển (`DocumentDAO.sendDocumentToGroup`); người nhận ở `RECEIVERID_VOF2`/`RECEIVER_GROUPID_VOF2` (staff) và `RECEIVER_GROUP_ID_VOF2` (group). Hộp Đề nghị trả lại và SMS khi bị trả lại dựa vào cặp cột "người gửi" này (DSIS:580-588; DISI:1061-1063, 1093-1095). (giữ từ bản cũ, đã kiểm lại 2026-10-01)
+10. **Đánh dấu đã đọc tách 2 đường**: cá nhân → `DOCUMENT_IN_STAFF.CONFIRM_TIME`; văn thư đọc bản gửi đơn vị → `DOCUMENT_IN_GROUP.CONFIRM_TIME` (chỉ khi người đọc có đơn vị làm văn thư — DC:9946, 9958-9960). Web không có `documentInStaffId` cho dòng mức đơn vị ⇒ logic web neo theo `documentInStaffId` không chạy khi văn thư thao tác. (giữ từ bản cũ)
+11. `DOCUMENT_IN_GROUP.STAFF_ID_VOF2` là **chuỗi** còn `DOCUMENT_IN_STAFF.STAFFID_VOF2` là **số** — so sánh trực tiếp gây `TO_NUMBER` ngầm; BE gen-2 parse chuỗi bằng `Long.parseLong` khi trả lại dòng đơn vị (DISI:1093-1095); SQL tìm kiếm dùng `to_char(?)` (DSIS:646). (giữ từ bản cũ)
+12. **Gom "tất cả người nhận của một lần chuyển" dùng `DOCUMENT_PROCESS.PARENT_ID`**; nhánh con theo `PROCESS_PATH LIKE '%/id/%'` (`DocumentProcessRepositoryJPA.java:89-91`), anh em theo cùng `PARENT_ID` (:122-123). Hoàn thành / trả lại gen-2 dựa hoàn toàn vào cây này: luồng **không có nút `DOCUMENT_PROCESS`** (dữ liệu cũ, một số luồng phát hành cũ) sẽ **không lan** trạng thái lên/xuống (DISI:617-619, 742-744, 1114-1116, 1205-1207). (giữ từ bản cũ, bổ sung)
+13. (sửa 2026-10-01) **Không có `hasActiveDelegatedLead`** trên `kha_develop` (grep `BE1/`, `BE2/` rỗng) — bản cũ mô tả một kiểm tra "đã chuyển giao chủ trì thì ẩn/chặn Hoàn thành" không tồn tại ở nhánh này. Hiện trạng: luồng đã chuyển tiếp (`STATUS = 4`) **vẫn được Hoàn thành** (`filterDocumentsForComplete` — DISI:1750-1754).
+14. **Kiểm trùng số đến bị tắt** ở cả popup tiếp nhận và form nhập văn bản (PRDVM:675-682, 1048-1051; DPRVM:3465-3468); chỉ còn kiểm "trùng sổ + số" qua `list-exist-document-by-textbook-and-register` (PRDVM:1059). Số đến được đọc lại ngay lúc lưu (REQ-254 — PRDVM:451-460) nhưng không khóa sổ → hai văn thư cùng lưu vẫn có thể ra cùng số (xem L9).
+15. **Hai đường "Thêm mới văn bản"**: menu 337192 mở màn cũ `document.zul` (`DocumentVM`, `doc_add.zul`, `DB.insertDocument`) còn các hộp việc dùng `doc_in_add.zul` (`DB.insertDocument2`); cùng endpoint `AddDocument` nhưng validate web khác nhau.
+16. **Tham số `selectType` của `get-pending-doc-in`**: 1 = chỉ dòng đơn vị (BE **bỏ `employeeId`**), 2 = chỉ dòng cá nhân (bỏ danh sách đơn vị văn thư), 0/null = cả hai (DISI:1475-1484). Hoàn thành nhiều văn bản truyền 1/2 theo tab (DPPVM:3094).
+17. **Tên API ngược nghĩa**: `mark-received-know-doc` ("đánh dấu nhận để biết") thực tế đổi `SEND_TYPE` 1/null → **2** (Phối hợp) cho dòng của người gọi (`DocumentInStaffRepositoryJPA.java:62-75`).
+18. Nhiều phiên bản tìm kiếm: `search`, `searchDocumentIn`, `searchReceive`, `searchReceiveGroupByTextBook`, `searchReceiveWithProcessingStatsByUser`, `getDocumentListVof2` — mỗi màn dùng một hàm; đổi cột hiển thị phải sửa đúng hàm màn đó dùng (DB:266-709, 2172-2203, 6726). (giữ từ bản cũ)
+19. `getTextIdByDocId` / `getTextIdByDocumentId`: liên kết ngược `DOCUMENT → TEXT` (văn bản đi gốc) để hiện số/ngày ban hành gốc (DPRVM:7059-7068). Văn bản đến nhập tay không có `TEXT_ID`. (giữ từ bản cũ)
+20. Văn bản tài chính (`searchFinancial`, `exportFinanceText`, `FINANCIAL_DOCUMENT_TYPE_ID_KEY`, `isFinanceText` truyền xuống `searchReceive` — DB:486) là nhánh riêng có phân quyền `financialRecordsRoles` (menu HỒ SƠ TÀI CHÍNH). (giữ từ bản cũ)
+21. File `backend2.0/backendvoffice/sql/12032026_yc_16_tacdong.sql` (bản cũ ghi dấu hỏi): là SQL "cũ/mới" của **danh sách chọn người** (truy vấn `VHR_EMPLOYEE`, `row_number() … is_default, org_level, role_level`) — thuộc phạm vi chọn người nhận (`chuyen-van-ban` / `he-thong`), không đổi bảng văn bản đến. (sửa 2026-10-01: đã đọc file)
+
+## 3. Lỗi hệ thống — ghi nhận (không sửa trong phạm vi xây tri thức)
+
+| # | Hiện tượng | Nguồn |
+|---|---|---|
+| L1 | Menu "Văn bản đang xử lý" (439340) và "Yêu cầu chỉnh sửa thông tin văn bản" (440667) trỏ zul **không tồn tại** (`document_being_processed.zul`, `document_edit_request.zul`) — **nghiệp vụ: chức năng đang ẩn, không dùng** (xác nhận 2026-10-01, Q8) | DB DEV `SYS_MENU`; `ZUL/document/reportSendReceiveDoc/` |
+| L2 | Mã menu `DOCUMENT_RETURN` (31745273536) tên "Văn bản chờ xử lý" nhưng là hộp *Đã trả lại* | DB DEV; DPPVM:11791-11797; DRVM:1024-1025 |
+| L3 | Widget `IN_CHUA_HOAN_THANH` ("Chưa hoàn thành" trong `HOME_WIDGET`) hiển thị nhãn **"Đã xử lý"** và số = đã chuyển (28) + đã hoàn thành (26) — **nghiệp vụ xác nhận giữ nguyên như hiện tại** (2026-10-01, Q6) — không coi là lỗi | `HomeWidgetRestController.java:871-873, 906-908`; `HomeVM.java:2943-2945, 3040-3042`; DC:2984-2987 |
+| L4 | Nút *Cho ý kiến* hiện cho luồng `STATUS = 7` (bị trả lại) nhưng BE từ chối lưu với trạng thái 7 | DISI:1788-1793, 1821 so với DLCS:174-178, 190-192 |
+| L5 | Bộ lọc nút *Trả lại* không gồm luồng 4 (đã chuyển) nhưng BE `returnDocument` chấp nhận 4 | DISI:1721-1725 so với :945-949, 962 |
+| L6 | Lan hoàn thành lên luồng cha đặt `STATUS = 5` **không kiểm** trạng thái hiện tại của cha (kể cả 0 thu hồi / 6 đã trả lại) | DISI:719-733; `updateCompletedById` (`DocumentInStaffRepositoryJPA.java:28`, `DocumentInGroupRepositoryJPA.java:29`) |
+| L7 | Hoàn thành / trả lại bỏ qua im lặng dòng đơn vị khi người gọi không phải văn thư đơn vị nhận, vẫn trả `true` | DISI:395-397, 996-998 |
+| L8 | Hoàn thành gửi thông báo + SMS "đã hoàn thành" cho **chính người vừa hoàn thành** (người nhận của dòng hiện tại), không phải người gửi | DISI:560-563 (`ds.getReceiveridVof2()`), 590-596 (đơn vị nhận) |
+| L9 | Kiểm trùng số đến trong sổ bị comment; không khóa số khi lưu đồng thời | PRDVM:675-682, 1048-1051; DPRVM:3465-3468; DDAO:17507-17516 (chỉ chặn trùng cùng văn bản + đơn vị + số + sổ) |
+| L10 | *Sắp đến hạn*: nếu tham số `PROCESS_DOCUMENT_WARNING_TIMED_OUT` rỗng thì không có điều kiện ngày → mọi văn bản chờ xử lý / bị trả lại đều tính là sắp đến hạn; giá trị tham số được ghép thẳng vào chuỗi SQL | DSIS:678-686, 761-768 |
+| L11 | "Quá hạn" ở hộp việc (`trunc(deadline) < trunc(sysdate)`) khác "quá hạn" ở thống kê (`deadline + 1 ≤ sysdate`); thống kê coi `STATUS = 4` là chưa hoàn thành — phần "thống kê coi `STATUS = 4` là chưa hoàn thành" là **đúng nghiệp vụ** ("đã xử lý nhưng chưa hoàn thành", Q7); chỉ còn lệch hai công thức quá hạn | DSIS:688-691; `BE1/database/dao/DocumentInDAO.java:566-568, 845-856` |
+| L12 | Code chết: `ViewUtil.createLookupDetailDocumentXPB` + `DocumentConsultVM` (xin bút phê) không được gọi; `processDocumentReturn` chỉ còn lời gọi bị comment; nút `tickProcessedDoc` ẩn; `isPresideExceedLimit` luôn `false` nhưng vẫn gọi ở 6 VM | `ViewUtil.java:720-723`; DISI:466-471, 2913; `doc_pending_reception_search.zul:1314-1317`; `TransferDocumentInVM.java:4125-4129` |
+| L13 | API `mark-received-know-doc` đổi vai trò thành Phối hợp (2) chứ không phải Nhận để biết (3), chú thích "TO → CC"; web không dùng — **nghiệp vụ mong muốn** (Q4): nút *Nhận để biết* trong chi tiết văn bản → hoàn thành + đổi loại nhận thành Nhận để biết (3) + vào menu Nhận để biết; tính năng mới, chưa có trên web `kha_develop` | `DocumentInStaffRepositoryJPA.java:62-75`; DISI:160-165 |
+| L14 | Trả lại dòng đơn vị: `Long.parseLong(STAFF_ID_VOF2)` trên cột chuỗi — lỗi nếu dữ liệu không phải số; dòng đơn vị không có người gửi (nhập tay) truyền `null` cho SMS/thông báo | DISI:1093-1095 |
+| L15 | `validateSave` cho ý kiến: thiếu vai trò VT chỉ ghi log `warn` rồi chạy tiếp (sau đó mới bị chặn ở kiểm từng dòng) | DLCS:203-205 |
+| L16 | Màn trong `ban-do.md` trỏ VM không tồn tại: `DocumentReceive.zul` (`DocumentReceviceVM`), `assignListMove.zul` (`AssignMoveListVM`) | `ban-do.md` mục 1 |
+| L17 | Menu thử nghiệm còn trên DB DEV dưới VĂN BẢN ĐẾN: "Danh sách văn bản đến - Long test, đừng xóa role" (339273), "Menu Test" (439337), "Menu văn bản Ngoan test" (439355), "VB THU NGHIEM P2" (339026, URL `a`) | DB DEV `SYS_MENU` |
+| L18 | Người Nhận để biết vẫn bấm được *Trả lại* từ màn Tra cứu (icon hiện khi `status` null/3) dù chi tiết `NDB` ẩn nút này; trả lại của Nhận để biết kéo luồng người gửi về 7 và thu hồi nhánh (bẫy 6) — **nghiệp vụ** (Q9): Nhận để biết **không được trả lại**, chỉ chuyển / lưu hồ sơ / thêm ghi chú → hành vi trên màn Tra cứu là lệch nghiệp vụ | `doc_lookup_search.zul:1294-1296`; DVDVM:1893-1901; DISI:1058 |
+
+## 4. Yêu cầu hay gặp → hướng
 
 | Yêu cầu | Hướng |
 |---|---|
-| Thêm điều kiện hoàn thành / chặn hoàn thành | gen-2 `DocInServiceImpl.completeDocument` (mẫu `check-completion-reminders`, `hasActiveDelegatedLead` — xem mục 13) |
-| Thêm loại trạng thái theo dõi (vd. "đang chờ ý kiến") | Cột STATUS ở `DOCUMENT_IN_STAFF/GROUP` + `document.status` i18n + tab trong `DocumentVM`/`DocumentSendSearchVM` + điều kiện `DocumentDAO.searchReceive` (gen-1) |
-| Thêm thông tin vào chi tiết | `DocumentViewDetailVM` + `getDocumentDetail` (gen-1) hoặc endpoint gen-2 mới |
-| Cảnh báo hạn / nhắc | `lich-nhac-viec` (reminder) + `documentProcessTermConfig` |
-| Xuất báo cáo mới | gen-2 `DocController.export-*` là mẫu mới nhất |
+| Thêm điều kiện chặn / cho phép Hoàn thành | `DISI.filterDocumentsForComplete` (ẩn ở popup + chi tiết) **và** đầu `DISI.completeDocument` (chặn ở API — mobile gọi thẳng); mẫu kiểm nhắc việc `check-completion-reminders` |
+| Tự hoàn thành khi mọi người Nhận để biết đã đọc (yêu cầu mới 2026-10-01) | Điểm móc: sau khi ghi `CONFIRM_TIME` ở `DC.updateReadingStatus` (:9955-9960) và `DC.updateReadingStatusV2` (:14619-14621); xác định "lần chuyển" bằng `DOCUMENT_PROCESS.PARENT_ID` (bẫy 12) và kiểm mọi anh em `SEND_TYPE = 3`; hoàn thành luồng cha qua `DISI.completeDocumentWithoutReminderCheck` (:208-212) hoặc `updateCompleteCurrentProcess`; chú ý `DOCUMENT_IN_GROUP.CONFIRM_TIME` chỉ do văn thư ghi (bẫy 10) |
+| Thêm hộp việc / tab mới | Mã hộp mới ở `STATUS_DOCUMENT` (web) + `Constants.Document.Status` (BE) + nhánh `documentInType` ở DPOOL (:937-1003) + `switch(status)` ở DSIS (:668-760) + `countDocument` (DC:2915-3000) + `changeMenuType` (DPPVM:11755-11850) nếu là tab con |
+| Đổi điều kiện nút ở chi tiết | `filterDocumentsFor*` (DISI:1719-1865) + ghi đè theo `ARG_MENU` (DVDVM:1209-1240, 1893-1901) |
+| Thêm thao tác mới trên luồng nhận (vd. "xin gia hạn") | Mẫu popup `PopupCompleteDocumentVM` + `ARG_TYPE` mới trong `DOCUMENT_PROCESS_ACTION` (`WEB/util/AppConstants.java:8546-8552`) + loại lọc mới trong `DISI.filterPendingDocumentsByType` + endpoint mới ở `DocInController` (xem `vi-du-mau.md` mẫu 1) |
+| Đổi điều kiện tiếp nhận / sổ đến | PRDVM `validateDoReceiveDocument` (:1014-1104) + `DC.docReceivedDocument` / `DDAO.docReceivedDocument` (:17503); số đến → `van-ban/so-van-ban` |
+| Cảnh báo hạn / nhắc | `PROCESS_DOCUMENT_WARNING_TIMED_OUT` (DSIS:681-686) + `lich-nhac-viec` |

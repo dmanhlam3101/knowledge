@@ -12,8 +12,8 @@
 | Entity | `entities/XxxEntity` | `@Data @NoArgsConstructor @FieldDefaults(PRIVATE) @Entity @Table(name="XXX")`; id `@GeneratedValue(SEQUENCE)` + `@SequenceGenerator(sequenceName="SEQ_XXX", allocationSize=1)` | Cột UPPER_SNAKE, field camelCase; luôn có `DEL_FLAG`, `CREATED_AT/BY`, `UPDATED_AT/BY` |
 | DTO | `dto/request/<domain>/XxxRequestDTO`, `dto/response/<domain>/XxxResponseDTO`, projection interface trong `dto/response/<domain>/projection` | `@Data` | Không trả entity ra ngoài controller |
 | Response | `ResponseUtils.getResponseEntity(obj)` → `ResultResponse{ result: BaseResponse{ mess{errorCode,message}, data, status, timestamp } }` | Web đọc `root.data` hoặc `root.result.data` | Lỗi nghiệp vụ: `ResponseUtils.getResponseEntity(ErrorApp, obj)` hoặc throw exception custom (vd `ReminderPromulgationException`) — `GlobalExceptionHandler` xử lý |
-| User hiện tại | `CoreUtils.getUserId()` (employeeId từ JWT) | Không nhận userId từ client cho thao tác ghi | |
-| SQL migration | `backend2.0/backendvoffice/sql/DDMMYYYY_mo_ta.sql` | Tạo SEQUENCE + TABLE + comment cột; dữ liệu SYS_MENU nếu có màn hình mới | Chưa có Flyway/Liquibase — chạy tay theo môi trường ❓ |
+| User hiện tại | `CoreUtils.getUserId()` (employeeId từ JWT) | Không nhận userId từ client cho thao tác ghi | Code cũ nhiều chỗ lấy người dùng từ dữ liệu client gửi (vd. `nhiem-vu/dac-thu.md` L1) — đừng chép |
+| SQL migration | `backend2.0/backendvoffice/sql/DDMMYYYY_mo_ta.sql` (có cả kiểu `YYYYMMDD_mo_ta.sql`) | Tạo SEQUENCE + TABLE + comment cột; bảng mới thêm cột vết đồng bộ hai site `VO_VERSION`, `VO_SOURCE`, `VO_LAST_UPDATED` + trigger `VO_SOURCE_<BẢNG>` (`tich-hop` NV-13); màn mới chèn `SYS_MENU` **và** `ROLE_MENU` (`he-thong/dac-thu.md` bẫy 6) | Không có Flyway / Liquibase trong `pom.xml` — script chạy tay (cách chạy theo môi trường: hỏi DEV) (sửa 2026-10-02) |
 
 ## BE gen-1 (`com.viettel.voffice`) — chỉ khi sửa cái đang có
 
@@ -34,19 +34,21 @@
 | Thông báo | `NotificationCenter` / `CustomMessageBox` | |
 | Popup chọn | `LookupUtil.showLookup(...)`, widget trong `view/widgets/` + `com.viettel.voffice.widget.*` | Có sẵn lookup đơn vị, người dùng, văn bản… — tìm trong `_chung/ban-do.md` trước khi viết mới |
 | Reload màn khác | `EventQueues.lookup(AppConstants.EVENT_QUEUE.*)` | |
-| Quyền | `screenName` + `LookupUtil.getPopupPermision(screenName, eventName)`; menu & quyền cấu hình trong DB | |
+| Quyền | Menu được cấp (`ROLE_MENU`, `ORG_SYS_MENU` — cấu hình DB) + **điều kiện hiện nút viết trong VM** (vd. `visible="@load(vm.isXxx)"`). `hasSave/Update/Delete/InsertPermission` của `CommonVM` mặc định `true` (đoạn kiểm `iVps.checkPermission` đã comment — `xu-ly-cong-viec/dac-thu.md` bẫy 5); `LookupUtil.getPopupPermision` chỉ đếm popup đang mở, **không** kiểm quyền (`web-spring/src/main/java/com/viettel/zk/common/LookupUtil.java:71-94`) | (sửa 2026-10-02: bản cũ ghi quyền theo `screenName` + `getPopupPermision`) — `he-thong` NV-09 BR-25 |
 
 ## DB (Oracle)
 
 - **`VHR_ORG.ORG_LEVEL` không tin được** (có bản ghi `ORG_LEVEL = 2` nhưng `PATH` sâu 4–5 cấp). Cấp/độ sâu/quan hệ cha-con luôn suy từ `PATH` (`/1/2/3/`): độ sâu = số `/` − 1, con cháu = `PATH LIKE 'p%'`. Phát hiện 2026-09 khi làm cây chuyển VB đi.
 
 - Bảng/cột UPPER_SNAKE_CASE, `NVARCHAR2` cho tiếng Việt, id `NUMBER(19,0)` từ `SEQ_<TABLE>`.
-- Xóa mềm `DEL_FLAG` (0/1). Truy vấn luôn lọc `DEL_FLAG = 0`.
+- Xóa mềm `DEL_FLAG` (0/1). Truy vấn luôn lọc `DEL_FLAG = 0`. Ngoại lệ phải biết: một số bảng comment DB ghi ngược nghĩa (vd. `CATEGORY_COMMON` — tin code); bảng gen-2 ghi qua JPA có thể để `DEL_FLAG` null thay vì 0 (vd. `REP_IN` — `kpi-danh-gia` mục 3) → xem cách code hiện có của bảng đó lọc `DEL_FLAG` (bài phân hệ) trước khi viết truy vấn.
+- Cờ trạng thái / loại là **số**; đọc giá trị thật ở bảng "Giá trị trạng thái dùng xuyên suốt" mục 3 của bài phân hệ — comment cột DB nhiều chỗ lệch code (kiến trúc tổng thể, bẫy 8). DB DEV gần như không có FK.
 - Audit: `CREATED_AT/CREATED_BY/UPDATED_AT/UPDATED_BY` (gen-2) hoặc `CREATED_DATE/CREATED_BY/UPDATED_DATE/UPDATED_BY` (bảng cũ).
 - Quan hệ văn bản ↔ nghiệp vụ khác thường qua bảng `*_RELATION` / `*_DOCUMENT_RELATION` với `TEXT_ID` (dự thảo) **hoặc** `DOCUMENT_ID` (đã ban hành) — một trong hai null.
 
 ## Git / build
 
-- Web: Maven, `mvnw`, Java 8, đóng gói WAR/Jar chạy Tomcat nhúng ❓; Jenkinsfile.groovy; Dockerfile.
-- BE: Maven, Java 21, Spring Boot 3.5, port dev 8075 / prod 8080, context `/ServiceMobile_V02/resources`; `docker/`, `k8s/`, `postman/` có sẵn collection để thử API.
+- Web: Maven, `mvnw`, Java 8, đóng gói **jar** (`web-spring/pom.xml:18`) chạy Tomcat nhúng (`spring-boot-starter-tomcat`, `pom.xml:89-92`); Jenkinsfile.groovy; Dockerfile. (sửa 2026-10-02: bỏ dấu hỏi — đã kiểm `pom.xml`)
+- BE: Maven, Java 21, Spring Boot 3.5, đóng gói jar, port dev 8075 / prod 8080, context `/ServiceMobile_V02/resources`; `docker/`, `k8s/`; `postman/` hiện chỉ có **một** collection quản lý cache Redis (`Cache_Management_API.postman_collection.json` — kiểm thư mục 2026-10-02), không phải bộ mẫu cho mọi API.
+- Danh sách đường dẫn bỏ qua JWT `jwt.ignore-apis` so khớp **"chứa chuỗi"** — thêm một đường dẫn có thể mở luôn API khác chứa chuỗi đó (`tich-hop/dac-thu.md` bẫy 6).
 - Hai repo git riêng; root workspace không phải repo.

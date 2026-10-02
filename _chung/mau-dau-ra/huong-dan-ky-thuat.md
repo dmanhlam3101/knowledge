@@ -43,7 +43,8 @@ Ký hợp đồng API (request/response JSON mẫu):
 | 2 | `vm/<domain>/XxxVM.java` | `@Command ...` |
 | 3 | `view/voffice/<domain>/xxx.zul` | … |
 | 4 | `common_voffice_vi.properties` | key … |
-| 5 | SQL `SYS_MENU` (nếu màn hình mới) | |
+| 5 | SQL `SYS_MENU` + `ROLE_MENU` (+ `ORG_SYS_MENU` nếu chỉ mở cho một số đơn vị) (nếu màn hình mới) | `he-thong/dac-thu.md` bẫy 6–7 |
+| 6 | Điều kiện hiện nút trong VM (quyền) | BE không kiểm người gọi — kiến trúc tổng thể bẫy 6 |
 
 ## 3. Mẫu code để copy
 - Tính năng tương tự đã có: `knowledge/<phanhe>/vi-du-mau.md` → mục "…"

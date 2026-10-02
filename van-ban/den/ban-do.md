@@ -7,7 +7,7 @@
 
 ## 1. Màn hình (web)
 
-Tổng: 53 màn hình, 0 VM không gắn zul trực tiếp.
+Tổng: 37 màn hình, 0 VM không gắn zul trực tiếp.
 
 | Màn hình (.zul) | ViewModel | Gọi BE qua (Business) | Legacy (remote/facade) | Nhãn |
 |---|---|---|---|---|
@@ -23,18 +23,12 @@ Tổng: 53 màn hình, 0 VM không gắn zul trực tiếp.
 | `document/process/popupCompleteProcess.zul` | `vm.document.PopupCompleteDocumentVM` | `CommonBusiness`, `ReminderBusiness` | — | BE |
 | `document/process/popupNoteDetail.zul` | `vm.document.PopupNoteDetailVM` | — | — | — |
 | `document/process/popupReturnProcess.zul` | `vm.document.PopupCompleteDocumentVM` | `CommonBusiness`, `ReminderBusiness` | — | BE |
-| `document/process/viewFlow.zul` | `vm.document.PopupViewFlowVM` | `AnswerDocumentBusiness` | — | BE |
-| `document/process/viewFlow_v2.zul` | `vm.document.PopupViewFlowVM` | `AnswerDocumentBusiness` | — | BE |
 | `document/reportSendReceiveDoc/AddAttachFile.zul` | `vm.document.AddAttachFileVM` | `DocumentBusiness`, `DocumentProcessTermBusiness`, `DocumentPublishBusiness`, `DocumentRequestBusiness`, `SavePersonalDocBusiness`, `WOPIBusiness` | `ICommon`, `ISysOrganization` | BE+LEGACY |
 | `document/reportSendReceiveDoc/DocumentReceive.zul` | `vm.document.DocumentReceviceVM` | — | — | ☠ VM không tồn tại |
-| `document/reportSendReceiveDoc/archive_document.zul` | `vm.document.ArchiveDocumentVM` | `CategoryCommonBusiness`, `DocumentBusiness`, `RequisitionBusiness`, `TextBookBusiness` | — | BE |
 | `document/reportSendReceiveDoc/assignListMove.zul` | `vm.document.AssignMoveListVM` | — | — | ☠ VM không tồn tại |
-| `document/reportSendReceiveDoc/detailVB_per_storage.zul` | `vm.document.DocumentViewDetailVM` | `AnswerDocumentBusiness`, `BriefBusiness`, `CVGroupBusiness`, `ConnectDocumentBusiness`, `DocumentBusiness`, `DocumentHistoryLogBusiness`, `DocumentProcessTermBusiness`, `DocumentPublishBusiness`, `DocumentRequestBusiness`, `FlowBusiness`, `GraspSituationBusiness`, `MeetingAssistantBusiness`, `ReminderBusiness`, `SavePersonalDocBusiness`, `ShareExtDocBusiness`, `TagDictionaryBusiness`, `WOPIBusiness` | `ICommon`, `ISysOrganization`, `SysMenuService` | BE+LEGACY |
-| `document/reportSendReceiveDoc/dispatch_Book_List.zul` | `vm.document.BookDispatchVM` | — | `IBookDispatch` | LEGACY |
 | `document/reportSendReceiveDoc/doc_org_all.zul` | `vm.document.DocOrgAllVM` | `CategoryCommonBusiness`, `DocumentBusiness`, `DocumentCopyHistoryBusiness`, `DocumentProcessTermBusiness`, `DocumentPublishBusiness`, `HomeBusiness`, `NotificationBusiness`, `RequisitionBusiness`, `TagDictionaryBusiness`, `TextBookBusiness` | `ISysOrganization`, `SysMenuService` | BE+LEGACY |
 | `document/reportSendReceiveDoc/doc_org_pending_processing_all_doc_manager.zul` | `vm.document.DocOrgAllVM` | `CategoryCommonBusiness`, `DocumentBusiness`, `DocumentCopyHistoryBusiness`, `DocumentProcessTermBusiness`, `DocumentPublishBusiness`, `HomeBusiness`, `NotificationBusiness`, `RequisitionBusiness`, `TagDictionaryBusiness`, `TextBookBusiness` | `ISysOrganization`, `SysMenuService` | BE+LEGACY |
 | `document/reportSendReceiveDoc/document.zul` | `vm.document.DocumentVM` | `DocumentBusiness`, `RequisitionBusiness`, `TextBookBusiness` | — | BE |
-| `document/reportSendReceiveDoc/documentFinance.zul` | `vm.document.DocumentFinanceVM` | `DocumentBusiness` | — | BE |
 | `document/reportSendReceiveDoc/documentIn.zul` | `vm.document.DocumentInVM` | `AnswerDocumentBusiness`, `CategoryCommonBusiness`, `DocumentBusiness`, `DocumentProcessTermBusiness`, `RequisitionBusiness`, `TextBookBusiness` | — | BE |
 | `document/reportSendReceiveDoc/documentViewDetailAdvanced.zul` | `vm.document.DocumentViewDetailAdvancedVM` | `DocumentBusiness`, `MeetingAssistantBusiness` | — | BE |
 | `document/reportSendReceiveDoc/document_consult.zul` | `vm.document.DocumentConsultVM` | — | — | — |
@@ -46,22 +40,12 @@ Tổng: 53 màn hình, 0 VM không gắn zul trực tiếp.
 | `document/reportSendReceiveDoc/document_return.zul` | `vm.document.DocumentReturnVM` | `CategoryCommonBusiness`, `DocumentBusiness`, `HomeBusiness`, `RequisitionBusiness`, `TagDictionaryBusiness`, `TextBookBusiness` | — | BE |
 | `document/reportSendReceiveDoc/document_returned.zul` | `vm.document.DocumentReturnedVM` | `CategoryCommonBusiness`, `DocumentBusiness`, `NotificationBusiness`, `RequisitionBusiness`, `TagDictionaryBusiness`, `TextBookBusiness` | `SysMenuService` | BE+LEGACY |
 | `document/reportSendReceiveDoc/documentorg.zul` | `vm.document.DocumentSysOrgVM` | `DocumentBusiness` | `IDocument` | BE+LEGACY |
-| `document/reportSendReceiveDoc/listDocumentSign.zul` | `vm.document.DocumentVM` | `DocumentBusiness`, `RequisitionBusiness`, `TextBookBusiness` | — | BE |
-| `document/reportSendReceiveDoc/listOrg.zul` | `vm.document.DocumentOrgVM` | — | — | — |
-| `document/reportSendReceiveDoc/lookUpDispatchDocument.zul` | `vm.document.BookDispatchVM` | — | `IBookDispatch` | LEGACY |
-| `document/reportSendReceiveDoc/popupArchiveDocumentDetail.zul` | `vm.document.ArchiveDocumentViewDetailVM` | `DocumentBusiness`, `DocumentRequestBusiness`, `SavePersonalDocBusiness`, `WOPIBusiness` | `ICommon` | BE+LEGACY |
 | `document/reportSendReceiveDoc/popupDetailGroupReceived.zul` | `vm.document.DetailGroupReceivedVM` | — | — | — |
 | `document/reportSendReceiveDoc/popupExtSign.zul` | `vm.document.ExtSignViewDetailVM` | — | — | — |
-| `document/reportSendReceiveDoc/popupGraspSituation.zul` | `vm.graspSituation.PopupGraspSituationVM` | `DocumentBusiness`, `GraspSituationBusiness` | `ICommon` | BE+LEGACY |
 | `document/reportSendReceiveDoc/popupListReceived.zul` | `vm.document.DocumentListReceivedVM` | — | — | — |
 | `document/reportSendReceiveDoc/popupReceiveDocument.zul` | `widget.PopupReceiveDocVM` | `CategoryCommonBusiness`, `DocumentBusiness`, `DocumentProcessTermBusiness`, `RequisitionBusiness`, `TagDictionaryBusiness`, `TextBookBusiness` | — | BE |
 | `document/reportSendReceiveDoc/popupReplyDocument.zul` | `vm.document.DocumentViewDetailVM` | `AnswerDocumentBusiness`, `BriefBusiness`, `CVGroupBusiness`, `ConnectDocumentBusiness`, `DocumentBusiness`, `DocumentHistoryLogBusiness`, `DocumentProcessTermBusiness`, `DocumentPublishBusiness`, `DocumentRequestBusiness`, `FlowBusiness`, `GraspSituationBusiness`, `MeetingAssistantBusiness`, `ReminderBusiness`, `SavePersonalDocBusiness`, `ShareExtDocBusiness`, `TagDictionaryBusiness`, `WOPIBusiness` | `ICommon`, `ISysOrganization`, `SysMenuService` | BE+LEGACY |
-| `document/reportSendReceiveDoc/popupTransferGraspSituation.zul` | `vm.graspSituation.PopupTransferGraspSituationVM` | `GraspSituationBusiness` | — | BE |
 | `document/reportSendReceiveDoc/popupVB.zul` | `vm.document.DocumentViewDetailVM` | `AnswerDocumentBusiness`, `BriefBusiness`, `CVGroupBusiness`, `ConnectDocumentBusiness`, `DocumentBusiness`, `DocumentHistoryLogBusiness`, `DocumentProcessTermBusiness`, `DocumentPublishBusiness`, `DocumentRequestBusiness`, `FlowBusiness`, `GraspSituationBusiness`, `MeetingAssistantBusiness`, `ReminderBusiness`, `SavePersonalDocBusiness`, `ShareExtDocBusiness`, `TagDictionaryBusiness`, `WOPIBusiness` | `ICommon`, `ISysOrganization`, `SysMenuService` | BE+LEGACY |
-| `document/reportSendReceiveDoc/popupVBScheduleMeeting.zul` | `vm.document.DocumentScheduleMeetingDetailVm` | `DocumentBusiness`, `DocumentRequestBusiness`, `MeetingBusiness`, `ScheduleToMeetingDocumentBusiness`, `WOPIBusiness` | `ICommon`, `IMeeting` | BE+LEGACY |
-| `document/reportSendReceiveDoc/reportContentSendReceiveDoc.zul` | `widget.SysMenuLookupVM` | — | `ISysMenu` | LEGACY |
-| `document/reportSendReceiveDoc/reportSendReceiveDoc.zul` | `vps.vm.SysMenuVM` | — | `ISysMenu` | LEGACY |
-| `document/requestToScheduleMeetingDoc/docScheduleMeeting.zul` | `vm.document.DocumentScheduleMeetingVM` | `ScheduleToMeetingDocumentBusiness` | — | BE |
 | `document/submitForConsideration/submitForConsideration.zul` | `vm.document.DocumentProposalVM` | `CVGroupBusiness`, `CommonBusiness`, `ConnectDocumentBusiness`, `ConnectVHRBusiness`, `DocumentBusiness`, `DocumentRequestBusiness`, `EnterpriseBusiness`, `GraspSituationBusiness`, `MeetingAssistantBusiness`, `MissionBusiness`, `SearchSolrBusiness` | — | BE |
 | `widgets/template/document/templateInputDoc_add.zul` | `vm.document.DocumentVM` | `DocumentBusiness`, `RequisitionBusiness`, `TextBookBusiness` | — | BE |
 
@@ -205,56 +189,12 @@ Cách gọi: `new XxxBusiness(serviceConnection).serveProcessing("a.b", params)`
 
 </details>
 
-### DocumentInformalityController (gen2) — base `/api/document-informality`, 16 endpoint
-
-`backend2.0/backendvoffice/src/main/java/com/viettel/office/controller/DocumentInformalityController.java`
-
-- Service: `DocumentInformalityService`
-- Bảng (ước lượng từ SQL/@Table): —
-
-<details><summary>Endpoint</summary>
-
-| Verb | Path | Method |
-|---|---|---|
-| POST | `/api/document-informality/create-or-update` | `createOrUpdate` |
-| GET | `/api/document-informality/get-group-doc-lead-type` | `getGroupDocumentLeadType` |
-| GET | `/api/document-informality/search` | `search` |
-| GET | `/api/document-informality/detail/{documentId}` | `getDetail` |
-| POST | `/api/document-informality/send` | `send` |
-| POST | `/api/document-informality/delete/{documentId}` | `deleteDocument` |
-| POST | `/api/document-informality/mark-as-read/{documentId}` | `markAsRead` |
-| GET | `/api/document-informality/count-read` | `countRead` |
-| POST | `/api/document-informality/count-read` | `countReadPost` |
-| POST | `/api/document-informality/update-to-informality/{documentId}` | `updateToInformality` |
-| GET | `/api/document-informality/is-document-assistant` | `isDocumentAssistant` |
-| GET | `/api/document-informality/get-leader-same-receive/{documentId}` | `getLeaderSameReceive` |
-| GET | `/api/document-informality/get-permission-view-file/doc-informality/{docInformalityId}/{attachId}` | `getPermissionViewFileByDocInformalityIdAndAttachId` |
-| GET | `/api/document-informality/get-permission-view-file/doc/{docId}/{attachId}` | `getPermissionViewFileByDocIdAndAttachId` |
-| GET | `/api/document-informality/get-list-file-encrypt-map/{docId}` | `findDocFileEncryptByDocId` |
-| POST | `/api/document-informality/insert-permission-for-supplier` | `insertPermissionForSupplier` |
-
-</details>
-
-### DocumentInformalityGroupController (gen2) — base `/api/document-informality-group`, 0 endpoint
-
-`backend2.0/backendvoffice/src/main/java/com/viettel/office/controller/DocumentInformalityGroupController.java`
-
-- Service: `DocumentInformalityGroupService`, `DocumentInformalityGroupServiceImpl`
-- Bảng (ước lượng từ SQL/@Table): —
-
-<details><summary>Endpoint</summary>
-
-| Verb | Path | Method |
-|---|---|---|
-
-</details>
-
 ## 4. Web legacy — facade → service → JPA DAO → entity (query thẳng DB từ web, KHÔNG dùng cho tính năng mới)
 
 _Không có facade legacy riêng._
 
 ## 5. Entity / bảng DB thuộc phân hệ
 
-**BE gen-2 (`com.viettel.office.entities`)**: `DocumentInCvGroupEntity`→`DOCUMENT_IN_CV_GROUP`, `DocumentInFileEntity`→`DOCUMENT_IN_FILE`, `DocumentInGroupEntity`→`DOCUMENT_IN_GROUP`, `DocumentInListRequestEntity`→`DOCUMENT_IN_LIST_REQUEST`, `DocumentInStaffEntity`→`DOCUMENT_IN_STAFF`, `DocumentInformality`→`DOCUMENT_INFORMALITY`, `DocumentInformalityAttach`→`DOCUMENT_INFORMALITY_ATTACH`, `DocumentInformalityGroupEntity`→`DOCUMENTINFORMALITYGROUPENTITY`, `DocumentInformalityStaff`→`DOCUMENT_INFORMALITY_STAFF`, `DocumentReceiveMapEntity`→`DOCUMENT_RECEIVE_MAP`
+**BE gen-2 (`com.viettel.office.entities`)**: `DocumentInCvGroupEntity`→`DOCUMENT_IN_CV_GROUP`, `DocumentInFileEntity`→`DOCUMENT_IN_FILE`, `DocumentInGroupEntity`→`DOCUMENT_IN_GROUP`, `DocumentInListRequestEntity`→`DOCUMENT_IN_LIST_REQUEST`, `DocumentInStaffEntity`→`DOCUMENT_IN_STAFF`, `DocumentReceiveMapEntity`→`DOCUMENT_RECEIVE_MAP`
 
-**Tổng hợp bảng chạm tới**: `AREA`, `ATTACH`, `ATTACH_TEMPLATE`, `AUTO_DIGSIG_TRANSACTION`, `BOXS`, `BRIEF`, `BRIEF_DOCUMENT`, `BRIEF_DOCUMENT_MAP`, `BRIEF_FILES_ATTACHMENT`, `BRIEF_MARK`, `CATALOG_BRIEF`, `CATEGORY_COMMON`, `CHART_AGREEMENT_PERMISSION`, `CONFIG_SMS_ORG`, `CONFIG_TEXT_SYNC`, `CONFIG_USER_DOCUMENT`, `CONFIG_VALUES`, `CONNECT_DOCUMENT`, `CONNECT_DOC_OUT_DETAIL`, `CONNECT_DOC_OUT_FILES`, `CONNECT_PROCESS_IN`, `CONNECT_VHR`, `CV_GROUP`, `CV_PRIORITY`, `DIRECTOR_CONFIG`, `DOCUMENT`, `DOCUMENTINFORMALITYGROUPENTITY`, `DOCUMENT_INFORMALITY`, `DOCUMENT_INFORMALITY_ATTACH`, `DOCUMENT_INFORMALITY_STAFF`, `DOCUMENT_IN_CV_GROUP`, `DOCUMENT_IN_FILE`, `DOCUMENT_IN_GROUP`, `DOCUMENT_IN_LIST_REQUEST`, `DOCUMENT_IN_STAFF`, `DOCUMENT_IN_STAFF_NOTSEND`, `DOCUMENT_LEADER_COMMENT`, `DOCUMENT_MEETING_REQ`, `DOCUMENT_OFFICE_SEND`, `DOCUMENT_PROCESS`, `DOCUMENT_PROPOSAL`, `DOCUMENT_PROPOSAL_DETAIL`, `DOCUMENT_PUBLISHED`, `DOCUMENT_RECEIVERS`, `DOCUMENT_RECEIVE_MAP`, `DOCUMENT_REQUEST`, `DOCUMENT_REQUEST_LIST`, `DOCUMENT_REQUEST_REPLY`, `DOCUMENT_SCOPE`, `DOCUMENT_SCOPE_DETAIL`, `DOCUMENT_SCOPE_REF`, `DOCUMENT_TYPE`, `DOC_ORG_REPUBLISH`, `DOC_ORG_REPUBLISHED`, `EXT_APP`, `FILES_ATTACHMENT`, `FILES_ATTACHMENT_COMMENT`, `FILES_COMMENT_DRAFF`, `FILE_ATTACHMENT`, `FILE_ATTACHMENT_MAPPER`, `FILE_ENCRYPT_MAP`, `FLOOR`, `GROUP_IN_CV_GROUP`, `GROUP_MAPPING`, `HOME_WIDGET`, `INTERNAL_DOC_DETAIL`, `INTERNAL_DOC_SEND_XML`, `LOG_TRANSTION_SIGN`, `LSTDOCID`, `MARK_ATTACH_HISTORY`, `MARK_LOCATION`, `MEETING`, `MEETING_ASSISTANT`, `MEETING_CONFIG`, `MEETING_MEMBER`, `MESSAGE`, `MIGRATED_DOCUMENT`, `MISSION`, `NODE_ACTION`, `NOTICE`, `NOTIFICATION`, `P12_CERT`, `POSITION`, `READ_NOTICE_HISTORY`, `REMINDER`, `REMINDER_DOCUMENT_RELATIONS`, `REMINDER_FOLLOWERS`, `REMINDER_HISTORY`, `REMINDER_REPLY`, `REPORT_DAILY_HISTORY`, `SEARCH_TEXT_DRAFT`, `SECURITY_TYPE`, `SHELVES`, `SMS_BLACK_LIST`, `SMS_MASTER`, `SOURCE_MAP`, `STAFF`, `STAFFGROUP`, `STAFF_GROUP_ROLE`, `STAFF_IMAGE_SIGN`, `STAFF_IN_CV_GROUP`, `STORAGES`, `STORE_TYPE_CONFIG`, `STORE_UNFOLOW`, `SUBMISSION_FORM`, `SUBMISSION_MAP`, `SUBMISSION_PROCESS`, `SYSTEM_PARAMETER`, `SYSTIMESTAMP`, `SYS_FUNCTION`, `SYS_FUNCTION_EMPLOYEE`, `SYS_MESS_MUTILANGUAGE`, `SYS_NOTIFICATION_MUTILANGUAGE`, `SYS_ROLE`, `TASK`, `TEXT`, `TEXT_ASSISTANT_CONFIG`, `TEXT_ATTACH`, `TEXT_ATTACH_BASE`, `TEXT_ATTACH_OTHER`, `TEXT_BOOK`, `TEXT_DRAFT`, `TEXT_DRAFT_HISTORY`, `TEXT_EXPLANATION`, `TEXT_EXPLANATION_ATTACH`, `TEXT_MARK`, `TEXT_NOTE`, `TEXT_PROCESS`, `TEXT_PROCESS_HISTORY`, `TEXT_SIGN_NEXT`, `TEXT_TEXT_ATTACH`, `TIME_ZONE_LOCAL`, `TO_DATE`, `USER_ORG_MAP`, `USER_ROLE`, `VHR_EMPLOYEE`, `VHR_FOREIGN_CONFIG`, `VHR_ORG`
+**Tổng hợp bảng chạm tới**: `AREA`, `ATTACH`, `ATTACH_TEMPLATE`, `AUTO_DIGSIG_TRANSACTION`, `BOXS`, `BRIEF`, `BRIEF_DOCUMENT`, `BRIEF_DOCUMENT_MAP`, `BRIEF_FILES_ATTACHMENT`, `BRIEF_MARK`, `CATALOG_BRIEF`, `CATEGORY_COMMON`, `CHART_AGREEMENT_PERMISSION`, `CONFIG_SMS_ORG`, `CONFIG_TEXT_SYNC`, `CONFIG_USER_DOCUMENT`, `CONFIG_VALUES`, `CONNECT_DOCUMENT`, `CONNECT_DOC_OUT_DETAIL`, `CONNECT_DOC_OUT_FILES`, `CONNECT_PROCESS_IN`, `CONNECT_VHR`, `CV_GROUP`, `CV_PRIORITY`, `DIRECTOR_CONFIG`, `DOCUMENT`, `DOCUMENT_IN_CV_GROUP`, `DOCUMENT_IN_FILE`, `DOCUMENT_IN_GROUP`, `DOCUMENT_IN_LIST_REQUEST`, `DOCUMENT_IN_STAFF`, `DOCUMENT_IN_STAFF_NOTSEND`, `DOCUMENT_LEADER_COMMENT`, `DOCUMENT_MEETING_REQ`, `DOCUMENT_OFFICE_SEND`, `DOCUMENT_PROCESS`, `DOCUMENT_PROPOSAL`, `DOCUMENT_PROPOSAL_DETAIL`, `DOCUMENT_PUBLISHED`, `DOCUMENT_RECEIVERS`, `DOCUMENT_RECEIVE_MAP`, `DOCUMENT_REQUEST`, `DOCUMENT_REQUEST_LIST`, `DOCUMENT_REQUEST_REPLY`, `DOCUMENT_SCOPE`, `DOCUMENT_SCOPE_DETAIL`, `DOCUMENT_SCOPE_REF`, `DOCUMENT_TYPE`, `DOC_ORG_REPUBLISH`, `DOC_ORG_REPUBLISHED`, `EXT_APP`, `FILES_ATTACHMENT`, `FILES_ATTACHMENT_COMMENT`, `FILES_COMMENT_DRAFF`, `FILE_ATTACHMENT`, `FILE_ATTACHMENT_MAPPER`, `FILE_ENCRYPT_MAP`, `FLOOR`, `GROUP_IN_CV_GROUP`, `GROUP_MAPPING`, `HOME_WIDGET`, `INTERNAL_DOC_DETAIL`, `INTERNAL_DOC_SEND_XML`, `LOG_TRANSTION_SIGN`, `LSTDOCID`, `MARK_ATTACH_HISTORY`, `MARK_LOCATION`, `MEETING`, `MEETING_ASSISTANT`, `MEETING_CONFIG`, `MEETING_MEMBER`, `MESSAGE`, `MIGRATED_DOCUMENT`, `MISSION`, `NODE_ACTION`, `NOTICE`, `NOTIFICATION`, `P12_CERT`, `POSITION`, `READ_NOTICE_HISTORY`, `REMINDER`, `REMINDER_DOCUMENT_RELATIONS`, `REMINDER_FOLLOWERS`, `REMINDER_HISTORY`, `REMINDER_REPLY`, `REPORT_DAILY_HISTORY`, `SEARCH_TEXT_DRAFT`, `SECURITY_TYPE`, `SHELVES`, `SMS_BLACK_LIST`, `SMS_MASTER`, `SOURCE_MAP`, `STAFF`, `STAFFGROUP`, `STAFF_GROUP_ROLE`, `STAFF_IMAGE_SIGN`, `STAFF_IN_CV_GROUP`, `STORAGES`, `STORE_TYPE_CONFIG`, `STORE_UNFOLOW`, `SUBMISSION_FORM`, `SUBMISSION_MAP`, `SUBMISSION_PROCESS`, `SYSTEM_PARAMETER`, `SYSTIMESTAMP`, `SYS_FUNCTION`, `SYS_FUNCTION_EMPLOYEE`, `SYS_MESS_MUTILANGUAGE`, `SYS_NOTIFICATION_MUTILANGUAGE`, `SYS_ROLE`, `TASK`, `TEXT`, `TEXT_ASSISTANT_CONFIG`, `TEXT_ATTACH`, `TEXT_ATTACH_BASE`, `TEXT_ATTACH_OTHER`, `TEXT_BOOK`, `TEXT_DRAFT`, `TEXT_DRAFT_HISTORY`, `TEXT_EXPLANATION`, `TEXT_EXPLANATION_ATTACH`, `TEXT_MARK`, `TEXT_NOTE`, `TEXT_PROCESS`, `TEXT_PROCESS_HISTORY`, `TEXT_SIGN_NEXT`, `TEXT_TEXT_ATTACH`, `TIME_ZONE_LOCAL`, `TO_DATE`, `USER_ORG_MAP`, `USER_ROLE`, `VHR_EMPLOYEE`, `VHR_FOREIGN_CONFIG`, `VHR_ORG`

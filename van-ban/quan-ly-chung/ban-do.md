@@ -7,7 +7,7 @@
 
 ## 1. Màn hình (web)
 
-Tổng: 36 màn hình, 1 VM không gắn zul trực tiếp.
+Tổng: 40 màn hình, 1 VM không gắn zul trực tiếp.
 
 | Màn hình (.zul) | ViewModel | Gọi BE qua (Business) | Legacy (remote/facade) | Nhãn |
 |---|---|---|---|---|
@@ -29,6 +29,10 @@ Tổng: 36 màn hình, 1 VM không gắn zul trực tiếp.
 | `document/orgFollower/orgFollower.zul` | `vm.document.OrgFollowerVM` | — | `ISysUser` | LEGACY |
 | `document/orgFollower/orgFollowerDocOut.zul` | `vm.document.DocumentSendSearchVM` | `AnswerDocumentBusiness`, `BriefBusiness`, `EnterpriseBusiness`, `NotificationBusiness`, `RequisitionBusiness`, `SearchSolrBusiness`, `TagDictionaryBusiness`, `TextBookBusiness` | `ICommonVoffice`, `ISysOrganization`, `ISysUser` | BE+LEGACY |
 | `document/orgFollower/orgFollowerGroup.zul` | `vm.document.DocumentSendSearchVM` | `AnswerDocumentBusiness`, `BriefBusiness`, `EnterpriseBusiness`, `NotificationBusiness`, `RequisitionBusiness`, `SearchSolrBusiness`, `TagDictionaryBusiness`, `TextBookBusiness` | `ICommonVoffice`, `ISysOrganization`, `ISysUser` | BE+LEGACY |
+| `document/reportSendReceiveDoc/archive_document.zul` | `vm.document.ArchiveDocumentVM` | `CategoryCommonBusiness`, `DocumentBusiness`, `RequisitionBusiness`, `TextBookBusiness` | — | BE |
+| `document/reportSendReceiveDoc/detailVB_per_storage.zul` | `vm.document.DocumentViewDetailVM` | `AnswerDocumentBusiness`, `BriefBusiness`, `CVGroupBusiness`, `ConnectDocumentBusiness`, `DocumentBusiness`, `DocumentHistoryLogBusiness`, `DocumentProcessTermBusiness`, `DocumentPublishBusiness`, `DocumentRequestBusiness`, `FlowBusiness`, `GraspSituationBusiness`, `MeetingAssistantBusiness`, `ReminderBusiness`, `SavePersonalDocBusiness`, `ShareExtDocBusiness`, `TagDictionaryBusiness`, `WOPIBusiness` | `ICommon`, `ISysOrganization`, `SysMenuService` | BE+LEGACY |
+| `document/reportSendReceiveDoc/listOrg.zul` | `vm.document.DocumentOrgVM` | — | — | — |
+| `document/reportSendReceiveDoc/popupArchiveDocumentDetail.zul` | `vm.document.ArchiveDocumentViewDetailVM` | `DocumentBusiness`, `DocumentRequestBusiness`, `SavePersonalDocBusiness`, `WOPIBusiness` | `ICommon` | BE+LEGACY |
 | `document/seachDoc/searchAnnouncedDocument.zul` | `vm.document.SearchAnnouncedDocumentVM` | `SearchSolrBusiness` | — | BE |
 | `document/supervisionDoc/supervisionContentDoc.zul` | `widget.SysMenuLookupVM` | — | `ISysMenu` | LEGACY |
 | `document/supervisionDoc/supervisionDoc.zul` | `vps.vm.SysMenuVM` | — | `ISysMenu` | LEGACY |

@@ -14,12 +14,12 @@
 
 | Tầng | File thật | Vai trò |
 |---|---|---|
-| SQL | `backend2.0/backendvoffice/sql/19062026_create_table_reminder.sql`, `04082026_add_table_reminder_history.sql` | SEQUENCE + TABLE `REMINDER`, `REMINDER_REPLY`, `REMINDER_FOLLOWER`, `REMINDER_DOCUMENT_RELATION`, `REMINDER_HISTORY` |
+| SQL | `backend2.0/backendvoffice/sql/19062026_create_table_reminder.sql`, `04082026_add_table_reminder_history.sql` | SEQUENCE + TABLE `REMINDER`, `REMINDER_REPLY`, `REMINDER_FOLLOWERS`, `REMINDER_DOCUMENT_RELATIONS`, `REMINDER_HISTORY` (sửa 2026-10-02 theo `lich-nhac-viec`: tên bảng thật có `S`) |
 | Entity | `backend2.0/.../com/viettel/office/entities/ReminderEntity.java` (+ `ReminderReplyEntity`, `ReminderFollowerEntity`, `ReminderDocumentRelationEntity`) | `@Entity @Table`, sequence, `DEL_FLAG`, audit |
 | Repository JPA | `.../repositories/jpa/ReminderRepositoryJPA.java` (+ `ReminderReplyRepositoryJPA`, `ReminderFollowerRepositoryJPA`, `ReminderDocumentRelationRepositoryJPA`) | `@Query` JPQL projection sang DTO, `@Modifying` soft delete |
 | Repository SQL tay | `.../repositories/ReminderRepository.java` + `repositories/impl/ReminderRepositoryImpl.java` | Tìm kiếm phân trang nhiều join bằng text block SQL qua `BaseRepositoryImpl` |
 | Service | `.../services/ReminderService.java` + `services/impl/ReminderServiceImpl.java` (~1.800 dòng) | Nghiệp vụ: save/reply/approve/delete/remindAgain/history; `@Transactional(rollbackFor = Exception.class)` |
-| Controller | `.../controller/ReminderController.java` — `@RequestMapping("/reminders")` | 17 endpoint POST; `getUserId()` từ JWT; `ResponseUtils.getResponseEntity(...)` |
+| Controller | `.../controller/ReminderController.java` — `@RequestMapping("/reminders")` (không tiền tố `/api`) | 16 endpoint (`lich-nhac-viec` mục 2); `getUserId()` từ JWT; `ResponseUtils.getResponseEntity(...)` |
 | DTO | `.../dto/request/reminder/*RequestDTO`, `.../dto/response/reminder/*DTO`, `.../projection/ReminderDashboardProjection` | Tách request/response |
 | Exception | `.../services/ReminderPromulgationException.java` | Lỗi nghiệp vụ riêng |
 | Web Business | `web-spring/.../com/voffice/service/business/ReminderBusiness.java` | Mỗi hàm = 1 endpoint (`"reminders.search"`, `"reminders.insertOrUpdate"`, …), parse Gson |
@@ -43,7 +43,7 @@
 - [ ] `services/XxxService` + `services/impl/XxxServiceImpl` — validate, quyền (userId từ `getUserId()`, orgId từ user), `@Transactional`.
 - [ ] `controller/XxxController` — `@RequestMapping("/api/xxx")`, mỗi thao tác 1 `@PostMapping`, trả `ResponseUtils.getResponseEntity(...)`.
 - [ ] Message lỗi: `messages_vi.properties` / exception riêng nếu cần.
-- [ ] Test bằng Swagger (`/ServiceMobile_V02/resources/swagger-ui.html`) hoặc Postman (`backend2.0/backendvoffice/postman/`).
+- [ ] Test bằng Swagger (`/ServiceMobile_V02/resources/swagger-ui.html`) hoặc Postman (`backend2.0/backendvoffice/postman/` hiện chỉ có collection quản lý cache — tự tạo request).
 
 ### Bước 3. Web — client gọi BE
 - [ ] `com/voffice/service/entity/XxxEntity.java` hoặc `com/viettel/voffice/dto/<domain>/XxxDTO.java` — field trùng JSON BE.
@@ -52,15 +52,15 @@
 ### Bước 4. Web — màn hình
 - [ ] `view/voffice/<domain>/xxx.zul` (list, dùng `menuPathLabel.zul` + `toolbarButton.zul`), `xxx_search.zul`, `xxx_add.zul`, `xxx_viewDetail.zul`.
 - [ ] `vm/<domain>/XxxVM extends SecurityVM<XxxEntity>` với `@Init(superclass = true) @AfterCompose(superclass = true)`; khởi tạo `new XxxBusiness(serviceConnection)` trong `postViewInitialized()`; `@Command doSearch/onDoInsert/...`.
-- [ ] Nhãn: thêm key `voffice.<domain>.label.*` vào `common_voffice_vi.properties` + `_en` (reminder hiện đang hard-code tiếng Việt trong zul — ❓ team chấp nhận hay yêu cầu i18n?).
+- [ ] Nhãn: thêm key `voffice.<domain>.label.*` vào `common_voffice_vi.properties` + `_en` (nhắc việc đang ghi cứng tiếng Việt trong zul / VM — **không** chép phần đó; các điểm "không copy" khác của mẫu nhắc việc: `lich-nhac-viec/vi-du-mau.md`).
 - [ ] Popup chọn đơn vị/người: dùng lookup có sẵn (`selectMainOrg`, `doSelectSysUser` trong `ReminderVM` là ví dụ).
 - [ ] Nếu cần reload màn khác sau khi lưu: `EventQueues.lookup(AppConstants.EVENT_QUEUE.*)`.
 - [ ] Nếu nhúng vào chi tiết văn bản: mở modal theo cách `DocumentViewDetailVM` mở `reminder_add_modal.zul`.
 
 ### Bước 5. Quyền, menu, thông báo
-- [ ] Menu: dòng SYS_MENU (bước 1) + gán vào vai trò (SYS_ROLE ↔ menu) ❓ cách gán — hỏi admin/DBA.
-- [ ] Quyền thao tác trong màn hình: `screenName` + `LookupUtil.getPopupPermision` nếu màn hình có nút phân quyền.
-- [ ] Thông báo/SMS: `NotificationAction`/`NotificationService`, cấu hình `smsMaster` (xem `lich-nhac-viec/`).
+- [ ] Menu: dòng `SYS_MENU` (bước 1) + gán vai trò bằng **`ROLE_MENU`**; giới hạn đơn vị bằng `ORG_SYS_MENU` (danh sách trắng — cẩn thận) — `he-thong` NV-09, NV-10. Ứng dụng mới / mobile dùng bộ menu khác `MENU` + `SYS_ROLE_MENU` (sửa 2026-10-02).
+- [ ] Quyền thao tác trong màn hình: điều kiện hiển thị nút trong VM (BE không kiểm người gọi; `LookupUtil.getPopupPermision` **không** phải kiểm quyền — chỉ đếm popup) (sửa 2026-10-02).
+- [ ] Thông báo/SMS: chuông = `NOTIFICATION` (gen-1 `NotificationAction`, LNV NV-11); SMS = ghi hàng đợi `MESSAGE` / `SMS_MASTER` qua `SmsDAO` sau khi kiểm chặn `shouldSendSms` — cổng gửi nằm ngoài repo (LNV NV-13); loại tin mới phải có dòng `CONFIG_SMS_MODULE` để người dùng chặn được (LNV mục 5.2). Mẫu nhắc việc **không** gửi SMS.
 
 ### Bước 6. Cập nhật tri thức
 - [ ] `knowledge/<phanhe>/nghiep-vu.md`, `dac-thu.md`; chạy `_tools/scan.py && gen.py`.

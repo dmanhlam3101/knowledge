@@ -1,257 +1,186 @@
 # Câu hỏi mở cần người xác nhận
 
-> Sinh bởi `_tools/questions.py`. Trả lời xong: sửa file gốc (xóa ❓), chạy lại script. Đây là danh sách việc cho BA / người biết nghiệp vụ.
-Tổng: **121** câu.
-
-## cong-viec/dac-thu.md (1)
-
-- [ ] L3: - **Gần như toàn bộ gen-1**: `TaskAction` (`/taskAction`) + `TaskService` (`/TaskService`, class annotated @RestController dù tên Service) → `controler/TaskController` ❓ → `TaskDAO`, `TaskRatingDAO`, `KI*DAO`. Không có controller gen-2 riêng → tính năng mới nên tạo `TaskController` gen-2 (`/api/task`) theo `_chung/cach-lam-chuan/them-api-be-gen2.md`.
-
-## cong-viec/nghiep-vu.md (4)
-
-- [ ] L34: - QT1. Tổng tỷ trọng công việc trong kỳ = 100% (`updateProportionPersonalTasks`, `checkPointUnit`) ❓.
-- [ ] L38: - QT5. Việc sinh từ văn bản giữ liên kết `DOCUMENT_ID`; đóng văn bản không tự đóng việc ❓.
-- [ ] L41: 1. "Phiếu giao việc" và "phiếu đánh giá" là file PDF sinh ra (`convertTaskToPDF`, `convertRatingTaskToPDF`) rồi ký số — đúng không? Ký bằng loại chữ ký nào?
-- [ ] L42: 2. KI khác KPI thế nào trong hệ thống này?
-
-## he-thong/dac-thu.md (1)
-
-- [ ] L4: - Hai hệ quyền song song: VPS (`SYS_OPERATION`/`SYS_RESOURCE`/`RolePermission`) và gen-2 `PermissionBase`/`PermissionData` — cần chốt ❓ nguồn hiện hành trước khi thêm quyền mới.
-
-## he-thong/nghiep-vu.md (4)
-
-- [ ] L24: - Tham số: `SYSTEM_PARAMETER`/`CONFIG_PARAMETER` (`configParamAction.GetAppConfig`, `getConfigParamMultiSign`; `ManagerController.get-lst-param/add-param`), danh sách đen (`ConfigBackList` — chặn người nhận? ❓), người nhận nhắc ký muộn (`getLstUserReMessOfSignerLate`, `NotifyToNextSignerVM`).
-- [ ] L33: 1. Quyền thao tác trong màn hình dùng VPS (`SYS_OPERATION`/`SYS_RESOURCE`) hay `permission-base` gen-2 — cái nào là nguồn hiện hành?
-- [ ] L34: 2. SSO đang dùng là Viettel passport hay SSO tỉnh (VNeID)?
-- [ ] L35: 3. `ConfigBackList` là gì?
-
-## ho-so-cong-viec/dac-thu.md (1)
-
-- [ ] L5: - `TypeConfigAction.getUserDocRolesByEmpId`, `getUserRolesDetail` được web gọi nhưng không nối được endpoint ❓ (đổi tên?).
-
-## ho-so-cong-viec/nghiep-vu.md (6)
-
-- [ ] L16: - Trạng thái hồ sơ: mở / đang xử lý / đề nghị hoàn thành / hoàn thành / đã nộp lưu / trong kho ❓ mã cụ thể — tra `Brief.getBriefProcessingStats`, `checkHardStatusBrief` (`hardStatus` = trạng thái bản cứng: đang ở kho / đang cho mượn).
-- [ ] L19: - Văn bản trong hồ sơ: `BRIEF_DOCUMENT_MAP` ❓ (+ số trang giấy), file `BRIEF_FILES_ATTACHMENT`, đa phương tiện `BRIEF_MULTIMEDIA` (SQL `20250303_add_column_table_brief_multimedia_file.sql`), file danh mục `CATALOGIN_BRIEF_FILE` (`10012026_create_table_catalogin_brief_file.sql`).
-- [ ] L21: - Chứng thư SHVB (`get-cert-shvb`) ❓ ký số hồ sơ.
-- [ ] L40: 1. Vòng đời trạng thái hồ sơ chính xác và ai được "hoàn thành"?
-- [ ] L41: 2. Nộp lưu có theo thời hạn (năm) và tự động không?
-- [ ] L42: 3. `get-cert-shvb` phục vụ ký số hồ sơ điện tử theo chuẩn lưu trữ?
-
-## hop/dac-thu.md (1)
-
-- [ ] L5: - `voffice.service.url.meeting` trong `application.properties` — BE họp có thể trỏ **server khác** (10.60.110.21) ❓ còn dùng không.
-
-## hop/nghiep-vu.md (5)
-
-- [ ] L39: - QT4. Đặt lịch bị khóa sau hạn (mở khóa: menu *Mở khóa đặt lịch họp*) ❓ quy tắc khóa.
-- [ ] L40: - QT5. Biên bản phải ký (`requestForSigningMeetingMinutes`) trước khi đóng kết luận ❓.
-- [ ] L44: 1. eCabinet (phòng họp không giấy) là phân hệ mobile/tablet riêng hay tab trong web?
-- [ ] L45: 2. Họp trực tuyến Cisco/cospace còn dùng?
-- [ ] L46: 3. "Báo cáo quân số" thuộc họp hay KPI?
-
-## hop/vi-du-mau.md (1)
-
-- [ ] L6: | Duyệt / từ chối / hủy lịch có kiểm quyền | gen-1 `MettingWeek.approveCalendar`, `rejectCalendar`, `cancelCalendar`, `checkPermisionCalendar` ← `MeetingBusiness` ← `vm/meeting/*Approve*VM` ❓ |
-
-## kpi-danh-gia/nghiep-vu.md (5)
-
-- [ ] L19: - `KpiPortalController` (`/api/kpi-portal`): CRUD chỉ số hiển thị cổng KPI (`kpi.status`: đang nháp → chờ phản hồi → chốt đánh giá); `system-downtime-log` (thời gian hệ thống ngừng, trừ vào KPI vận hành ❓).
-- [ ] L29: `get-usage-statistics` (mức độ dùng hệ thống), `get-document-in/out-statistics`, `-ranking`, `get-meeting-schedule-statistics`, `get-mission-statistics`, `get-document-statistics-by-org`; cây đơn vị `vhr-org/get-list-child-all-level`. Web `summaryUsageReport/*`, `StatisticsReportBusiness`. Nguồn cho báo cáo lãnh đạo tỉnh ❓.
-- [ ] L32: 1. KPI ở đây là KPI vận hành hệ thống (số văn bản, đúng hạn) hay KPI nhân sự? Ai xem cổng KPI?
-- [ ] L33: 2. Chấm điểm thi đua theo kỳ nào (tháng/quý/năm) và có liên kết với KI cá nhân?
-- [ ] L34: 3. Báo cáo định kỳ cá nhân có thay phiếu đánh giá cuối tháng của `cong-viec` không, hay song song?
-
-## ky-so/nghiep-vu.md (4)
-
-- [ ] L13: | Ký tự động | `AutoDigitalSign` (`AUTO_DIGSIG_TRANSACTION`) | ❓ dùng cho loại văn bản nào |
-- [ ] L35: 1. Phương thức nào đang dùng thực tế ở Khánh Hòa (USB token? CloudCA của nhà cung cấp nào?).
-- [ ] L36: 2. Ký tự động áp dụng ở đâu?
-- [ ] L37: 3. `DocumentSignKNTCService` / `AuthenticationKntcController` (KNTC = khiếu nại tố cáo?) là tích hợp với hệ thống nào?
-
-## ky-so/vi-du-mau.md (2)
-
-- [ ] L6: | Popup ký USB token | `requisition/signUsbToken.zul` + VM ký trong `vm/requisition` (`RequisitionSignVM` ❓) → `RequisitionBusiness` `Sign.SignSoftHashMutiFile` → `textAction.updateDatabaseSign` |
-- [ ] L12: | Quản lý chứng thư người dùng | `CertManagementAction.*` + `vm/config` ❓ zul (menu Ký điện tử) |
-
-## lich-nhac-viec/dac-thu.md (3)
-
-- [ ] L3: - **Nhắc việc = mẫu gen-2 chuẩn nhất** (xem `_chung/cach-lam-chuan/them-tinh-nang-moi.md`): `ReminderController` (`/reminders`, 16 endpoint, không prefix `/api`) → `ReminderServiceImpl` (~1.800 dòng, `@Transactional`) → `ReminderRepositoryJPA` + `ReminderRepositoryImpl` (SQL text block qua `BaseRepositoryImpl`) → `REMINDER*`. Web `vm/reminder/*` (6 VM) + `ReminderBusiness` (18 hàm). Không có gen-1 tương đương. `reminders.cancelReply`, `getReminderReport`, `updateNewReplyAssignee` web gọi nhưng BE không có → ❓ chưa làm hoặc đã bỏ.
-- [ ] L7: - Thông báo (`NotificationAction`) và SMS chặn (`SmsInterceptAction`) là gen-1; SMS chặn theo đơn vị mới thêm ở gen-2 (`SMSInterceptController`). `api.smsIntercept.getListModulInterceptSmsOfOrgId.` (dấu chấm cuối) không nối được endpoint ❓ bug tên.
-- [ ] L9: - Bảng `ALERT` (web entity `Alert`) là cơ chế cảnh báo cũ ❓ còn dùng.
-
-## lich-nhac-viec/nghiep-vu.md (4)
-
-- [ ] L57: Lãnh đạo/trợ lý tạo "văn bản nắm tình hình" (không qua văn thư), gửi cho nhóm lãnh đạo (`get-group-doc-lead-type`, `DOCUMENT_LEAD_TYPE`), có file mật (`get-list-file-encrypt-map`, `get-permission-view-file`), đếm đã đọc (`count-read`, `mark-as-read`), phân quyền nhà cung cấp (`insert-permission-for-supplier`) ❓. Liên quan `document.processType = situation` (Nắm tình hình) trong văn bản đến.
-- [ ] L63: 1. Nhắc việc có SMS/thông báo đẩy khi gửi và khi nhắc lại không? Cấu hình ở đâu?
-- [ ] L64: 2. `FOLLOWER_TYPE` có những giá trị nào (người tạo / lãnh đạo / theo dõi thêm)?
-- [ ] L65: 3. "Nắm tình hình" có phải là tính năng dành riêng cho lãnh đạo tỉnh (Khánh Hòa) không?
-
-## nhiem-vu/dac-thu.md (2)
-
-- [ ] L5: - `MissionController` và `MissionDashboardController` có **cùng bộ endpoint** (`get-assign-mission-charts`, `search-mission`, `sync-mission`…) dưới 2 base — nghi ngờ trùng lặp/di chuyển dở ❓; web gọi `api.mission_dashboard.*`.
-- [ ] L6: - `api.work-group-action.unBlock` web gọi nhưng không có endpoint (BE có `api.work-group.block`) ❓.
-
-## nhiem-vu/nghiep-vu.md (6)
-
-- [ ] L54: - QT1. Nhiệm vụ BGĐ giao phải được chỉ huy phê duyệt trước khi chạy (`approvedMissionByCommander`) ❓ áp dụng loại nào.
-- [ ] L56: - QT3. Đóng nhiệm vụ cha khi con chưa xong bị chặn ❓.
-- [ ] L58: - QT5. Đồng bộ nhiệm vụ với hệ thống khác (`sync-mission`, `count-sync-mission`) ❓ hệ thống nào.
-- [ ] L61: 1. `WORK_GROUP` (nhóm công việc) là nhóm theo dõi nhiệm vụ hay nhóm người dùng?
-- [ ] L62: 2. "Thỏa thuận hợp tác" (`agreement`) là nghiệp vụ riêng của khách hàng nào? Có còn dùng?
-- [ ] L63: 3. Sự khác nhau giữa `/api/mission` và `/api/mission_dashboard` (endpoint trùng tên)?
-
-## nhiem-vu/vi-du-mau.md (1)
-
-- [ ] L5: | Biểu đồ dashboard theo đơn vị/người (gen-2) | `MissionDashboardController.get-assign-mission-charts`, `get-perform-mission-charts`, `count-*` ← `MissionChartBusiness` ← `vm/mission/*Chart*VM` ❓ |
-
-## phieu-trinh/nghiep-vu.md (7)
-
-- [ ] L3: > Phiếu trình = văn bản nội bộ trình lãnh đạo xem xét/phê duyệt một nội dung (đề xuất, xin chủ trương), có luồng ký riêng, **không phải văn bản đi** nhưng liên kết chặt với dự thảo văn bản đi. Bảng `SUBMISSION_FORM`, `SUBMISSION_FORWARD`, `SUBMISSION_MAP` ❓, file ký riêng. Chạy trên **BE gen-2** `SubmissionManagerController` (`/api/submission-manager`, 41 endpoint) — mẫu gen-2 tốt.
-- [ ] L45: | Dự thảo **đính kèm phiếu trình đã hoàn thành** | Trong `requisition_add` chọn phiếu trình `completed` | Phiếu trình là sở cứ; kiểm tra `api.brief-detail.check-text-doc-for-submitting` ❓ |
-- [ ] L53: - QT4. Đếm trang giấy để thống kê in ấn (`update-num-page`) ❓ mục đích.
-- [ ] L58: Khác phiếu trình: là **khó khăn vướng mắc** gửi lên cấp trên (`request.status`: chưa gửi → đã gửi → đang giải quyết → đã giải quyết / đã chuyển cấp trên / đã đóng; `request.action`: giao đơn vị, giao cá nhân, tự giải quyết, gửi lên cấp trên, đóng, từ chối kết quả) và có thể **sinh nhiệm vụ** (`requestProcess.action = tao.cong.viec`). Web `request/*.zul` (12) + `vm/request/*`; cấu hình người nhận kiến nghị `ProposalBusiness` (`requestAction.*RequestEmpConfig`, menu *Cấu hình cá nhân nhận kiến nghị*). ❓ Nếu team coi đây là phân hệ riêng thì tách folder `kien-nghi`.
-- [ ] L61: 1. Phiếu trình có nhiều cấp ký cố định (phòng → đơn vị) hay theo luồng `FLOW`?
-- [ ] L62: 2. `update-all-submission-7939827832452673672323443432323` là endpoint migrate dữ liệu một lần? Có nên xóa?
-- [ ] L63: 3. Phiếu trình "ký luôn dự thảo": chữ ký đặt lên file dự thảo hay chỉ đổi trạng thái?
-
-## phieu-trinh/vi-du-mau.md (1)
-
-- [ ] L8: | Tạo/sửa có đính kèm dự thảo | `submissionForm_add.zul` (❓ VM: `SubmissionDetailVM`) | `submission-form/create-or-update`, `submit`, `check-submission-attachments-for-submitting`, `submission-form-by-text-id` |
-
-## tai-lieu-mau/dac-thu.md (1)
-
-- [ ] L6: - `TemplateFilter` (web `http/`) xử lý URL mẫu ❓.
-
-## tai-lieu-mau/nghiep-vu.md (3)
-
-- [ ] L15: - QT1. Mẫu có thứ tự hiển thị (`updateIndexTemplate`) và thuộc đơn vị/loại ❓.
-- [ ] L20: 1. "Cấu hình thư viện" (menu quản trị) cấu hình cây thư mục hay quyền xem?
-- [ ] L21: 2. Mẫu văn bản (docx) có tích hợp WOPI để soạn thảo online không (`tich-hop`)?
-
-## tich-hop/nghiep-vu.md (5)
-
-- [ ] L14: | **KNTC** (khiếu nại tố cáo?) | Ký số & đăng nhập cho hệ thống KNTC | `DocumentSignKNTCService`, `AuthenticationKntcController`, `BaseResponseKNTC` ❓ |
-- [ ] L20: - QT1. Dữ liệu tổ chức/nhân sự **chỉ nhập từ VHR**; sửa tay trong VOffice sẽ bị đồng bộ ghi đè ❓ (xác nhận).
-- [ ] L26: 1. Ở Khánh Hòa, HR nguồn là VHR Viettel hay hệ thống cán bộ công chức tỉnh?
-- [ ] L27: 2. Ứng dụng ngoài nào đang dùng `/ext-*`?
-- [ ] L28: 3. ViettelPay / VContract / CM còn hoạt động hay là di sản Viettel?
-
-## van-ban/den/dac-thu.md (1)
-
-- [ ] L30: 8. `12032026_yc_16_tacdong.sql` — một yêu cầu (YC16) có "tác động" DB gần đây ❓ nội dung gì; đọc file trước khi đụng bảng liên quan.
-
-## van-ban/den/nghiep-vu.md (4)
-
-- [ ] L80: - QT2. Chỉ **chủ trì** được hoàn thành/đóng; phối hợp và để biết không đóng được (❓ xác nhận trong `updateStatusDocumentInStaff`).
-- [ ] L88: 1. Bút phê có bắt buộc với mọi văn bản đến hay tuỳ loại (`documentStatus = van.ban.khong.can.xin.y.kien`)?
-- [ ] L89: 2. Ai được "trả lại nơi gửi" và có thông báo ngược qua liên thông không?
-- [ ] L90: 4. Trạng thái `needAnswer` do ai đặt: nơi gửi khi ban hành hay lãnh đạo khi bút phê?
-
-## van-ban/den/vi-du-mau.md (2)
-
-- [ ] L29: `DocLeaderCommentController` (`/api/doc-leader-comment/save-doc-leader-comment`, `get-doc-leader-comments`) ← `DocumentBusiness` ← VM chi tiết (`DocumentViewDetailVM`) / popup ❓ zul tên. Mẫu cho: ý kiến chỉ đạo, ghi chú của lãnh đạo lên đối tượng bất kỳ.
-- [ ] L37: `document/inputDoc/inputDoc_add.zul`, `doc_in_add.zul`, `inputDocEdit.zul` + VM tương ứng trong `vm/document` (`InputDocument*VM` ❓ tên) → `DocumentBusiness` → gen-1 `DocumentAction.AddDocument`, `AddDocumentAttachment`, `GetRegisterNumberIndex`; gen-2 kiểm tra trùng `api.doc-in.is-duplicated-register-number`, `list-exist-document-by-textbook-and-register`.
-
-## van-ban/di/dac-thu.md (2)
-
-- [ ] L22: 8. `textAction.checkShowTransferGiveAdvice.` (có dấu chấm cuối) và vài key khác không nối được endpoint — có thể là bug tên hàm hoặc endpoint đã bị xóa ❓.
-- [ ] L23: 9. Ký đối tác ngoài (`listPartnerSign`, `TextPartnerDAO`) là nhánh riêng, ít dùng ❓.
-
-## van-ban/di/nghiep-vu.md (6)
-
-- [ ] L90: - QT6. Hủy ban hành cần quyền (`checkPermissionRollBack`) và ghi lý do; văn bản đến đã phát sinh ở đơn vị nhận phải được thu hồi ❓ (cần xác nhận cơ chế).
-- [ ] L116: 1. Hủy ban hành có tự thu hồi văn bản đến ở đơn vị nhận không, hay chỉ đổi trạng thái?
-- [ ] L117: 2. `TYPE_VBDT_V2 = 12` — màn dự thảo bản 2 khác gì bản 1?
-- [ ] L118: 3. Ký song song (`STATE_SIGN_PRALLEL`) áp dụng cho bước nào (ký nháy? nhận xét?).
-- [ ] L119: 4. "Văn bản phê duyệt" (`VBPD = 7`, menu *Công văn phê duyệt*) là gì so với ký duyệt?
-- [ ] L120: 5. Tự động ban hành (`AUTO_PROMULGATE`) cấu hình ở đâu, áp dụng loại văn bản nào?
-
-## van-ban/di/vi-du-mau.md (3)
-
-- [ ] L13: | BE repo/entity | `repositories/jpa/*Text*RepositoryJPA`, `entities/TextEntity`, `TextProcessEntity` ❓ tên chính xác — grep `@Table(name = "TEXT_PROCESS")` |
-- [ ] L27: | Business | `RequisitionBusiness.rejectPublishDocument` → gen-1 `textAction.rejectSignDocument` / `DocumentAction.cancelPublish` ❓ (xem ban-do mục 2) |
-- [ ] L37: `requisition/signUsbToken.zul` + `RequisitionSignVM` ❓ (VM thật trong `vm/requisition`) → `RequisitionBusiness` gọi `Sign.SignSoftHashMutiFile` / `Sign.SignCloudCA` / `Sign.SignTextByCASIM` → cập nhật `textAction.updateDatabaseSign`. Chi tiết ở `ky-so/vi-du-mau.md`.
-
-## van-ban/lien-thong/dac-thu.md (2)
-
-- [ ] L3: - Điểm vào từ ngoài là **gen-2 webhook** `VOConnectProcessorController` (`/api/hook`: `send-document`, `update-status-document`, `send-mission`, `revoke-document`) → `VOConnectProcessorService`(Impl). Sửa ở đây ảnh hưởng đối tác ngoài — cần test với trục giả lập (`postman/` có collection ❓).
-- [ ] L6: - `document/goverment/govermentDocument.zul` + `GovermentDocumentVM`, `TransferGovermentDocumentVM` không gọi Business/facade nào → khả năng là màn chết mềm (VM tồn tại nhưng không còn dữ liệu) ❓.
-
-## van-ban/lien-thong/nghiep-vu.md (6)
-
-- [ ] L12: | Văn bản từ VPCP | `document/goverment/govermentDocument.zul`, `transferGovermentDocument.zul` (VM không gọi dữ liệu — ❓ còn dùng), menu *Văn bản từ VPCP*, *Báo cáo VP CP* | |
-- [ ] L20: - QT3. Thu hồi văn bản đã gửi liên thông = `revoke-document` + hủy ban hành ở `van-ban/di` ❓ thứ tự.
-- [ ] L21: - QT4. Webhook `/api/hook/*` phải nằm trong `jwtIgnoreConfig` hoặc dùng xác thực riêng ❓ (kiểm tra `WebSecurityConfig`).
-- [ ] L24: 1. Trục đang kết nối là trục LGSP tỉnh Khánh Hòa hay trục văn bản quốc gia? Chuẩn edXML phiên bản nào?
-- [ ] L25: 2. `goverment/*` (VPCP) còn hoạt động hay là di sản Viettel?
-- [ ] L26: 3. `merge/` có liên quan tới migrate dữ liệu không?
-
-## van-ban/luong-xu-ly/dac-thu.md (1)
-
-- [ ] L6: - Bẫy: `api.flow-manager.doc-out` được web gọi nhưng **không có endpoint** (❓ đã bỏ hoặc chưa làm) — xem `_chung/ban-do-tong/web-goi-be.md`.
-
-## van-ban/luong-xu-ly/nghiep-vu.md (5)
-
-- [ ] L10: | Nhóm luồng | `FlowGroupTypeEntity`, `flow-group-type/get-all` | Phân loại: theo loại văn bản, theo đơn vị ❓ |
-- [ ] L29: - QT2. Sao chép luồng (`flow/copy`) để tạo luồng mới cho đơn vị khác — không sửa luồng đang dùng nếu văn bản đang chạy trên đó ❓ (cần xác nhận có snapshot hay tham chiếu sống).
-- [ ] L31: - QT4. Luồng tập đoàn > đơn vị > cá nhân (`requisitionFlow.requisitionFlowMap`) ❓ thứ tự ưu tiên.
-- [ ] L43: 1. Luồng ký văn bản đi có lấy hoàn toàn từ `FLOW/NODE` hay vẫn còn bảng `REQUISITION_FLOW` cũ song song?
-- [ ] L44: 2. Khi cấu hình luồng thay đổi, văn bản đang trình có bị ảnh hưởng không?
-
-## van-ban/luong-xu-ly/vi-du-mau.md (1)
-
-- [ ] L5: | CRUD cấu hình có lịch sử, sao chép, bật/tắt | `FlowManagerController`: `flow/create-or-update`, `flow/copy`, `toggle-active-flow`, `delete-flow`, `get-flow-histories` ← `FlowBusiness` ← `vm/flow/FlowVM` ❓ tên chính xác |
-
-## van-ban/quan-ly-chung/dac-thu.md (1)
-
-- [ ] L5: - Tìm kiếm: 2 engine (Solr gen-1 `SolrSearchResource`, Elasticsearch `ElasticDocument*`/`els_query/`) ❓ cái nào đang sản xuất; `application-prod.properties` có `elasticsearch.host`.
-
-## van-ban/quan-ly-chung/nghiep-vu.md (3)
-
-- [ ] L15: | **Lịch sử văn bản** | | gen-2 `document-history-log/search` (`DOCUMENT_HISTORY_LOG`), `getListDocumentHistory`, `ReportdocumentTransferHistory`, `DocumentCopyHistory` (`document-copy/check-permission` — sao y ❓) |
-- [ ] L27: - QT2. Loại văn bản có thể riêng đơn vị hoặc dùng chung; xóa loại đang dùng bị chặn ❓.
-- [ ] L28: - QT3. Tìm toàn văn phụ thuộc index (Solr/ES) — văn bản mới ban hành phải được index (`indexEmployee` cho người; văn bản qua `ElasticDocument`) ❓ đồng bộ ra sao.
-
-## van-ban/quan-ly-chung/vi-du-mau.md (1)
-
-- [ ] L5: | Danh mục có cấp phát cho đơn vị / chuyển dùng chung (gen-2) | `DocumentTypeController` (`create-doc-type-org`, `granted-doc-type-to-orgs`, `convert-doc-type-to-common`, `get-by-organization`) ← `DocumentTypeBusiness` ← `vm/document` ❓ `DocumentTypeVM` / `document_type/document_type.zul` |
-
-## van-ban/so-van-ban/dac-thu.md (1)
-
-- [ ] L3: - gen-1 `TextBookAction` (`/textBookAction`) → `controler/*` → `TextBookDAO`; gen-2 `TextBookManagerController` (`/api/text-book`) mới, ít hàm ❓ web đã gọi chưa (xem `ban-do.md` mục 2).
-
-## van-ban/so-van-ban/nghiep-vu.md (3)
-
-- [ ] L16: - QT4. Cấp số có hàng chờ (`WaitingNumberBookEntity`, `VBCCS` "chờ cấp số") — tránh trùng khi nhiều người cấp cùng lúc ❓ cơ chế khóa.
-- [ ] L20: 1. Đánh số lại đầu năm thực hiện thế nào (tự động theo năm hay tạo sổ mới)?
-- [ ] L21: 2. Số văn bản có dạng mẫu (vd. `123/UBND-VP`) sinh từ đâu — sổ hay loại văn bản?
-
-## _chung/kien-truc-tong-the.md (1)
-
-- [ ] L111: 3. `merge/` ở root workspace là bản gộp cũ — không phải nguồn sự thật. ❓ cần xác nhận mục đích.
-
-## _chung/quy-uoc.md (2)
-
-- [ ] L15: | SQL migration | `backend2.0/backendvoffice/sql/DDMMYYYY_mo_ta.sql` | Tạo SEQUENCE + TABLE + comment cột; dữ liệu SYS_MENU nếu có màn hình mới | Chưa có Flyway/Liquibase — chạy tay theo môi trường ❓ |
-- [ ] L47: - Web: Maven, `mvnw`, Java 8, đóng gói WAR/Jar chạy Tomcat nhúng ❓; Jenkinsfile.groovy; Dockerfile.
-
-## _chung/thuat-ngu.md (1)
-
-- [ ] L43: | Nhóm công việc | `WORK_GROUP*`, `workGroupTree` | ❓ nhóm theo dõi nhiệm vụ chung |
-
-## _chung/cach-lam-chuan/them-man-hinh-web.md (3)
-
-- [ ] L101: | Gán menu cho vai trò | `SYS_ROLE` ↔ menu ❓ (bảng map — hỏi admin) | |
-- [ ] L102: | Nhãn đa ngôn ngữ | `common_voffice_vi.properties` (+ `_en`), key `voffice.<domain>.label.*` | reminder hiện hard-code tiếng Việt ❓ |
-- [ ] L113: - `scan.py` thấy zul → VM → Business → endpoint nối đủ (không ❓ trong `ban-do.md`).
-
-## _chung/cach-lam-chuan/them-tinh-nang-moi.md (2)
-
-- [ ] L55: - [ ] Nhãn: thêm key `voffice.<domain>.label.*` vào `common_voffice_vi.properties` + `_en` (reminder hiện đang hard-code tiếng Việt trong zul — ❓ team chấp nhận hay yêu cầu i18n?).
-- [ ] L61: - [ ] Menu: dòng SYS_MENU (bước 1) + gán vào vai trò (SYS_ROLE ↔ menu) ❓ cách gán — hỏi admin/DBA.
-
-## _chung/cach-lam-chuan/them-truong-du-lieu.md (2)
-
-- [ ] L16: | 8 | Elasticsearch/Solr | Nếu cột cần tìm kiếm toàn văn: `ElasticDocument*`, `els_query/`, `SolrSearch*` | ❓ quy trình reindex |
-- [ ] L33: Pattern sẵn có: `rejectPublish.zul` + `RejectPublishVM` (từ chối ban hành có lý do) → BE `textAction.rejectPublish` ❓ tên hàm — xem `requisition/ban-do`. Làm tương tự: popup nhập lý do → Business → endpoint → lưu vào bảng lịch sử (`TEXT_PROCESS_HISTORY`, `DOCUMENT_HISTORY_LOG`, `REMINDER_HISTORY` là các bảng lịch sử đang có) thay vì cột đơn lẻ, để có lịch sử nhiều lần.
+> Sinh bởi `_tools/questions.py` từ mục **7.1** của từng `nghiep-vu.md`. Không sửa tay. Trả lời xong: chuyển câu sang mục 7.2 của file gốc (kèm hệ quả ghi vào tri thức) rồi chạy lại script.
+
+Tổng: **136** câu.
+
+## cong-viec/nghiep-vu.md (10)
+
+- [ ] **Q1** — Kỳ giao việc / đánh giá công việc cá nhân đúng là (a) theo quý (và cả năm); (b) theo tháng; (c) khác? KI cá nhân xếp theo tháng hay theo cùng kỳ với phiếu đánh giá?
+- [ ] **Q2** — Cả hai cách đều được dùng? Nếu chỉ một cách là chính thức thì (a) cán bộ tự trình; (b) lãnh đạo ký trực tiếp.
+- [ ] **Q3** — Hai loại này còn dùng không? (a) không — bỏ; (b) có — cần hiện ở danh sách (tab riêng).
+- [ ] **Q4** — Hệ thống có cần giới hạn ngày được đăng ký / đánh giá trong tháng (hoặc kỳ) không? (a) không cần, chỉ giới hạn theo kỳ; (b) cần chặn ngoài khoảng ngày cấu hình.
+- [ ] **Q5** — Chức năng KI cá nhân còn dùng trên hệ thống này không? (a) không — KI làm ở hệ thống nhân sự; (b) có — cần lấy danh sách cán bộ (từ đâu: hệ thống nhân sự hay danh sách người dùng của đơn vị?).
+- [ ] **Q6** — Cấu hình này mang ý nghĩa gì: (a) đơn vị A được đánh giá / giao việc cho cán bộ của các đơn vị B; (b) đơn vị A xem thống kê của các đơn vị B; (c) không còn dùng?
+- [ ] **Q7** — Tính năng này đã ngừng hẳn? (a) đã ngừng; (b) cần khôi phục.
+- [ ] **Q8** — Tổ chức lao động cần làm gì với phiếu đánh giá công việc: (a) không tham gia; (b) xem / tổng hợp phiếu của toàn đơn vị; (c) chấm thay lãnh đạo?
+- [ ] **Q9** — Sau khi lãnh đạo đã chấm, cán bộ còn được sửa điểm tự chấm không? (a) không; (b) được, và lãnh đạo phải chấm lại.
+- [ ] **Q10** — Phân hệ công việc cá nhân còn được sử dụng ở Khánh Hòa không? (a) đang dùng (dữ liệu ở môi trường thật); (b) đã ngừng, chỉ giữ để tra cứu; (c) sẽ triển khai lại.
+
+## he-thong/nghiep-vu.md (10)
+
+- [ ] **Q1** — Mật khẩu chính thức của cán bộ là: (a) mật khẩu tài khoản SSO tỉnh — VOffice không cần quản mật khẩu riêng; (b) mật khẩu riêng của VOffice; (c) cả hai cùng tồn tại?
+- [ ] **Q2** — Mã nhân viên trên VOffice có phải luôn là (a) số định danh cá nhân / CCCD; (b) tên đăng nhập SSO; (c) mã riêng — cần cột liên kết khác?
+- [ ] **Q3** — Ý đồ là: (a) vai trò hỗ trợ dùng để khai "menu chung cho tất cả" (ví dụ HỖ TRỢ, phản ánh); (b) chỉ người được gán vai trò hỗ trợ mới thấy các menu đó?
+- [ ] **Q4** — Ba lựa chọn Chủ trì / Phối hợp / Nhận để biết nghĩa là gì: người đó tự nhận văn bản chuyển tới đơn vị với **đúng vai trò đó**? Hay chỉ cần "có nhận / không nhận"?
+- [ ] **Q5** — Danh sách này áp cho: (a) toàn bộ đơn vị người đó thuộc; (b) chỉ đơn vị mà quản trị đã chọn khi cấu hình?
+- [ ] **Q6** — Quản trị hệ thống (`ADMIN`) là: (a) quản trị toàn tỉnh — mọi màn quản trị đều toàn tỉnh; (b) quản trị theo cây đơn vị được gán — màn đơn vị cũng nên giới hạn như màn người dùng?
+- [ ] **Q7** — Hiện nay người dùng / đơn vị được cập nhật bằng (a) nhập tay trên VOffice; (b) đồng bộ tự động từ hệ thống nhân sự (hệ thống nào)? Nếu (b): khi đổi đơn vị có đúng là phải gỡ hết vai trò cũ không?
+- [ ] **Q8** — Với danh mục theo đơn vị, khi đơn vị con khai thêm giá trị thì mong muốn: (a) thay danh mục của cấp trên (như hiện tại); (b) cộng thêm vào danh mục cấp trên?
+- [ ] **Q9** — Hai tính năng này còn dùng không: (a) ngừng, có thể khóa menu; (b) cần dùng — mong muốn người dùng thấy giới thiệu / khảo sát ở đâu?
+- [ ] **Q10** — Cấu hình trang chủ cá nhân cần (a) giữ lâu dài; (b) tạm thời là đủ?
+
+## ho-so-cong-viec/nghiep-vu.md (10)
+
+- [ ] **Q1** — Nghĩa đúng là bên nào? (a) như màn hình: 1 = sử dụng có điều kiện (phải mượn), 2 = công khai; (b) như ghi chú DB: 1 = công khai.
+- [ ] **Q2** — Người bàn giao có cần tiếp tục xem hồ sơ đã bàn giao không? (a) không — bàn giao là chuyển hẳn; (b) có, chỉ xem.
+- [ ] **Q3** — Nghiệp vụ mượn / cho mượn hồ sơ hiện (a) đã bỏ, (b) tạm khóa sẽ mở lại, hay (c) vẫn dùng (menu khóa nhầm)?
+- [ ] **Q4** — Người mượn bản cứng có được xem bản điện tử không? (a) có, đến khi trả; (b) có, nhưng chỉ trong hạn mượn; (c) không.
+- [ ] **Q5** — Hai loại cảnh báo này (a) đã bỏ, hay (b) vẫn cần (chưa được bật)?
+- [ ] **Q6** — "Hoàn thành hồ sơ" bây giờ có phải chính là **Đóng hồ sơ** không? (a) đúng, mục "Đã hoàn thành" cũ không còn ý nghĩa; (b) khác — là bước nào?
+- [ ] **Q7** — File biên mục do ai / hệ thống nào tạo và khi nào (ví dụ: phần mềm số hóa trả về sau khi tiếp nhận, hay một công cụ khác)?
+- [ ] **Q8** — Loại 1 là (a) tài liệu giấy / điện tử thông thường hay (b) phim âm bản?
+- [ ] **Q9** — Các chức năng này (a) đã bỏ, hay (b) cần hiện lại — nếu (b) thì chức năng nào?
+- [ ] **Q10** — Mỗi năm đơn vị (a) lập lại bộ thư mục mới, hay (b) một thư mục dùng qua nhiều năm (năm chỉ để lọc)?
+
+## hop/nghiep-vu.md (10)
+
+- [ ] **Q1** — Ở Khánh Hòa, lịch họp do ai duyệt? (a) luôn bộ phận quản lý lịch của đơn vị người đặt (hoặc cấp trên gần nhất); (b) của đơn vị quản lý phòng họp; (c) của đơn vị chủ trì. Các quy tắc "ban giám đốc tập đoàn / chi nhánh" có…
+- [ ] **Q2** — Có cần cơ chế ưu tiên này không? Nếu có, "ban giám đốc" ở đây là ai (lãnh đạo UBND tỉnh, lãnh đạo sở…)?
+- [ ] **Q3** — Đây có phải quy trình mong muốn (chốt lịch tuần rồi mới mời)? (a) đúng; (b) nên gửi ngay khi duyệt.
+- [ ] **Q4** — Khánh Hòa có dùng quy tắc chốt lịch tuần này không? Nếu có, khung giờ khóa là từ thứ mấy, mấy giờ đến khi nào?
+- [ ] **Q5** — Ý đồ: (a) chủ trì là lãnh đạo thì được tự duyệt; (b) chỉ bộ phận quản lý lịch / trợ lý được duyệt.
+- [ ] **Q6** — Cấu hình này dùng để làm gì? (a) chỉ để biết / in người duyệt trực theo ngày; (b) phải giới hạn: chỉ người được phân công ngày đó mới duyệt được.
+- [ ] **Q7** — Việc thay người dự họp (ví dụ lãnh đạo cử người đi thay) có cần ai phê duyệt không? (a) không; (b) có — người nào duyệt?
+- [ ] **Q8** — Ở Khánh Hòa đang / sẽ dùng những tính năng nào: điểm danh, biểu quyết, phòng họp không giấy eCabinet, báo cáo quân số?
+- [ ] **Q9** — Vượt ngưỡng có cần chặn không? (a) chỉ cảnh báo; (b) chặn duyệt.
+- [ ] **Q10** — Lịch công khai dành cho ai: (a) mọi người có link (cả người ngoài cơ quan); (b) chỉ nội bộ.
+
+## kpi-danh-gia/nghiep-vu.md (10)
+
+- [ ] **Q1** — Quan hệ giữa hai cách đánh giá là gì? (a) đánh giá tuần thay cho phiếu đánh giá công việc / KI ở các đơn vị được mở menu; (b) chạy song song, độc lập; (c) điểm tuần sẽ là đầu vào để xếp KI tháng.
+- [ ] **Q2** — Mức đúng là (a) 70 hay (b) 75?
+- [ ] **Q3** — (a) phải khóa mục công việc của tuần đã chấm / duyệt; (b) cho sửa tự do — phiếu đã duyệt chỉ giữ điểm.
+- [ ] **Q4** — (a) được chấm thay như hiện nay; (b) phải chờ cán bộ tự chấm trước.
+- [ ] **Q5** — (a) hai cấp phê duyệt nối tiếp (người phê duyệt rồi lãnh đạo cấp trên); (b) hai cách thay thế nhau — đơn vị chọn một; (c) một cách sẽ bỏ. Nếu (a), bước nào là bước cuối?
+- [ ] **Q6** — (a) Ban kế hoạch chỉ chốt, mọi số liệu do đơn vị đánh giá nhập; (b) Ban kế hoạch được nhập thay khi đơn vị đánh giá chưa nhập.
+- [ ] **Q7** — (a) nhập tay là cách làm hiện hành, màn ánh xạ chỉ còn lưu trữ; (b) vẫn cần hệ thống tự lấy số liệu kinh doanh.
+- [ ] **Q8** — (a) chỉ cấp trên chấm cho đơn vị con — phòng ban của mình xuất hiện là thừa; (b) lãnh đạo phòng được tự chấm KPI cho phòng mình.
+- [ ] **Q9** — (a) các màn này đã ngừng, chỉ giữ dữ liệu cũ; (b) sẽ mở lại — khi đó điểm đề xuất là tổng (tối đa 20) hay trung bình?
+- [ ] **Q10** — (a) một menu cấu hình là đủ, công thức KI đã bỏ; (b) mỗi menu lẽ ra chỉ một nhóm loại (KI: 1, 4, 6; tỷ lệ: 2, 3, 5, 7) và công thức KI vẫn là kế hoạch.
+
+## ky-so/nghiep-vu.md (10)
+
+- [ ] **Q1** — Ở Khánh Hòa cán bộ đang ký bằng gì: (a) chỉ USB Token, (b) USB Token và SIM CA, (c) có cả MySign? Hình thức nào chắc chắn không dùng?
+- [ ] **Q2** — Loại 0 là (a) ảnh ký nháy (chữ ký tắt) hay (b) ảnh in? Ảnh ký loại 2, loại 3 dùng trong trường hợp nào (ví dụ chữ ký khi ký thay mặt, ký thừa lệnh…)?
+- [ ] **Q3** — Việc chọn loại ảnh khi soạn nhằm mục đích gì: (a) quyết định ảnh sẽ in lên văn bản khi ký, (b) chỉ để xem trước?
+- [ ] **Q4** — Quy định nghiệp vụ là: (a) mỗi người / đơn vị tự đăng ký USB qua lần ký đầu như hiện nay, (b) USB phải được khai trước (cá nhân tự khai hoặc quản trị khai) mới được ký?
+- [ ] **Q5** — Cặp trình ký giấy còn dùng ở Khánh Hòa không? Nếu dùng: "Bị trả lại" (4) khác "Đã ra, bị từ chối ký" (3) thế nào, và trợ lý có được chọn tự do mọi trạng thái hay phải đi theo thứ tự?
+- [ ] **Q6** — Văn thư Khánh Hòa đóng dấu số bằng (a) USB Token đơn vị, (b) chữ ký số tổ chức từ xa, (c) cả hai?
+- [ ] **Q7** — Dấu xác nhận dùng trong nghiệp vụ nào (ví dụ "sao y", "đã nhận", xác nhận văn bản đến…)?
+- [ ] **Q8** — Mức xác thực mong muốn: (a) như hiện nay là đủ, (b) phải kiểm cả tình trạng thu hồi với nhà cung cấp?
+- [ ] **Q9** — "Ký thay" trong nghiệp vụ là (a) đổi sang người khác ký (người mới nhận tin), (b) người khác ký thay mặt lãnh đạo nhưng vẫn ghi tên lãnh đạo?
+- [ ] **Q10** — Văn bản / phiếu trình mật (mã hóa file theo người nhận) hiện (a) đang dùng thật, (b) chỉ là dữ liệu thử trên môi trường DEV, (c) dùng cho một loại tài liệu khác (nêu rõ)?
+
+## lich-nhac-viec/nghiep-vu.md (10)
+
+- [ ] **Q1** — Nhắc việc có cần báo cho người nhận qua tin nhắn / thông báo không? (a) không cần, chỉ xem trên màn hình; (b) cần khi giao và khi nhắc lại; (c) cần ở mọi bước (giao, nhắc lại, trả lời, duyệt).
+- [ ] **Q2** — Người duyệt trả lời nhắc việc là ai? (a) chỉ lãnh đạo theo dõi; (b) lãnh đạo theo dõi và người giao; (c) mọi người theo dõi và người giao.
+- [ ] **Q3** — Đó có phải ý đồ: nhắc việc chỉ giao cho đơn vị **đã nhận văn bản**? Nếu văn thư quên chuyển cho một đơn vị trong nhắc việc thì (a) chấp nhận nhắc việc không tới đơn vị đó; (b) cần cảnh báo / tự giao.
+- [ ] **Q4** — Đơn vị giao của nhắc việc luôn phải là đơn vị ban hành văn bản? (a) đúng; (b) không — người soạn được chọn đơn vị giao khác.
+- [ ] **Q5** — Tính năng này dành cho ai? (a) chỉ lãnh đạo và trợ lý của lãnh đạo (phân bằng menu); (b) mọi cán bộ được cấp menu. Và "văn bản không chính thức" là gì trong thực tế (văn bản cấp trên chuyển qua kênh khác, thông tin nắm t…
+- [ ] **Q6** — Văn bản đã chuyển sang nắm tình hình có còn phải xử lý / hoàn thành như văn bản thường không? (a) không — chỉ để nắm thông tin; (b) vẫn phải xử lý ở nơi khác.
+- [ ] **Q7** — Có cần giữ lịch sử các lần trả lời / trả lại không? (a) không; (b) có.
+- [ ] **Q8** — Nghiệp vụ Định hướng còn dùng không? (a) đã ngừng, chỉ giữ để xem dữ liệu cũ; (b) tạm khóa, sẽ mở lại.
+- [ ] **Q9** — Có cần chặn ở đơn vị cấp dưới (phòng, ban) không? (a) không, cấp 1 là đủ; (b) có.
+- [ ] **Q10** — Mã 109 và 108 có phải cùng một loại tin ("cảnh báo chưa ký / cảnh báo ban hành")? Mã 444 "cảnh báo quá hạn" dùng cho tin nào (văn bản, nhiệm vụ, phiếu trình…)?
+
+## nhiem-vu/nghiep-vu.md (10)
+
+- [ ] **Q1** — Trạng thái nhiệm vụ nên đổi khi nào? (a) ngay khi đơn vị thực hiện (lãnh đạo) báo cáo — như hiện nay; (b) chỉ khi đơn vị giao duyệt.
+- [ ] **Q2** — "Phê duyệt của chỉ huy" có phải là tên cũ của "Nhiệm vụ chờ phê duyệt" (có thể bỏ)? Hay cần một danh sách riêng cho cấp chỉ huy cao hơn (ví dụ Ban Giám đốc)?
+- [ ] **Q3** — (a) Đóng nhiệm vụ cha khi còn nhiệm vụ con đang làm có được phép không? (b) Nếu được, nhiệm vụ con có tự đóng theo không?
+- [ ] **Q4** — Đơn vị cũ sau khi chuyển có còn trách nhiệm gì (báo cáo phần đã làm, phối hợp) không? (a) không, chỉ xem lịch sử; (b) có.
+- [ ] **Q5** — Giới hạn gia hạn tính theo (a) số lần được duyệt; (b) số lần đã xin (kể cả bị từ chối)? Báo cáo "đã gia hạn mấy lần" dùng con số nào?
+- [ ] **Q6** — Ô "Nhiệm vụ cá nhân" trên trang chủ phải hiển thị gì? (a) công việc cá nhân (phân hệ công việc); (b) nhiệm vụ giao cho cá nhân chủ trì; (c) cả hai.
+- [ ] **Q7** — Nhiệm vụ bí mật có được hiện tên với người không liên quan trong đơn vị không? (a) có (như hiện nay); (b) phải ẩn hẳn.
+- [ ] **Q8** — Các kênh này phục vụ hệ thống nào (VTS, cổng TTHT, kho dữ liệu, mobile…)? "Dịch vụ Mission" riêng có phải là hệ thống nhiệm vụ mới sẽ thay phần nhiệm vụ trong Văn phòng số không — và có phải nó ghi các cột "tự đăng ký /…
+- [ ] **Q9** — Đây là (a) liên kết sang hệ thống ngoài; (b) tính năng chưa làm; (c) đã bỏ?
+- [ ] **Q10** — Trạng thái biên bản có cần theo tiến độ các nhiệm vụ sinh ra từ nó không? (a) không cần, chỉ theo trạng thái văn bản kết luận; (b) cần.
+
+## phieu-trinh/nghiep-vu.md (1)
+
+- [ ] **Q7** — Cột "loại" của phiếu trình nghĩa là gì (có phải loại bản như văn bản)? Có phải tính năng ở nhánh khác chưa vào `kha_develop`? | (2026-10-01: chủ dự án **chưa rõ** — cần hỏi người làm tính năng / BA; DB DEV: 116 phiếu có…
+
+## tai-lieu-mau/nghiep-vu.md (8)
+
+- [ ] **Q1** — Ba menu này có phải cố ý trùng nhau? (a) đúng — chỉ là ba lối vào cùng một thư viện; (b) "Thư viện cá nhân" và "Quy trình - Quy định" phải là kho riêng (theo thư mục / theo người).
+- [ ] **Q2** — Nghiệp vụ thư mục thư viện còn dùng không? (a) đã ngừng, menu "Cấu hình thư viện" là thừa; (b) cần dùng — xếp văn bản vào thư mục kèm mô tả và thời hạn hiệu lực.
+- [ ] **Q3** — Phạm vi xem thư viện như vậy có đúng ý đồ? (a) đúng; (b) lãnh đạo / văn thư cấp trên cần thấy cả văn bản công khai cho đơn vị cấp dưới.
+- [ ] **Q4** — Thao tác xóa tag trong popup nghĩa là gì? (a) chỉ bỏ tag khỏi văn bản đang mở; (b) xóa hẳn tag khỏi danh mục đơn vị (như hiện tại) — khi đó tên tag trên các văn bản cũ có cần gỡ theo không?
+- [ ] **Q5** — Trường thứ hai của biểu mẫu nên gọi là gì trên màn hình: (a) "Lĩnh vực" (đúng dữ liệu đang lưu); (b) "Ngành" — khi đó cần danh mục ngành riêng?
+- [ ] **Q6** — Bộ ý kiến mẫu cũ còn dùng ở đâu không? (a) không — đã thay bằng mẫu ý kiến mới; (b) còn dùng (ví dụ trên ứng dụng di động).
+- [ ] **Q7** — (a) Biểu mẫu hết hiệu lực có nên ẩn khỏi danh sách mặc định không? (b) Biểu mẫu áp dụng cho đơn vị cha thì đơn vị con thấy là đúng; còn đơn vị cha thấy biểu mẫu của đơn vị con có cần không?
+- [ ] **Q8** — Vai trò "REPORT" trong thực tế là ai (chuyên viên tổng hợp, văn thư, thư ký…)? Lãnh đạo đơn vị có cần tự gửi được báo cáo ngày không?
+
+## tich-hop/nghiep-vu.md (10)
+
+- [ ] **Q1** — Ngoài Thư viện điện tử, có hệ thống nào khác cần nhận văn bản do văn thư chủ động chia sẻ không? (a) chỉ Thư viện điện tử; (b) sẽ có thêm — cần cho văn thư chọn hệ thống nhận. Thư viện điện tử hiện đã kết nối chạy thật c…
+- [ ] **Q2** — Văn thư có cần thao tác "thu hồi chia sẻ" (văn bản vẫn còn nhưng không muốn thư viện giữ nữa) không? (a) không cần; (b) cần.
+- [ ] **Q3** — Mọi văn bản từ KNTC đều là công văn thường? (a) đúng; (b) KNTC cần gửi kèm thể loại / độ khẩn. Và văn thư được KNTC "đại diện" có cần là văn thư của đúng đơn vị ban hành (hiện code kiểm đúng như vậy)?
+- [ ] **Q4** — Ở Khánh Hòa, danh sách cán bộ / đơn vị được (a) quản trị nhập tay / import trong Văn phòng số; (b) đồng bộ tự động từ một hệ thống nhân sự của tỉnh — hệ thống nào? Hai menu "Đồng bộ người dùng" và "Thông tin nhân viên VH…
+- [ ] **Q5** — Mở file đính kèm trên trình soạn thảo có được tính là "đã đọc văn bản" không? (a) có; (b) không — chỉ tính khi mở chi tiết văn bản.
+- [ ] **Q6** — Cờ đăng nhập 0 / 1 của từng phiên bản nghĩa là gì: (a) 1 = chỉ cho đăng nhập SSO / VNeID, 0 = cho cả tài khoản; (b) nghĩa khác (mô tả)?
+- [ ] **Q7** — Hệ thống ngoài có cần biết thời điểm văn bản **đã ký xong** (trước khi ban hành) không? (a) không, chỉ cần ban hành / hủy / từ chối; (b) cần.
+- [ ] **Q8** — Văn phòng số Khánh Hòa có quản lý văn bản / nhiệm vụ theo **tổ chức Đảng** riêng không? (a) có — cây Đảng khác cây chính quyền, sẽ làm màn; (b) chưa dùng.
+- [ ] **Q9** — Ở Khánh Hòa có đúng **hai cụm máy chủ** (Internet và mạng nội bộ) dùng chung dữ liệu đồng bộ qua lại không? (a) có hai cụm; (b) chỉ một cụm.
+- [ ] **Q10** — Những tích hợp này còn dùng ở Khánh Hòa không? (a) đã ngừng, chỉ giữ dữ liệu cũ; (b) còn dùng — nêu hệ thống nào.
+
+## van-ban/lien-thong/nghiep-vu.md (10)
+
+- [ ] **Q1** — Trục liên thông đang kết nối thật là trục nào? (a) trục văn bản quốc gia (VPCP); (b) trục LGSP tỉnh Khánh Hòa; (c) cả hai. Danh mục đơn vị liên thông lấy từ trục đó hay do quản trị nhập tay?
+- [ ] **Q2** — Hệ thống bên kia là hệ thống nào (cấp nào)? Khi bên gửi sửa hoặc xóa văn bản, bên nhận có cần thấy thay đổi không? (a) không cần; (b) cần cập nhật / xóa theo.
+- [ ] **Q3** — Việc báo hoàn thành cho cơ quan gửi là (a) văn thư tự bấm ở màn liên thông khi thấy cần; (b) phải tự động khi văn bản đến được hoàn thành?
+- [ ] **Q4** — Khi nhận lệnh thu hồi / thay thế từ cơ quan ngoài: (a) văn thư tự xử lý thủ công; (b) hệ thống phải tự thu hồi / thay văn bản đến đã vào sổ.
+- [ ] **Q5** — Mô hình thực tế ở Khánh Hòa là (a) văn bản liên thông về thẳng đơn vị nhận (không cần đầu mối phân phối); (b) về một đầu mối (văn phòng) rồi phân phối cho đơn vị. Nếu (b), đơn vị nhận bản phân phối có cần báo trạng thái…
+- [ ] **Q6** — "W00" là loại đơn vị gì? (a) mã giữ chỗ / đơn vị ảo không nhận văn bản; (b) nhóm đơn vị khác.
+- [ ] **Q7** — Các đơn vị nhận hai bản là đơn vị nào và vì sao (a) đơn vị đang dùng song song một hệ thống khác; (b) yêu cầu lưu vết trên trục; (c) lý do khác?
+- [ ] **Q8** — Văn bản migrate còn cần tra cứu không? Nếu cần: (a) mọi người dùng xem tất cả; (b) chỉ văn thư / đơn vị liên quan xem văn bản của mình.
+- [ ] **Q9** — Chức năng này (a) đã ngừng hẳn — có thể khóa menu; (b) sẽ làm lại theo trục mới?
+- [ ] **Q10** — Thu hồi từ hệ thống khác có cần thu hồi luôn các bản đã chuyển tiếp trong đơn vị nhận không? (a) có; (b) không.
+
+## van-ban/luong-xu-ly/nghiep-vu.md (8)
+
+- [ ] **Q1** — Nhóm luồng được hiểu là gì: (a) bộ điều kiện theo thuộc tính văn bản (như hệ thống đang làm); (b) phân loại văn bản Đảng / Chính quyền; (c) cả hai?
+- [ ] **Q2** — "Đơn vị áp dụng" mang ý nghĩa: (a) đơn vị sở hữu / quản trị luồng (như hiện tại); (b) luồng chỉ được áp dụng cho văn bản của đơn vị đó?
+- [ ] **Q3** — Cách làm này có đúng ý đồ không: (a) đúng — quản trị tự chịu trách nhiệm khi sửa luồng đang dùng; (b) văn bản đã vào luồng phải đi tiếp theo phiên bản luồng lúc bắt đầu?
+- [ ] **Q4** — Quy tắc "người ký thêm không làm đổi luồng" có đúng ý đồ không? Giới hạn 5 người và chỉ cho thêm vai trò lãnh đạo đơn vị / thủ trưởng có phải quy định nghiệp vụ?
+- [ ] **Q5** — Khác biệt này là: (a) chủ ý (nhiều văn bản khác thuộc tính nên dùng luồng chung); (b) chuyển nhiều cũng phải theo nhóm của từng văn bản?
+- [ ] **Q6** — Lịch sử thay đổi luồng được thiết kế để theo dõi: (a) chỉ thông tin chung; (b) cả sơ đồ (nút, người theo nút, hành động)?
+- [ ] **Q7** — Chức năng luồng trình ký mẫu đã (a) bỏ hẳn, thay bằng cấu hình luồng; (b) còn kế hoạch dùng lại?
+- [ ] **Q8** — Với luồng văn bản đi, nút kết thúc **không** đánh dấu Ban hành mang ý nghĩa nghiệp vụ gì (ví dụ: kết thúc không ban hành), hay mọi nút kết thúc đều phải là nút Ban hành?
+
+## van-ban/quan-ly-chung/nghiep-vu.md (9)
+
+- [ ] **Q1** — Công khai văn bản nghĩa là: (a) toàn hệ thống được xem, phạm vi chỉ để biết đơn vị nào cần đọc; (b) chỉ đơn vị trong phạm vi được xem. Khi hủy công khai thì người ngoài luồng nhận (a) vẫn xem được; (b) không còn xem được…
+- [ ] **Q2** — Mục "Văn bản đi" của Tra cứu văn bản hàng năm cần hiện: (a) văn bản đơn vị mình ban hành; (b) văn bản đi mình nhận được; (c) cả hai?
+- [ ] **Q3** — Một người có thể theo dõi văn bản đi của đơn vị A nhưng văn bản đến của đơn vị B không? (a) không — một cấu hình chung là đủ; (b) có — tách riêng.
+- [ ] **Q4** — "Toàn bộ" và "Liền kề" khác nhau thế nào trong nghiệp vụ (ví dụ: liền kề = chỉ đơn vị được chọn, toàn bộ = cả đơn vị con)? Có còn cần hai loại không?
+- [ ] **Q5** — Hai thuộc tính này dùng để làm gì (ví dụ: lọc văn bản quy phạm pháp luật, văn bản cần xử lý)? Giá trị 2 nghĩa là gì?
+- [ ] **Q6** — Khi cán bộ bàn giao, cần bàn giao những văn bản nhận được nào? (a) chỉ văn bản chưa xử lý xong; (b) tất cả văn bản đã nhận (cả đã hoàn thành) để người mới tra cứu.
+- [ ] **Q7** — Ghi chú trên văn bản dành cho ai đọc? (a) chỉ người viết; (b) cùng phòng / đơn vị trực tiếp; (c) toàn đơn vị cấp 2 như hiện nay.
+- [ ] **Q8** — Hai chức năng này còn dùng không? (a) ẩn menu; (b) còn cần — mô tả ngắn người dùng mong thấy gì.
+- [ ] **Q9** — Hướng mong muốn khi trùng: (a) xin cấp thể loại của đơn vị kia; (b) chuyển thành dùng chung toàn hệ thống; (c) cả hai như hiện nay.
+
+## van-ban/so-van-ban/nghiep-vu.md (10)
+
+- [ ] **Q1** — Hiện còn phân biệt **sổ Đảng** với sổ thường không? (a) không — ô chỉ là số thứ tự, việc tự chọn sổ không cần xét Đảng; (b) có — cần một ô "Sổ Đảng" riêng, tách khỏi số thứ tự.
+- [ ] **Q2** — Đầu năm mới, số đi / số đến phải bắt đầu lại từ 1 theo cách nào? (a) văn thư tự tạo sổ năm mới và tự khóa sổ năm cũ; (b) hệ thống tự ẩn sổ năm cũ khỏi danh sách chọn; (c) văn thư vẫn được dùng sổ năm cũ trong một thời gi…
+- [ ] **Q3** — (1) Bộ 4 sổ trên có đúng là bộ sổ chuẩn của mọi đơn vị (kể cả phòng, ban)? (2) Đơn vị đã có một vài sổ thì: (a) chấp nhận không sinh thêm; (b) cần sinh bù đúng loại còn thiếu.
+- [ ] **Q4** — Sổ dùng chung dùng trong trường hợp nào (ví dụ phòng ban dùng chung sổ của cơ quan)? Khi đơn vị vừa có sổ riêng vừa được dùng chung sổ cấp trên thì ưu tiên: (a) sổ dùng chung; (b) sổ riêng.
+- [ ] **Q5** — Sổ 5 năm dùng cho loại văn bản nào? Có cần hệ thống tự chọn sổ 5 năm như sổ 1 năm không: (a) không; (b) có.
+- [ ] **Q6** — Nghiệp vụ giữ số trước còn cần không? (a) bỏ; (b) cần — giữ số cho trường hợp nào (văn bản ký tay ngoài hệ thống, văn bản sẽ ban hành sau…), và khi cấp số có phải tự bỏ qua số đang giữ không?
+- [ ] **Q7** — Sổ đến đã có văn bản tiếp nhận vào sổ có được phép xóa không? (a) không — phải khóa; (b) có.
+- [ ] **Q8** — (1) Hai menu có phải một menu thừa không: (a) giữ cả hai; (b) bỏ một. (2) Khi văn thư của nhiều đơn vị xuất báo cáo cho một đơn vị đã chọn, báo cáo phải chứa: (a) chỉ đơn vị đã chọn; (b) mọi đơn vị mình làm văn thư.
+- [ ] **Q9** — Menu này dùng để làm gì? (a) bỏ menu; (b) cần — xem danh sách văn bản đã vào các sổ của đơn vị (giống sổ đăng ký trên màn hình).
+- [ ] **Q10** — Báo cáo ngày VP TWĐ (và phân loại sổ theo Trung ương / Địa phương) còn dùng không? (a) đã bỏ; (b) còn — cần đưa lại vào danh sách báo cáo.

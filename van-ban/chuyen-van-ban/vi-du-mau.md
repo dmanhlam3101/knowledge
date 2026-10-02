@@ -21,7 +21,7 @@
 | Business | `DB.getTreeDocInUserFlow` :5845, `getListDocInUserFlowByOrg` :5657-5669, `getListOrgFlow` :5763-5773 | `serveGetRequest/servePostRequest` tới `api.flow-manager.doc-in.*` |
 | BE gen-2 | `BE2/controller/FlowManagerController.java:203-333` → `FlowManagerService` | Endpoint gen-2 trả `Page<VhrEmployeeDTO>` / `Page<VhrOrgDTO>` |
 
-Bản nâng cấp cùng ý tưởng (cây lazy-load từng cấp, mỗi nút có `selectable`/`isLeaf`, `SysOrganizationTreeModel.ChildrenLoader`) nằm ở nhánh chưa merge `taipd/feature/YC_VT_PH(_fe)` — xem `nghiep-vu.md` mục 7 và `knowledge/yeu-cau/2026-09-16-van-thu-phat-hanh-chuyen-vb-di-web.md`; nên lấy làm mẫu khi cây lớn.
+Bản nâng cấp cùng ý tưởng (cây lazy-load từng cấp, mỗi nút có `selectable`/`isLeaf`, `SysOrganizationTreeModel.ChildrenLoader`) nằm ở nhánh chưa merge `taipd/feature/YC_VT_PH(_fe)` — xem `nghiep-vu.md` mục 8 và `knowledge/yeu-cau/2026-09-16-van-thu-phat-hanh-chuyen-vb-di-web.md`; nên lấy làm mẫu khi cây lớn.
 
 ## Mẫu 3 — Cấu hình theo đơn vị điều khiển hành vi chuyển: "Cấu hình chuyển văn bản sau khi tiếp nhận"
 

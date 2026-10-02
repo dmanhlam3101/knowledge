@@ -2,6 +2,10 @@
 
 **Phân hệ:** `van-ban/di` · **Tầng:** Web (ZK) + BE gen-2 · **Ngày:** 2026-09-16 · **Thay thế** phần "hướng dẫn kỹ thuật" của `2026-09-15-loc-don-vi-nhan-khi-ban-hanh.md` (bản đó còn giả định dùng `orgLevel` và dựng cây ở web — đã bỏ).
 
+> **Cập nhật 2026-10-02 — bỏ "ngang cấp":** nhóm thứ 4 đổi từ "cùng độ sâu path + có mã" thành **mọi đơn vị có mã định danh** (mọi cấp/nhánh); thêm **mọi đơn vị cấp 0** (`LEVEL_0_PATH_DEPTH = 2`, không xét mã, **không** phụ thuộc cấp của đơn vị ban hành). Endpoint/DTO không đổi.
+
+> **Cập nhật 2026-10-02 (2) — phạm vi CÁ NHÂN tách riêng:** tab Cá nhân + ô tìm cá nhân chỉ trong **đơn vị ban hành + con cháu**; đơn vị ban hành = **VPUB** (`sysOrganization.id.vpub`, BE đọc qua `FuncUtils.environment`) thì thêm cá nhân của **chính đơn vị cha trực tiếp** (UBND tỉnh), không lấy đơn vị con khác của UBND (`VhrOrgServiceImpl.findDocManagerUserParentOrg`). Đơn vị có mã / cấp 0 ngoài nhánh chỉ áp dụng cho tab Đơn vị.
+
 ## 1. Nghiệp vụ
 
 Văn thư của **đơn vị ban hành** chuyển **văn bản đơn vị** ở màn *Văn bản ban hành* chỉ được chọn:
@@ -11,11 +15,10 @@ Văn thư của **đơn vị ban hành** chuyển **văn bản đơn vị** ở 
 | Cấp cha | mọi đơn vị nằm trên `PATH` của đơn vị ban hành |
 | Đơn vị ban hành | `DOCUMENT.BUILT_GROUP_ID` |
 | Con cháu | `PATH LIKE '<path đơn vị ban hành>%'` |
-| Ngang cấp có mã | **cùng độ sâu path** (số segment) **và** `IDENTIFIER_CODE IS NOT NULL` — không cần cùng cha |
+| Đơn vị có mã | `IDENTIFIER_CODE IS NOT NULL` — **mọi độ sâu, mọi nhánh** (trừ nút ảo `1`) |
+| Cấp 0 (mọi đơn vị ban hành) | độ sâu `PATH` = 2 (`/1/<id>/`) — mọi đơn vị, **không** xét mã |
 
-Không được chọn đơn vị con của cơ quan ngang cấp. Tổ tiên của đơn vị ngang cấp ở nhánh khác chỉ hiện trên cây để mở xuống (node "chỉ điều hướng"), **không** báo lỗi khi click — cây chỉ để lọc; việc chặn nằm ở danh sách bên phải.
-
-Lý do dùng độ sâu path: dữ liệu `ORG_LEVEL` sai (vd `/1/148842/9134381/9135455/9135456/` sâu 5 nhưng `ORG_LEVEL = 2`).
+Ngoài nhánh đơn vị ban hành, đơn vị **không có mã** không chọn được. Đơn vị không mã là tổ tiên của một đơn vị có mã chỉ hiện trên cây để mở xuống (node "chỉ điều hướng"), **không** báo lỗi khi click — cây chỉ để lọc; việc chặn nằm ở danh sách bên phải.
 
 ## 2. Điều kiện kích hoạt
 
@@ -59,19 +62,19 @@ TransferDocumentVM (popup Chuyển văn bản)
 
 | Endpoint | Request | Response | Query |
 |---|---|---|---|
-| `POST /api/vhr-org/get-doc-manager-transfer-scope` | `GetDocManagerTransferDTO{builtOrgId}` | `GetDocManagerTransferScopeResponseDTO`: `builtOrg`, `builtOrgDepth`, `selectableOrgIds` (tổ tiên + đơn vị ban hành + ngang cấp có mã — **chỉ id**), `descendantOrgIds` (chỉ id) | 3: `findById`, `VhrOrgRepositoryJPA.findOrgIdHasIdentifierCodeByPathDepth`, `findChildrenAllLevel` |
+| `POST /api/vhr-org/get-doc-manager-transfer-scope` | `GetDocManagerTransferDTO{builtOrgId}` | `GetDocManagerTransferScopeResponseDTO`: `builtOrg`, `builtOrgDepth`, `selectableOrgIds` (tổ tiên + đơn vị ban hành + mọi đơn vị có mã — **chỉ id**), `descendantOrgIds` (chỉ id), `userOrgIds` + `userRootOrg` (phạm vi/gốc cây **cá nhân**) | 3: `findById`, `VhrOrgRepositoryJPA.findOrgIdHasIdentifierCode` + `findOrgIdByPathDepth(2)`, `findChildrenAllLevel` |
 | `POST /api/vhr-org/get-doc-manager-transfer-children` | `GetDocManagerTransferDTO{builtOrgId, parentOrgId}` (`parentOrgId` = nút đang mở, null = gốc) | `List<VhrOrgResponseDTO>` con trực tiếp **có liên quan**, mỗi node có `selectable`, `isLeaf` | 1: `VhrOrgRepositoryImpl.getDocManagerTransferChildren` |
-| `POST /api/vhr-org/get-doc-manager-transfer-org-ids` | `GetDocManagerTransferDTO{builtOrgId, orgId}` (`orgId` = nút đang chọn, null = toàn bộ phạm vi) | `List<Long>` id đơn vị **chọn được** nằm dưới node `orgId` (không gồm node "chỉ để mở cây") | 1: `VhrOrgRepositoryImpl.getDocManagerTransferOrgIds` |
+| `POST /api/vhr-org/get-doc-manager-transfer-org-ids` | `GetDocManagerTransferDTO{builtOrgId, orgId}` (`orgId` = nút đang chọn, null = toàn bộ phạm vi) | `List<Long>` id đơn vị trong **phạm vi cá nhân** (đơn vị ban hành + con cháu; VPUB thêm chính đơn vị cha) nằm dưới `orgId` | 1: `VhrOrgRepositoryImpl.getDocManagerTransferOrgIds(builtPath, parentOrgId, nodePath)` |
 
 Cả 3 endpoint dùng chung **một** DTO request `dto.request.GetDocManagerTransferDTO {builtOrgId, parentOrgId, orgId}` — key giữ nguyên như bản đã bàn giao cho mobile (`children` dùng `parentOrgId`, `org-ids` dùng `orgId`).
 
 Con "có liên quan" của `parentOrgId` (SQL `WHERE org_parent_id = :p AND (a ∨ b ∨ c ∨ d)`):
 - (a) trong nhánh đơn vị ban hành → `selectable=true`, `isLeaf` theo DB;
 - (b) tổ tiên đơn vị ban hành → `selectable=true`, `isLeaf=0`;
-- (c) cùng độ sâu + có mã → `selectable=true`, `isLeaf=1` (không kéo con của ngang cấp);
-- (d) có hậu duệ (c) (`EXISTS … d.path LIKE o.path||'%'`) → `selectable=false`, `isLeaf=0` (chỉ để mở).
+- (c) có mã, hoặc là đơn vị cấp 0 (`IS_LEVEL_0`) → `selectable=true`, `isLeaf=0` nếu còn hậu duệ có mã, ngược lại `1` (không kéo con không mã);
+- (d) không mã nhưng có hậu duệ có mã (`EXISTS … d.path LIKE o.path||'%'`) → `selectable=false`, `isLeaf=0` (chỉ để mở).
 
-Service: `VhrOrgServiceImpl.getDocManagerTransferScope / getDocManagerTransferChildren`. Độ sâu = `LENGTH(path) - LENGTH(REPLACE(path,'/','')) - 1`.
+`isLeaf` tính trong SQL (`CASE … HAS_CODED_DESCENDANT`), `selectable` tính ở service: `VhrOrgServiceImpl.getDocManagerTransferScope / getDocManagerTransferChildren`.
 
 Bẫy: `BaseRepositoryImpl.getListData` map **tên cột = tên field**, phải alias `sys_organization_id AS sysOrganizationId…` (không `SELECT o.*`). API POST nhận DTO bắt buộc `@RequestBody`.
 
@@ -90,9 +93,10 @@ Bẫy: `BaseRepositoryImpl.getListData` map **tên cột = tên field**, phải 
   - `builtOrgNode` = `scope.builtOrg` → `ARG_ORG` (focus + auto mở cây tới đơn vị ban hành);
   - `ancestorAndSelfIds` = id trong `builtOrg.path` → `ARG_ORG_ID` (filter `id IN` của danh sách — **cố ý không** đưa id ngang cấp vì `SysOrganizationLookupVM` sẽ `findByIds` cả list);
   - `selectablePathPrefixes` = `[builtOrg.path]` → `ARG_SELECTABLE_PATH_PREFIXES`;
-  - `identifierCodeDepth` = `builtOrgDepth` → `ARG_SELECTABLE_IDENTIFIER_CODE_DEPTH`;
+  - `hasIdentifierCode` = `TRUE` → `ARG_SELECTABLE_HAS_IDENTIFIER_CODE`;
+  - `allPathDepth` = `2` (luôn) → `ARG_SELECTABLE_ALL_PATH_DEPTH`;
   - `childrenLoader` → `ARG_TREE_CHILDREN_LOADER`; `doc.builtGroupId` → `ARG_SELECTABLE_SCOPE_BUILT_ORG_ID` (tab Cá nhân lọc danh sách).
-- `prepareForOrgLookup` (tab Đơn vị) nhận `ARG_TREE_ROOT`, `ARG_ORG`, `ARG_ORG_ID`, `ARG_SELECTABLE_PATH_PREFIXES`, `ARG_SELECTABLE_IDENTIFIER_CODE_DEPTH`, `ARG_TREE_CHILDREN_LOADER`; `prepareForUserLookup` (tab Cá nhân) nhận `ARG_TREE_ROOT`, `ARG_ORG`, `ARG_TREE_CHILDREN_LOADER`, `ARG_SELECTABLE_SCOPE_BUILT_ORG_ID`.
+- `prepareForOrgLookup` (tab Đơn vị) nhận `ARG_TREE_ROOT`, `ARG_ORG`, `ARG_ORG_ID`, `ARG_SELECTABLE_PATH_PREFIXES`, `ARG_SELECTABLE_HAS_IDENTIFIER_CODE`, `ARG_SELECTABLE_ALL_PATH_DEPTH`, `ARG_TREE_CHILDREN_LOADER`; `prepareForUserLookup` (tab Cá nhân) nhận `ARG_TREE_ROOT`, `ARG_ORG`, `ARG_TREE_CHILDREN_LOADER`, `ARG_SELECTABLE_SCOPE_BUILT_ORG_ID`.
 - `getDocManagerTree()` cache theo instance vì `sendTabChangeEvent` gọi lại mỗi lần đổi tab.
 
 ### 3.4 Web — cây: `SysOrganizationTreeModel`
@@ -109,19 +113,22 @@ Bẫy: `BaseRepositoryImpl.getListData` map **tên cột = tên field**, phải 
 
 ### 3.5 Web — tab Đơn vị: `SysOrganizationLookupVM`
 
-- Args mới: `ARG_SELECTABLE_PATH_PREFIXES`, `ARG_SELECTABLE_IDENTIFIER_CODE_DEPTH`, `ARG_SELECTABLE_ORG_IDS`, `ARG_TREE_CHILDREN_LOADER`.
+- Args mới: `ARG_SELECTABLE_PATH_PREFIXES`, `ARG_SELECTABLE_HAS_IDENTIFIER_CODE` (Boolean), `ARG_SELECTABLE_ALL_PATH_DEPTH` (Integer), `ARG_SELECTABLE_ORG_IDS`, `ARG_TREE_CHILDREN_LOADER`.
 - `createSysOrgTree()` cuối: `treeModel.setChildrenLoader(treeChildrenLoader)`.
-- `findDataList / countDataList`: `obj.setIncludePathPrefixes(...)`, `obj.setIncludeIdentifierCodeDepth(...)` (transient mới trên `com.viettel.vps.entity.SysOrganization`).
-- DAO `SysOrganizationJpaDao.appendInCondition(query, params, "o.sysOrganizationId", "filter", ids, includePathPrefixes, includeIdentifierCodeDepth)` sinh:
+- `findDataList / countDataList`: `obj.setIncludePathPrefixes(...)`, `obj.setIncludeHasIdentifierCode(...)`, `obj.setIncludeAllPathDepth(...)` (transient mới trên `com.viettel.vps.entity.SysOrganization`).
+- DAO `SysOrganizationJpaDao.appendInCondition(query, params, "o.sysOrganizationId", "filter", ids, includePathPrefixes, includeHasIdentifierCode, includeAllPathDepth)` sinh:
   ```sql
   AND ( o.sysOrganizationId IN (:filter0)
         OR o.path LIKE :filterPath0                                   -- '<builtOrgPath>%'
-        OR ((LENGTH(o.path) - LENGTH(REPLACE(o.path,'/','')) - 1) = :filterDepth AND o.identifierCode IS NOT NULL) )
+        OR o.identifierCode IS NOT NULL
+        OR (LENGTH(o.path) - LENGTH(REPLACE(o.path,'/','')) - 1) = :filterDepth )   -- mọi đơn vị cấp 0 (:filterDepth = 2)
   ```
   dùng ở `findByCondition` và `getCountByCondition` (V2 không đổi). Danh sách chỉ hiện đơn vị hợp lệ → không cần disable.
 - Click cây: `onClickTreeItem` giữ nguyên (chỉ set `dataSearch.path` rồi `doSearch`).
 
 ### 3.6 Web — tab Cá nhân: `UserWSLookupVM`
+
+- **Cây riêng** (sửa 2026-10-02): `MultiTypeObjectLookupVM.prepareForUserLookup` truyền `DocManagerTree.userRoots`, **không** truyền `childrenLoader` (cây mở con theo DB). Thường: gốc = entity đơn vị ban hành. VPUB: gốc = clone đơn vị cha `onlyCurrentOrg = true`, `listOrgLimitOneLevel = [VPUB]` (giống `BussinessUtil.getGiveAdviceTreeRootOrgs`).
 
 - Đọc `ARG_TREE_CHILDREN_LOADER`, `ARG_SELECTABLE_SCOPE_BUILT_ORG_ID`; `createSysOrgTree()` set loader.
 - **Ẩn hẳn user ngoài phạm vi** (không chỉ disable): `isSelectableScopeMode()` = có `ARG_SELECTABLE_SCOPE_BUILT_ORG_ID` → `getPagingCount`/`findDataList` đi nhánh riêng:
@@ -134,7 +141,7 @@ Bẫy: `BaseRepositoryImpl.getListData` map **tên cột = tên field**, phải 
 
 - `initSearchScopeOrgIds()`: nếu `isDocManagerTransferOut()` → `searchScopeOrgIds = buildDocManagerSearchScopeOrgIds()` = `selectableOrgIds` + builtOrgId + `descendantOrgIds` (từ scope).
 - `doSearchOrg` → `findByConditionV2(..., searchScopeOrgIds, ...)` → `id IN`.
-- `doSearchReceiver` → `requisitionBusiness.getListUser(..., searchScopeOrgIds, current = … || isDocManagerTransferOut(), ...)`. `current=true` ⇒ `onlyParentGroup=1` ⇒ gen-1 `StaffDAO.getListUserLongPress` lọc `u.SYS_ORGANIZATION_ID IN (…)` **chính xác**. Nếu không ép, `lstGroupId` mặc định là `START WITH … CONNECT BY` kéo cả con cháu của từng id (đưa tổ tiên vào là ra cả tỉnh).
+- `doSearchReceiver` → `requisitionBusiness.getListUser(..., searchScopeUserOrgIds (= scope.userOrgIds; fallback searchScopeOrgIds), current = … || isDocManagerTransferOut(), ...)`. `current=true` ⇒ `onlyParentGroup=1` ⇒ gen-1 `StaffDAO.getListUserLongPress` lọc `u.SYS_ORGANIZATION_ID IN (…)` **chính xác**. Nếu không ép, `lstGroupId` mặc định là `START WITH … CONNECT BY` kéo cả con cháu của từng id (đưa tổ tiên vào là ra cả tỉnh).
 
 ## 4. Đã gỡ
 
@@ -148,9 +155,9 @@ Bẫy: `BaseRepositoryImpl.getListData` map **tên cột = tên field**, phải 
 
 ## 5. Kiểm thử
 
-1. Văn thư Sở A, tab Đã cấp số, radio *Văn bản đơn vị* → Chuyển → Chọn đơn vị: cây gốc → UBND tỉnh → Sở A (mở sẵn), các Sở khác là lá; Tỉnh ủy (nếu có Ban cùng độ sâu có mã) mở được, click vào danh sách trống; bấm `+` Sở A → phòng ban hiện dần (Network: 1 call `children`/lần mở).
-2. Danh sách tab Đơn vị: click UBND tỉnh → có UBND tỉnh, Sở A + phòng, các Sở có mã; **không** có phòng của Sở khác. Tìm nhanh "phòng" của Sở khác → không ra.
-3. Tab Cá nhân: click UBND tỉnh → chỉ thấy user của UBND tỉnh, Sở A (+ phòng), các Sở có mã — **không thấy** user phòng của Sở khác (kiểm cả số bản ghi/phân trang); click Sở B → user của Sở B (tick được), không có user phòng dưới Sở B; click phòng dưới Sở A → tick được.
-4. Ô "Họ tên, email…" / "Tên đơn vị…" trong popup Chuyển: gõ user/phòng của Sở B → không ra; gõ Sở B, UBND tỉnh, phòng của Sở A → ra.
+1. Văn thư Sở A, tab Đã cấp số, radio *Văn bản đơn vị* → Chuyển → Chọn đơn vị: cây gốc → UBND tỉnh → Sở A (mở sẵn); Sở khác có mã: lá nếu không còn con có mã, mở được nếu có (chỉ hiện con có mã); đơn vị có mã ở **cấp khác** Sở A (sâu hơn/nông hơn) cũng hiện và chọn được; bấm `+` Sở A → phòng ban hiện dần (Network: 1 call `children`/lần mở).
+2. Danh sách tab Đơn vị: click UBND tỉnh → có UBND tỉnh, Sở A + phòng, mọi đơn vị có mã bên dưới; **không** có phòng không mã của Sở khác. Tìm nhanh "phòng" (không mã) của Sở khác → không ra; tìm đơn vị có mã ở cấp khác → ra.
+3. Tab Cá nhân: cây chỉ có Sở A + phòng (không có UBND tỉnh, Sở B, cấp 0 khác); click Sở A → user Sở A + phòng; số bản ghi/phân trang khớp. Văn thư **VPUB**: cây = UBND tỉnh (chỉ 1 con VPUB) → VPUB → phòng; click UBND tỉnh → user của chính UBND tỉnh + VPUB (+ phòng), **không** có user các Sở.
+4. Ô "Tên đơn vị…" trong popup Chuyển: gõ phòng (không mã) của Sở B → không ra; gõ Sở B, UBND tỉnh, đơn vị cấp 0, phòng của Sở A → ra. Ô "Họ tên, email…": chỉ ra user Sở A + phòng; gõ user Sở B / UBND tỉnh → không ra. VPUB: ra user VPUB + phòng và user của chính UBND tỉnh; gõ user một Sở → không ra.
 5. Radio *Văn bản cá nhân* (orgRangeState=1) → hành vi cũ (giới hạn cấp 1). Chờ cấp số → cấp số → chi tiết → Chuyển → áp phạm vi mới.
 6. Hồi quy: VB đến, chuyển tự do, chuyển nhiều VB, người không phải văn thư → `getDocManagerTree()` trả null, `treeChildrenLoader` null → tree model đi nhánh DB cũ.

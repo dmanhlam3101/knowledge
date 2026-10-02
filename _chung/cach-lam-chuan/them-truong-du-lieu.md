@@ -13,7 +13,7 @@ Yêu cầu kiểu "thêm cột X cho văn bản", "thêm trạng thái Y", "thê
 | 5 | Entity web legacy | `com.viettel.voffice.entity.<T>` / `com.viettel.vps.entity.<T>` nếu tồn tại (137 entity web) | **Bắt buộc** nếu web còn đọc bảng qua JPA — kiểm tra `ban-do.md` mục 4/5 |
 | 6 | Model web | `com.voffice.service.entity.<T>Entity` / `dto` | Trùng tên JSON |
 | 7 | zul + VM | Thêm ô nhập/hiển thị, validate trong `validateDoSave()` | Nhãn i18n |
-| 8 | Elasticsearch/Solr | Nếu cột cần tìm kiếm toàn văn: `ElasticDocument*`, `els_query/`, `SolrSearch*` | ❓ quy trình reindex |
+| 8 | Elasticsearch | Nếu cột cần tìm kiếm: truy vấn ở `els_query/**`, `BE1/elasticsearch/search/*` (lớp tên `Solr*` thực chất gọi ES). Hệ thống **không** tự ghi chỉ mục nghiệp vụ — chỉ phát tín hiệu (`ELASTIC_DOCUMENT_PUBLIC` / `_PRIVATE`, cột `INDEXING_STATE`) cho dịch vụ đánh chỉ mục **ngoài repo**; thêm trường vào chỉ mục phải làm cùng đội vận hành dịch vụ đó | `tich-hop` NV-10 BR-24, BR-25 (sửa 2026-10-02: Solr đã bỏ) |
 | 9 | Liên thông | Nếu cột phải đi ra ngoài (trục): `InObjectSendXml`, `ConnectDocument` mapping | |
 
 ## 2. Thêm trạng thái
@@ -22,12 +22,12 @@ Trước hết xác định trạng thái đó thuộc kiểu nào:
 
 | Kiểu | Nhận biết | Cách thêm |
 |---|---|---|
-| Enum trong code | `TextStateConstants`, `TextProcessStateConstants`, `Constants.TEXT_STATE_*`, `MISSION_STATUS`, `task.state` | Thêm hằng số ở BE gen-1 `constants/` **và** web `AppConstants` (web có bản sao); thêm nhãn `voffice.appConstants.<map>.<key>` trong properties; sửa các `switch`/`if` đọc trạng thái (grep hằng số cũ liền kề) |
+| Enum trong code | `TextStateConstants`, `TextProcessStateConstants`, `Constants.TEXT_STATE_*`, `MISSION_STATUS`, `task.state` | Thêm hằng số ở BE gen-1 `constants/` **và** web `AppConstants` (web có bản sao — hiện đã lệch nhau ở vài chỗ, `xu-ly-cong-viec/dac-thu.md` bẫy 8); thêm nhãn `voffice.appConstants.<map>.<key>` trong properties; sửa các `switch`/`if` đọc trạng thái (grep hằng số cũ liền kề); kiểm số mới không trùng **mã lọc / mã hộp** đang dùng làm tham số tìm kiếm (vd. `lich-nhac-viec/dac-thu.md` bẫy 2) |
 | Danh mục động | web đọc `code.doc.status`, `code.meeting.status`… (`AppConstants` dòng ~118–160), bảng `CODE_MASTER` | `INSERT` dữ liệu; code không đổi trừ khi cần xử lý đặc biệt |
 | Tab/bộ lọc màn hình | `tabType`, `viewType` trong VM (`ReminderVM.doChangeTabStatus`) | Thêm nhánh trong `updateStatusByTab()` + zul tab + điều kiện query BE |
 
-Máy trạng thái văn bản đi (mã số thật) — xem `knowledge/van-ban/di/nghiep-vu.md`. Thêm trạng thái vào vòng đời văn bản là việc **L**: ảnh hưởng menu "Ký điện tử" (mỗi trạng thái một menu), dashboard đếm số (`HomeController`), mobile, liên thông.
+Máy trạng thái văn bản (mã số thật) — dự thảo `TEXT.STATE` ở `xu-ly-cong-viec` mục 4.6, sau ký / cấp số ở `van-ban/di` mục 4.7–4.8, dòng nhận văn bản đến ở `van-ban/den` mục 4.6. Thêm trạng thái vào vòng đời văn bản là việc **L**: ảnh hưởng điều kiện các hộp việc / tab (SQL lọc theo trạng thái ở `TextSearchDAO`…), dashboard đếm số (`HomeController`, widget), nhắc việc kéo theo vòng đời văn bản (`lich-nhac-viec/dac-thu.md` bẫy 6), mobile, liên thông. (sửa 2026-10-02)
 
 ## 3. Thêm lý do / ghi chú hành động (ví dụ "lý do thu hồi")
 
-Pattern sẵn có: `rejectPublish.zul` + `RejectPublishVM` (từ chối ban hành có lý do) → BE `textAction.rejectPublish` ❓ tên hàm — xem `requisition/ban-do`. Làm tương tự: popup nhập lý do → Business → endpoint → lưu vào bảng lịch sử (`TEXT_PROCESS_HISTORY`, `DOCUMENT_HISTORY_LOG`, `REMINDER_HISTORY` là các bảng lịch sử đang có) thay vì cột đơn lẻ, để có lịch sử nhiều lần.
+Pattern sẵn có: `rejectPublish.zul` + `RejectPublishVM` (hủy ban hành / từ chối cấp số có lý do) → `RequisitionBusiness.rejectPublishDocument` → BE `textAction.cancelDocumentPublish` (`TextController.cancelDocumentPublish` → `TextDAO.cancelDocumentPublish`) — mẫu đầy đủ ở `van-ban/di/vi-du-mau.md` mục A (sửa chéo 2026-10-02 theo `van-ban/di`: bản cũ ghi `textAction.rejectPublish` kèm dấu hỏi). Làm tương tự: popup nhập lý do → Business → endpoint → lưu vào bảng lịch sử (`TEXT_PROCESS_HISTORY`, `DOCUMENT_HISTORY_LOG`, `REMINDER_HISTORY` là các bảng lịch sử đang có) thay vì cột đơn lẻ, để có lịch sử nhiều lần.

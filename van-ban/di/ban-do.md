@@ -7,7 +7,7 @@
 
 ## 1. Màn hình (web)
 
-Tổng: 14 màn hình, 0 VM không gắn zul trực tiếp.
+Tổng: 15 màn hình, 0 VM không gắn zul trực tiếp.
 
 | Màn hình (.zul) | ViewModel | Gọi BE qua (Business) | Legacy (remote/facade) | Nhãn |
 |---|---|---|---|---|
@@ -19,6 +19,7 @@ Tổng: 14 màn hình, 0 VM không gắn zul trực tiếp.
 | `document/reportSendReceiveDoc/documentOut.zul` | `vm.document.DocumentOutVM` | `AnswerDocumentBusiness`, `CategoryCommonBusiness`, `DocumentBusiness`, `DocumentPublishBusiness`, `HomeBusiness`, `ImageOrgBusiness`, `NotificationBusiness`, `ReminderBusiness`, `RequisitionBusiness`, `TagDictionaryBusiness`, `TextBookBusiness` | `ISysOrganization`, `ISysUser`, `SysMenuService` | BE+LEGACY |
 | `document/reportSendReceiveDoc/documentOut_dcs_dbh.zul` | `vm.document.DocumentOutVM` | `AnswerDocumentBusiness`, `CategoryCommonBusiness`, `DocumentBusiness`, `DocumentPublishBusiness`, `HomeBusiness`, `ImageOrgBusiness`, `NotificationBusiness`, `ReminderBusiness`, `RequisitionBusiness`, `TagDictionaryBusiness`, `TextBookBusiness` | `ISysOrganization`, `ISysUser`, `SysMenuService` | BE+LEGACY |
 | `document/reportSendReceiveDoc/issussDocument.zul` | `vm.document.DocumentLookUpVM` | `DocumentPublishBusiness`, `ImageOrgBusiness`, `RequisitionBusiness`, `TextBookBusiness` | `ISysOrganization` | BE+LEGACY |
+| `document/reportSendReceiveDoc/listDocumentSign.zul` | `vm.document.DocumentVM` | `DocumentBusiness`, `RequisitionBusiness`, `TextBookBusiness` | — | BE |
 | `document/reportSendReceiveDoc/popupVB_issue_number.zul` | `vm.document.DocumentViewDetailVM` | `AnswerDocumentBusiness`, `BriefBusiness`, `CVGroupBusiness`, `ConnectDocumentBusiness`, `DocumentBusiness`, `DocumentHistoryLogBusiness`, `DocumentProcessTermBusiness`, `DocumentPublishBusiness`, `DocumentRequestBusiness`, `FlowBusiness`, `GraspSituationBusiness`, `MeetingAssistantBusiness`, `ReminderBusiness`, `SavePersonalDocBusiness`, `ShareExtDocBusiness`, `TagDictionaryBusiness`, `WOPIBusiness` | `ICommon`, `ISysOrganization`, `SysMenuService` | BE+LEGACY |
 | `documentDraft/rejectPublish.zul` | `vm.admin.requisition.RejectPublishVM` | — | — | ☠ VM không tồn tại |
 | `requisition/rejectPublish.zul` | `vm.requisition.RejectPublishVM` | `RequisitionBusiness` | — | BE |

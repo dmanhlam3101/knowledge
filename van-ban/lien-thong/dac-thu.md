@@ -1,7 +1,73 @@
-# Liên thông — đặc thù
+# Liên thông văn bản — đặc thù, bẫy, lỗi hệ thống ghi nhận
 
-- Điểm vào từ ngoài là **gen-2 webhook** `VOConnectProcessorController` (`/api/hook`: `send-document`, `update-status-document`, `send-mission`, `revoke-document`) → `VOConnectProcessorService`(Impl). Sửa ở đây ảnh hưởng đối tác ngoài — cần test với trục giả lập (`postman/` có collection ❓).
-- Phần gửi ra vẫn gen-1 (`ConnectDocumentAction` → `controler/*` → `ConnectDocumentDAO`), gắn vào bước ban hành trong `TextController` — sửa liên thông phải đọc `documentPromulgate`.
-- Entity XML (`InObjectSendXmlEntity`, `InObjectReceiveXmlEntity`, `InternalDocSendXmlEntity`…) lưu nguyên gói tin — hữu ích để debug lỗi gửi/nhận.
-- `document/goverment/govermentDocument.zul` + `GovermentDocumentVM`, `TransferGovermentDocumentVM` không gọi Business/facade nào → khả năng là màn chết mềm (VM tồn tại nhưng không còn dữ liệu) ❓.
-- Migrate: `MigratedDoc*` gen-2 + `Files.DownloadStreamMigratedFile` gen-1; bảng `MIGRATED_FILES` — dữ liệu hệ thống cũ chỉ đọc.
+> Viết lại từ code `kha_develop` ngày 2026-10-01. Viết tắt đường dẫn / lớp như `nghiep-vu.md` (WEB, ZUL, VPS, BIZ, ENT, BE1, BE2, SQL, APP; CDA, CDC, CDD, CVA, CVC, CVD, VOC, VOS, IDS, VORJ, OTA, DC, DDAO, DISDAO, DSIS, DISI, FC, C1, C2, CDVM, CDB, CVVM, CVBZ, CVLVM, DPRVM, TDVM, DVDVM, AC).
+
+## 1. Tình trạng kỹ thuật
+
+| Phần | Tầng | Nguồn |
+|---|---|---|
+| Trục cơ quan ngoài (danh sách, trạng thái, thu hồi, phân phối nội bộ) | **gen-1** `ConnectDocumentAction` → `ConnectDocumentController` → `ConnectDocumentDAO` (SQL ghép chuỗi, ~1.800 dòng) | `nghiep-vu.md` mục 2 |
+| Đóng gói gửi trục | **gen-1** trong luồng chuyển văn bản: `DC.sendDocument` / `sendDocumentMultiTransfer` → `DISDAO.sendDocumentToConnectOrg`; bản sao cho tự động chuyển nơi nhận dự kiến `DDAO.autoSendDocument` | `DC:7922-8046`, `8236-8550`; `DISDAO:2982-3155`; `DDAO:14605`, `14827-14880`, `14910-14999` |
+| Tiếp nhận văn bản liên thông | **gen-1** (`DDAO.addDocument`, `DC.processConnectDocumentRecipient`) + **gen-2** (`DISI.updateExistConnectDocument`) | NV-06 |
+| VOConnect ghi gói tin | **gen-2** service `InternalDocumentServiceImpl` được tiêm vào **gen-1** (`DocumentController`, `TextController`, `DocumentDAO`, `DocumentInStaffDAO`) và gen-2 (`DocInServiceImpl`, `DocLeaderCommentServiceImpl`) | NV-08 |
+| Webhook nhận | **gen-2** controller / service `VOConnectProcessor*` nhưng phần ghi văn bản / nhiệm vụ gọi **DAO gen-1** (`DocumentDAO.insert`, `sendDocumentToGroup`, `MeetingDAO.addMission`, `MissionDAO.*`, `CommentDAO`) | `VOS:18-66` |
+| Nhiệm vụ qua trục | gen-1 `ObjectTransferViaAxisDAO` (dùng repository gen-2) | `OTA:23-31` |
+| Danh mục đơn vị liên thông | gen-1 `ConnectVHRAction` / `ConnectVHRController` / `ConnectVHRDao`; web `vps.vm.ConnectVHRVM` | NV-02 |
+| Migrate | gen-2 `MigratedDocController` (một endpoint, không tham số) + gen-1 tải file / kiểm chữ ký | NV-12 |
+| Tiến trình gửi / nhận trục, hub VOConnect | **ngoài repo**; hub đọc bảng gói tin qua cơ chế bắt thay đổi (supplemental log + `VOFFICE_DBZ_ROLE`, trigger `VO_SOURCE_*`) | `SQL/20251009_alter_truc_lien_thong_noi_bo.sql:82-92`, `135-144` |
+
+Quy tắc chọn chỗ sửa: **điều kiện ai thấy văn bản liên thông** → `CDD.getListConnectDocument` **và** `DSIS.getSQLConnectDocument` (bẫy 7); **đóng gói gửi trục** → `DC.sendDocument` + bản sao `sendDocumentMultiTransfer` + `DDAO.autoSendDocument` (bẫy 6); **ghi trạng thái lên trục** → `CDD.addStateConnectDocument`; **gói tin VOConnect** → `IDS` + điểm gọi; **nút / nhãn trạng thái** → `CDVM` **và** `DVDVM` (bẫy 8).
+
+## 2. Bẫy
+
+1. **"Liên thông nội bộ" và "thu hồi" có nhiều nghĩa.** "Liên thông nội bộ" = (a) văn thư đơn vị gốc phân phối văn bản từ trục cho đơn vị trong hệ thống (`CONNECT_DOC_IN_INTERNAL`, `transferInternalOrgDoc` — NV-07) hoặc (b) VOConnect với tenant khác (`INTERNAL_DOC_*` — NV-08). "Thu hồi" = yêu cầu lấy lại văn bản đã gửi trục (`SEND_TYPE` 4 / 44 — NV-05), gỡ bản phân phối nội bộ (`doEvictionDoc` — NV-07), gói thu hồi VOConnect (`DOC_TYPE = 3` / `revoke-document` — NV-08, NV-09), và loại nghiệp vụ "thu hồi" do cơ quan ngoài gửi (`BUSSINESS_DOC_TYPE = 1` — chỉ hiển thị). Đọc tên hàm cẩn thận trước khi sửa.
+2. **Không có tiến trình gửi trong repo.** Đừng tìm job / scheduler: hệ thống chỉ ghi bảng. Đổi tên / ý nghĩa cột của các bảng gói tin (`CONNECT_DOC_OUT_DETAIL`, `CONNECT_PROCESS_IN`, `INTERNAL_DOC_*`, `IN_OBJECT_*`) làm hỏng tiến trình ngoài / hub; các bảng VOConnect còn gắn trigger `VO_SOURCE_*` và quyền đồng bộ (`SQL/20251009_alter_truc_lien_thong_noi_bo.sql:82-92`).
+3. **Trạng thái là lịch sử nhiều dòng.** `CONNECT_PROCESS_IN`: mỗi lần đổi = dòng mới, dòng hiện hành `IS_ACTIVE = 1` (`CDD:1092-1101`); `CONNECT_DOC_OUT_DETAIL`: mỗi lần gửi / thu hồi = dòng mới, hiển thị lấy **dòng mới nhất theo cặp đơn vị** (`ROW_NUMBER … rn = 1` — `CDD:931`, `965`, `1710`); `CONNECT_DOCUMENT` đi: **mỗi lần chuyển một gói**, nhiều gói cùng `DOC_ID`. Truy vấn mới phải theo cùng quy tắc.
+4. **`DOC_ID` khác định dạng theo kênh**: trục `<mã định danh đơn vị>-<năm ban hành>-<số ký hiệu>` (`DC:8008`); VOConnect `<tenant>-<DOCUMENT_ID>` hoặc giữ `DOC_ID` nhận được (`IDS:188-190`); nhiệm vụ `<tenant>-<missionId>` (`OTA:54`). Đổi số ký hiệu sau khi gửi trục sinh `DOC_ID` mới → lần gửi sau không còn là "cập nhật".
+5. **Hai cách ánh xạ đơn vị liên thông ↔ đơn vị nội bộ**, không đồng bộ với nhau: `CONNECT_VHR.CODE = VHR_ORG.IDENTIFIER_CODE` (đổi gửi trục thành gửi nội bộ — `CVD:583`; đơn vị gửi — `CDD:1444-1458`) và `CONNECT_VHR.VOF_ORG_ID = VHR_ORG.SYS_ORGANIZATION_ID` dạng chữ (lọc tab Văn bản đi theo đơn vị nội bộ — `CDD:1462-1481`). Màn danh mục chỉ cho nhập tay `VOF_ORG_ID` — DB DEV `CONNECT_VHR` ngày 2026-10-01: chỉ 9 / 123.265 dòng có giá trị, nên lọc tab Văn bản đi theo đơn vị nội bộ gần như không ra kết quả.
+6. **Đóng gói gửi trục có 3 bản**: `DC.sendDocument` (:7922-8046), `DC.sendDocumentMultiTransfer` (chuyển nhiều văn bản — :8394-8550, cùng logic) và tự động chuyển nơi nhận dự kiến `DDAO.autoSendDocument` (:14605; gửi trục ở :14827-14880; dựng nơi nhận `setupTransferConnectInfo` :14910-14999, đơn vị liên thông đổi sang nội bộ luôn gán vai trò 1 — :14990-14993). Sửa quy tắc phải sửa đủ.
+7. **Điều kiện "văn thư thấy văn bản liên thông đến" lặp ở 2 chỗ**: `CDD.getListConnectDocument` (:119-131) và `DSIS.getSQLConnectDocument` (:2813-2825) — cả hai còn nhánh `tdOrgId` đã chết (L4).
+8. **Logic nút / nhãn trạng thái nhân bản giữa màn Văn bản liên thông và chi tiết văn bản đi**: `checkEvictDoc` (`CDVM:2306-2322` ↔ `DVDVM:6639+`), `doRecoverDoc` / `doRecoverDocMulti` (`CDVM:1643-1694` ↔ `DVDVM:6587-6637`), nhãn / màu trạng thái (`CDVM:1804-1881` ↔ `DVDVM:6700+`), `loadListConnectDocOutDetail` (`CDVM:1555-1595` ↔ `DVDVM:1286-1300`). Cả hai có cùng lỗi L7.
+9. **Ba đường "gắn văn bản liên thông với văn bản đến"** với quy tắc trạng thái khác nhau: lưu văn bản mới (`DDAO:607-624` — ghi 3, 5), văn bản trùng (`DC:1121-1158` — ghi 3, 5, có thể 6; tìm theo `BuiltGroupId`), popup trùng (`DISI:1696-1717` — gán `CONNECT_DOCUMENT.DOCUMENT_ID` thay vì `CONNECT_DOC_IN_INTERNAL.DOCUMENT_ID`, sao dòng thành 3). Văn bản đã gắn có thể nằm ở **một trong hai cột** (`CONNECT_DOCUMENT.DOCUMENT_ID` hoặc `CONNECT_DOC_IN_INTERNAL.DOCUMENT_ID`); hộp văn bản đến tra theo `CONNECT_DOC_IN_INTERNAL` (`BE2/repositories/impl/DocumentRepositoryImpl.java:1121`, `1152`).
+10. **Webhook chạy DAO gen-1 với người dùng ảo**: `sendDocumentToGroup` nhận `Vof2_EntityUser` có `sysUserId = 0` + `internalSender` (`VOS:133-140`); mọi logic thêm vào `DDAO.sendDocumentToGroupInternal` (SMS, nhắc việc, KPI…) sẽ chạy cả cho văn bản đến từ hệ thống khác. `CoreUtils.getUserId()` trong webhook = tài khoản hub (`VOS:226`).
+11. **Hành vi khác khi người thao tác là tài khoản hub** (`FC.isHubProcessor` — so mã người dùng với `vo-connect.processor.system-code`): không ghi gói tin VOConnect (`IDS:45-47`, `151-153`). Đổi mã tài khoản hub ở cấu hình mà không đổi tài khoản thật sẽ sinh gói tin vòng lặp.
+12. **Đơn vị "gửi" khi thu hồi trên trục không phải đơn vị đã gửi gói gốc**: dòng thu hồi ghi `ORG_ID` = `tdOrgId` hoặc đơn vị văn thư đầu tiên thuộc `ORG_DOCUMENT_CONNECT` (`CDD:1120-1124`, `1400-1432`), trong khi quyền xem dòng lọc theo `ORG_ID` (`CDD:144-146`).
+13. **Cấu hình ở 3 nơi**: tham số DB `SYSTEM_PARAMETER` (DB DEV ngày 2026-10-01: `ORG_DOCUMENT_CONNECT = ALL`, `SEND_CONENCT_VHR_CONFIG = 3126999,3565421`, `CONNECT_VHR_SYNC = 1`), file BE (`tdOrgId`, `vo-connect.*` — `APP:102`, `478-479`) và file web (`sysOrganization.id.vig` — `web-spring/src/main/resources/application-prod.properties:347-348`, giá trị prod = 1, dòng giá trị 148842 bị chú thích). `tdOrgId` (BE) và VIG (web) hiện **khác nhau** trên cấu hình prod.
+14. **Tên cột / tham số gõ sai là tên thật**: `BUSSINESS_DOC_TYPE`, `SEND_CONENCT_VHR_CONFIG`, `CONECT_DOC_OUT_SEND_TYPE`, thư mục `goverment`, `connecVHRLookup.zul` — đừng "sửa chính tả".
+
+## 3. Lỗi hệ thống — ghi nhận (không sửa trong phạm vi xây tri thức)
+
+| # | Hiện tượng | Nguồn |
+|---|---|---|
+| L1 | BE không kiểm vai trò khi thêm / sửa / xóa danh mục đơn vị liên thông, khi ghi trạng thái, chuyển nội bộ, xem văn bản migrate (thiết kế X1); kiểm trùng mã danh mục chỉ ở web, BE `createConnectVHR` không kiểm | `CVC:457-646`; `CVD:416-473`; `CDC:144-179`; `BE2/services/impl/MigratedDocServiceImpl.java:31-38` |
+| L2 | Sắp xếp danh sách văn bản liên thông ghép thẳng chuỗi `searchOrder` từ client vào `ORDER BY` | `CDD:349-359`; `CDC:65-68`; `CDVM:793` |
+| L3 | Bản phân phối nội bộ (`transferInternalOrgDoc`) không có dòng `CONNECT_PROCESS_IN`; mọi lần ghi trạng thái văn bản đến không tìm thấy dòng hiện hành thì **không ghi gì nhưng trả thành công** | `CDD:1483-1531`, `1082-1088`, `1175` |
+| L4 | `ConnectVHRDao.getConnectVHRCode` có thân hàm bị chú thích, luôn trả `null` → nhánh "văn thư đơn vị `tdOrgId` thấy văn bản theo mã nhóm nhận" ở hai truy vấn không bao giờ chạy | `CVD:502-521`; `CDD:120-127`; `DSIS:2814-2821` |
+| L5 | Khối "ghi trạng thái Đang xử lý khi chuyển tiếp văn bản tạo từ văn bản liên thông" không có tác dụng: `getConnectDocInByDocumentId` chỉ lấy `doc_id, code, title` (không có `DOC_IN_INTERNAL_ID`) và không lọc `CONNECT_TYPE` → điều kiện `cpi.doc_in_internal_id = null` không khớp; bản thân code có ghi chú TODO nghi vấn | `DC:7968-7981`, `8485-8496`; `DDAO:14827-14838`; `CDD:1063-1070`, `1082` |
+| L6 | Dòng thu hồi gửi trục ghi `VHR_EMP_NAME` = họ tên + "(true)" (định dạng nhầm biểu thức boolean thay vì email) | `CDD:1159` |
+| L7 | Thu hồi **một** dòng: popup bắt nhập lý do nhưng hàm truyền `null` → lý do không được gửi; thu hồi nhiều dòng thì gửi | `CDVM:1660-1669` vs `1650`; `DVDVM:6587-6595` |
+| L8 | Màn Văn bản liên thông: nút "Tạo văn bản trình ký" không bao giờ hiện (`checkViewButtonText` luôn `false`); nút "Tạo văn bản" gọi lệnh `doCreateDoc` không có trong VM | `CDVM:2341-2356`; `connectDocument_detail.zul:1134-1138` |
+| L9 | `update-exist-connect-document` sao dòng trạng thái mới nhất bằng `BeanUtils.copyProperties` rồi chỉ đổi `STATUS = 3`, ngày tạo, `IS_ACTIVE` → dòng mới mang theo `IS_SEND`, `DATE_SEND`, `LOG_MESSAGE`, `STAFF_ID` của dòng cũ (thường `IS_SEND = 1`) → có thể không được tiến trình ngoài gửi lên trục | `DISI:1704-1714` |
+| L10 | Webhook thu hồi tìm văn bản qua `INTERNAL_DOC_RECEIVE_XML.DOC_ID` (bảng hub ghi), webhook nhận văn bản lại tìm qua `DOCUMENT.DOC_ID` — nếu hub không ghi `DOCUMENT_ID` vào bảng nhận thì thu hồi trả 0; thu hồi chỉ đổi dòng đơn vị, không đụng `DOCUMENT_IN_STAFF` | `VOS:605-612` vs `100`; `VOS:633-641` |
+| L11 | Tạo văn bản từ webhook dùng `Collectors.toMap` không hàm gộp trên mã định danh → hai đơn vị trong hệ thống trùng `IDENTIFIER_CODE` làm webhook lỗi | `VOS:147-151` |
+| L12 | Văn bản đi **chưa có ngày ban hành** mà chọn nơi nhận liên thông: `sendDocumentToConnectOrg` trả `false`, `sendConnectStatus` không được đặt → web không báo lỗi liên thông (chỉ báo khi = 2) | `DISDAO:2985`, `3154`; `DC:8021-8037`; `TDVM:5392`, `5401` |
+| L13 | Menu "Văn bản từ VPCP" còn mở nhưng VM chú thích toàn bộ → mở menu lỗi; widget "Văn bản liên thông" còn dòng `HOME_WIDGET` nhưng code dựng chú thích, khóa đếm `getCountConnectDocumentDashboard` không có endpoint | `GovermentDocumentVM.java:1-243`; `TransferGovermentDocumentVM.java:1-399`; `BIZ/ConnectDocTask.java:29`; `HomeVM.java:2124-2160` |
+| L14 | Menu "Migrate văn bản" trỏ `migrated_doc_import.zul` có vùng nội dung trống; API tra cứu trả toàn bộ bảng kèm file, web bỏ qua phân trang / từ khóa; khóa `api.migrated-doc.detail` không có endpoint | `migrated_doc_import.zul:23-28`; `MigratedDocServiceImpl.java:31-38`; `DocumentArchivedPool.java:484-490`; `BIZ/MigratedDocumentBusiness.java:93` |
+| L15 | Danh mục đơn vị liên thông luôn ghi `PATH`, `PATH_NAME` rỗng khi thêm / sửa | `CVD:343-361`, `419-420`, `455`, `460` |
+| L16 | `CONECT_DOC_OUT_SEND_TYPE` đọc mỗi lần lấy danh sách nơi nhận nhưng không dùng (DB DEV `SYSTEM_PARAMETER` ngày 2026-10-01: không có dòng); khử trùng `documentIds` so `connectDocumentId` nhưng thêm `documentId` | `CDD:899-902`, `386-389` |
+| L17 | Chuyển văn bản không có nơi nhận liên thông vẫn đặt `sendConnectStatus = 2` và ghi log cảnh báo "connectVhr empty" (web lọc nên không hiện) | `DC:7991-7994` |
+| L18 | Nhánh ghi trạng thái văn bản **đi** khác thu hồi (`processType` ≠ 4) cập nhật `CONNECT_DOCUMENT.IS_SENDED = 1` cho **mọi gói** cùng `DOC_ID` — web không gọi nhánh này (code chết) | `CDD:1136-1172` |
+| L20 | Trạng thái gửi trục và nhánh thu hồi dựa vào `CONNECT_DOC_SEND`, nhưng DB DEV `CONNECT_DOC_SEND` ngày 2026-10-01 **0 dòng** trong khi tiến trình ngoài đã ghi `CONNECT_DOC_OUT_DETAIL.IS_SENDED` = 1 cho 24.139 dòng (DB DEV `CONNECT_DOC_OUT_DETAIL`) → mọi nơi nhận hiện "Chưa gửi"; thu hồi luôn đổi thành 44 mà không tạo yêu cầu (dù DB còn 166 dòng `SEND_TYPE = 4` cũ); mọi lần gửi lại đều là "cập nhật". Có thể do DEV chưa có tiến trình gửi ghi `CONNECT_DOC_SEND` — cần đối chiếu môi trường thật | `ENT/ConnectDocOutDetailEntity.java:360-382`; `CDD:1130-1134`, `1774-1792`; `nghiep-vu.md` BR-12a |
+| L21 | Menu 338991 `DOCUMENT_CONNECT` "Danh sách văn bản trục liên thông" mở (`STATUS = 1`) nhưng `URL` trống; màn tra cứu migrate `migrated_document.zul` không có menu (DB DEV `SYS_MENU` ngày 2026-10-01) | `nghiep-vu.md` mục 1.2 |
+| L19 | `PopupSelectConnectVHRVM` không có zul; `getConnectDocumentDetail`, `DocOrgRepublish/getListOrganization`, `DocumentAction.searchMigratedDocument` không có nơi gọi | NV-13 |
+
+## 4. Yêu cầu hay gặp → hướng
+
+| Yêu cầu | Chỗ sửa | Lưu ý |
+|---|---|---|
+| Lọc / ẩn nơi nhận liên thông (theo mã định danh, cấp) | `CVD.getListConnectVHR` (:44-292, tham số `isExcludeW00`), `CVLVM.findDataList` (:540) | Yêu cầu nháp `knowledge/yeu-cau/2026-09-15-loc-don-vi-nhan-khi-ban-hanh.md` (mục 5.3); giữ kiểm BE `getOrgSendConnectDocument2` làm hàng rào cuối |
+| Báo "Đã hoàn thành" lên trục khi hoàn thành văn bản đến | `DISI.completeDocument*` → tìm `CONNECT_DOC_IN_INTERNAL` theo `DOCUMENT_ID` → `CDD.addStateConnectDocument(6)` | Q3; cần `DOC_IN_INTERNAL_ID` (bài học L5); đừng ghi khi người thao tác là hub |
+| Thêm loại gói tin VOConnect | `C1:2722-2736` (hằng), `IDS`, điểm gọi trong luồng văn bản, **và** hub ngoài repo + webhook mới ở `VOC` | BR-28: phía nhận hiện chỉ có 4 webhook |
+| Hiển thị / đổi nhãn trạng thái gửi trục | `ENT/ConnectDocOutDetailEntity.java:360-382` (quy ước chưa gửi / lỗi / đã gửi), `CDVM:1804-1881` **và** `DVDVM` (bẫy 8), `AC:8111-8138` | Giá trị `IS_SENDED = −1`, `INTERNAL_DOC_SEND_XML.STATUS = −1` có trên DB nhưng không có trong code |
+| Cho đơn vị nhận văn bản liên thông thấy văn bản | dữ liệu `CONNECT_DOC_IN_INTERNAL.ORG_RECEIVER_ID` (tiến trình ngoài / chuyển nội bộ) + điều kiện ở bẫy 7 | BR-17 |
+| Đổi cách sinh `DOC_ID` gửi trục | `DC:8005-8008` + `sendDocumentMultiTransfer` + `DDAO.autoSendDocument` | Ảnh hưởng nhận diện "cập nhật" (`CDD:1774-1792`) và tiến trình ngoài |

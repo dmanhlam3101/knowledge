@@ -7,7 +7,7 @@
 
 ## 1. Màn hình (web)
 
-Tổng: 7 màn hình, 0 VM không gắn zul trực tiếp.
+Tổng: 9 màn hình, 0 VM không gắn zul trực tiếp.
 
 | Màn hình (.zul) | ViewModel | Gọi BE qua (Business) | Legacy (remote/facade) | Nhãn |
 |---|---|---|---|---|
@@ -15,6 +15,8 @@ Tổng: 7 màn hình, 0 VM không gắn zul trực tiếp.
 | `document/bookDoc/bookContentDoc.zul` | `widget.SysMenuLookupVM` | — | `ISysMenu` | LEGACY |
 | `document/bookDoc/bookDoc.zul` | `vps.vm.SysMenuVM` | — | `ISysMenu` | LEGACY |
 | `document/bookDoc/documentBook.zul` | `vm.document.DocumentBookVM` | — | — | ☠ VM không tồn tại |
+| `document/reportSendReceiveDoc/dispatch_Book_List.zul` | `vm.document.BookDispatchVM` | — | `IBookDispatch` | LEGACY |
+| `document/reportSendReceiveDoc/lookUpDispatchDocument.zul` | `vm.document.BookDispatchVM` | — | `IBookDispatch` | LEGACY |
 | `document/textBook/textBook.zul` | `vm.document.TextBookVM` | `RequisitionBusiness`, `TextBookBusiness` | — | BE |
 | `document/textBook/textBook_detail.zul` | `vm.document.TextBookVM` | `RequisitionBusiness`, `TextBookBusiness` | — | BE |
 | `document/textBook/textBook_inspect.zul` | `vm.document.TextBookVM` | `RequisitionBusiness`, `TextBookBusiness` | — | BE |

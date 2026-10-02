@@ -31,7 +31,7 @@ Phân hệ **KHÔNG gồm** (trỏ sang):
 | Nội dung | Phân hệ |
 |---|---|
 | Dự thảo, trình ký, xin ý kiến, ký nháy/ký duyệt/phê duyệt, văn thư xét duyệt, trả lại trong luồng, "Chuyển cấp số" (đưa dự thảo vào hàng chờ) | `xu-ly-cong-viec` |
-| Khai báo sổ văn bản, số hiện tại, sổ dùng chung, **số chờ/giữ số** (`WAITING_NUMBER_BOOK`, `/api/text-book-manager/*-waiting-number`) | `van-ban/so-van-ban` |
+| Khai báo sổ văn bản, số hiện tại, sổ dùng chung, **số chờ/giữ số** (`WAITING_NUMBER_BOOK`, `/api/text-book/*-waiting-number` (sửa chéo 2026-10-02 theo `van-ban/so-van-ban`): tiền tố đúng là `/api/text-book` — `TextBookManagerController.java:29`; không client nào gọi) | `van-ban/so-van-ban` |
 | MỌI luồng **chuyển văn bản** (văn thư chuyển văn bản đã cấp số, tự động chuyển sau cấp số/ban hành, cây/phạm vi chọn đơn vị–cá nhân của văn thư phát hành) | `van-ban/chuyen-van-ban` (xem mục 8) |
 | Gửi trục liên thông / VPCP | `van-ban/lien-thong` |
 | Kỹ thuật ký số / đóng dấu số (USB token, CloudCA, băm file, ảnh dấu) | `ky-so` |
@@ -160,7 +160,7 @@ Nhãn tab là chữ cứng trong zul; trạng thái lọc của tab 0/3/4 dùng 
 - **BR-10.** Khi **cấp số & đóng dấu** (`isMark = 1`) văn bản đến từ hệ thống ký tự động (`AUTO_DIGSIG_TRANSACTION`): thể loại thuộc `CONFIG_HDLD_TTNS` → `checkDocumentContract = 1` → **không** cập nhật số sổ/số thủ công; `APP_CODE` thuộc `APP_CODE_RETURN_MARK` → `= 2`; cả hai trường hợp đánh dấu `isTrackingDocument = 1` để trả kết quả `DOCUMENT_MARKED` cho hệ thống ngoài (TDAO:9007-9033, 3071-3074; TC:1784-1786, 1829).
 - **BR-11.** Chỉ `TEXT.STATE = 3` mới được cấp số lần đầu (TDAO:2768-2773); BE không kiểm user có là văn thư đơn vị ban hành (ngoài IDOR).
 
-**Trạng thái.** `TEXT.STATE 3 → 4`; sinh `DOCUMENT` (`IS_FORWARD` null → tab *Đã cấp số*), `DOCUMENT.STATUS_NUMBER` null.
+**Trạng thái.** `TEXT.STATE 3 → 4`; sinh `DOCUMENT` (`IS_FORWARD` null → tab *Đã cấp số*), `DOCUMENT.STATUS_NUMBER` = 0 (sửa chéo 2026-10-02 theo `van-ban/so-van-ban`): `insertDocument` ghi 0 — `TextDAO.java:3806`; DB DEV văn bản đi có sổ: STATUS_NUMBER 0 = 1.407, 1 = 46, không có null).
 
 **Bảng.** `TEXT`, `DOCUMENT`, `FILES_ATTACHMENT`, `ATTACH`, `FILE_ENCRYPT_MAP`, `TEXT_BOOK`, `TEXT_BOOK_NUMBER`, `TEXT_BOOK_SHARE`, `TEXT_MANUAL_NUMBER`, `DOCUMENT_HISTORY_LOG`, `SOURCE_MAP`, `MEETING`, `BRIEF_DOCUMENT`/`BRIEF_DOCUMENT_MAP`, `AUTO_DIGSIG_TRANSACTION`, `DOCUMENT_PUBLISHED_TMP` (công bố tự động).
 
@@ -753,4 +753,4 @@ Bằng chứng: `LEFT JOIN text t ON d.document_id = t.document_id`, `LEFT JOIN 
 
 ## 8. Nội dung chuyển văn bản (đã chuyển sang `van-ban/chuyen-van-ban`)
 
-> (sửa 2026-10-01) Tri thức cũ "QT10" và "bẫy cũ 10–12" từng giữ tạm ở đây đã được module `van-ban/chuyen-van-ban` rà lại và **gỡ khỏi file này**. Kết luận: phạm vi chuyển "đơn vị ngang cấp có mã định danh" (`isDocManagerTransferOut`, `/api/vhr-org/get-doc-manager-transfer-*`) **không có trên `kha_develop`** — chỉ có ở nhánh đang phát triển `taipd/feature/YC_VT_PH(_fe)`; tab Cá nhân **ẩn hẳn** người ngoài phạm vi (không phải disable). Xem [`../chuyen-van-ban/nghiep-vu.md`](../chuyen-van-ban/nghiep-vu.md) NV-03 (hiện trạng, BR-11) và mục 7 (thay đổi chưa merge).
+> (sửa 2026-10-01) Tri thức cũ "QT10" và "bẫy cũ 10–12" từng giữ tạm ở đây đã được module `van-ban/chuyen-van-ban` rà lại và **gỡ khỏi file này**. Kết luận: phạm vi chuyển "đơn vị ngang cấp có mã định danh" (`isDocManagerTransferOut`, `/api/vhr-org/get-doc-manager-transfer-*`) **không có trên `kha_develop`** — chỉ có ở nhánh đang phát triển `taipd/feature/YC_VT_PH(_fe)`; tab Cá nhân **ẩn hẳn** người ngoài phạm vi (không phải disable). Xem [`../chuyen-van-ban/nghiep-vu.md`](../chuyen-van-ban/nghiep-vu.md) NV-03 (hiện trạng, BR-11) và mục 8 (thay đổi chưa merge).

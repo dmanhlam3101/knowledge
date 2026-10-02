@@ -7,12 +7,14 @@
 
 ## 1. Màn hình (web)
 
-Tổng: 19 màn hình, 1 VM không gắn zul trực tiếp.
+Tổng: 21 màn hình, 1 VM không gắn zul trực tiếp.
 
 | Màn hình (.zul) | ViewModel | Gọi BE qua (Business) | Legacy (remote/facade) | Nhãn |
 |---|---|---|---|---|
 | `config/sms/smsConfigOrg.zul` | `vm.config.sms.SmsConfigOrgVM` | `ConfigBusiness` | — | BE |
 | `config/smsController.zul` | `vm.config.SmsControllerVM` | `ConfigBusiness` | — | BE |
+| `document/reportSendReceiveDoc/popupGraspSituation.zul` | `vm.graspSituation.PopupGraspSituationVM` | `DocumentBusiness`, `GraspSituationBusiness` | `ICommon` | BE+LEGACY |
+| `document/reportSendReceiveDoc/popupTransferGraspSituation.zul` | `vm.graspSituation.PopupTransferGraspSituationVM` | `GraspSituationBusiness` | — | BE |
 | `grasp_situation/graspSituation.zul` | `vm.graspSituation.GraspSituationVM` | `CatalogBriefBusiness`, `CategoryCommonBusiness`, `DocumentBusiness`, `GraspSituationBusiness` | — | BE |
 | `grasp_situation/popupUpdateToGraspSituation.zul` | `vm.graspSituation.PopupUpdateToGraspSituationVM` | — | — | — |
 | `notice/notice.zul` | `vm.notice.NoticeVM` | — | `INotice` | LEGACY |
@@ -179,6 +181,50 @@ Cách gọi: `new XxxBusiness(serviceConnection).serveProcessing("a.b", params)`
 
 </details>
 
+### DocumentInformalityController (gen2) — base `/api/document-informality`, 16 endpoint
+
+`backend2.0/backendvoffice/src/main/java/com/viettel/office/controller/DocumentInformalityController.java`
+
+- Service: `DocumentInformalityService`
+- Bảng (ước lượng từ SQL/@Table): —
+
+<details><summary>Endpoint</summary>
+
+| Verb | Path | Method |
+|---|---|---|
+| POST | `/api/document-informality/create-or-update` | `createOrUpdate` |
+| GET | `/api/document-informality/get-group-doc-lead-type` | `getGroupDocumentLeadType` |
+| GET | `/api/document-informality/search` | `search` |
+| GET | `/api/document-informality/detail/{documentId}` | `getDetail` |
+| POST | `/api/document-informality/send` | `send` |
+| POST | `/api/document-informality/delete/{documentId}` | `deleteDocument` |
+| POST | `/api/document-informality/mark-as-read/{documentId}` | `markAsRead` |
+| GET | `/api/document-informality/count-read` | `countRead` |
+| POST | `/api/document-informality/count-read` | `countReadPost` |
+| POST | `/api/document-informality/update-to-informality/{documentId}` | `updateToInformality` |
+| GET | `/api/document-informality/is-document-assistant` | `isDocumentAssistant` |
+| GET | `/api/document-informality/get-leader-same-receive/{documentId}` | `getLeaderSameReceive` |
+| GET | `/api/document-informality/get-permission-view-file/doc-informality/{docInformalityId}/{attachId}` | `getPermissionViewFileByDocInformalityIdAndAttachId` |
+| GET | `/api/document-informality/get-permission-view-file/doc/{docId}/{attachId}` | `getPermissionViewFileByDocIdAndAttachId` |
+| GET | `/api/document-informality/get-list-file-encrypt-map/{docId}` | `findDocFileEncryptByDocId` |
+| POST | `/api/document-informality/insert-permission-for-supplier` | `insertPermissionForSupplier` |
+
+</details>
+
+### DocumentInformalityGroupController (gen2) — base `/api/document-informality-group`, 0 endpoint
+
+`backend2.0/backendvoffice/src/main/java/com/viettel/office/controller/DocumentInformalityGroupController.java`
+
+- Service: `DocumentInformalityGroupService`, `DocumentInformalityGroupServiceImpl`
+- Bảng (ước lượng từ SQL/@Table): —
+
+<details><summary>Endpoint</summary>
+
+| Verb | Path | Method |
+|---|---|---|
+
+</details>
+
 ### ReminderController (gen2) — base `/reminders`, 16 endpoint
 
 `backend2.0/backendvoffice/src/main/java/com/viettel/office/controller/ReminderController.java`
@@ -236,8 +282,8 @@ Cách gọi: `new XxxBusiness(serviceConnection).serveProcessing("a.b", params)`
 
 ## 5. Entity / bảng DB thuộc phân hệ
 
-**BE gen-2 (`com.viettel.office.entities`)**: `NotificationEntity`→`NOTIFICATION`, `ReminderDocumentRelationEntity`→`REMINDER_DOCUMENT_RELATIONS`, `ReminderEntity`→`REMINDER`, `ReminderFollowerEntity`→`REMINDER_FOLLOWERS`, `ReminderHistoryEntity`→`REMINDER_HISTORY`, `ReminderReplyEntity`→`REMINDER_REPLY`, `SmsBlackListEntity`→`SMS_BLACK_LIST`, `SmsMasterEntity`→`SMS_MASTER`
+**BE gen-2 (`com.viettel.office.entities`)**: `DocumentInformality`→`DOCUMENT_INFORMALITY`, `DocumentInformalityAttach`→`DOCUMENT_INFORMALITY_ATTACH`, `DocumentInformalityGroupEntity`→`DOCUMENTINFORMALITYGROUPENTITY`, `DocumentInformalityStaff`→`DOCUMENT_INFORMALITY_STAFF`, `NotificationEntity`→`NOTIFICATION`, `ReminderDocumentRelationEntity`→`REMINDER_DOCUMENT_RELATIONS`, `ReminderEntity`→`REMINDER`, `ReminderFollowerEntity`→`REMINDER_FOLLOWERS`, `ReminderHistoryEntity`→`REMINDER_HISTORY`, `ReminderReplyEntity`→`REMINDER_REPLY`, `SmsBlackListEntity`→`SMS_BLACK_LIST`, `SmsMasterEntity`→`SMS_MASTER`
 
 **Web (`com.viettel.voffice.entity`, dùng bởi legacy)**: `Alert`→`ALERT`, `Notice`→`NOTICE`, `NoticeDetail`→`NOTICE_DETAIL`, `OrientOrgMap`→`ORIENT_RECEIVE_ORG`, `Orientation`→`ORIENTATION`, `ReadNoticeHistory`→`READ_NOTICE_HISTORY`, `Reminder`→`REMINDER`, `ReminderDocumentRelation`→`REMINDER_DOCUMENT_RELATIONS`, `ReminderReply`→`REMINDER_REPLIES`, `SmsDetail`→`SMS_DETAIL`, `SmsMaster`→`SMS_MASTER`, `TimeConfig`→`TIME_CONFIG`
 
-**Tổng hợp bảng chạm tới**: `ACTION_LOG_SERVICE`, `ALERT`, `AREA`, `CONFIG_SMS_MODULE`, `CONFIG_SMS_ORG`, `EMAIL_MASTER`, `EMPLOYEE_TYPE_PROCESS`, `FILE_ATTACHMENT`, `FILE_ATTACHMENT_MAPPER`, `IMAGE_ORG`, `NOTICE`, `NOTICE_DETAIL`, `NOTIFICATION`, `ORIENTATION`, `ORIENT_RECEIVE_ORG`, `READ_NOTICE_HISTORY`, `REMINDER`, `REMINDER_DOCUMENT_RELATIONS`, `REMINDER_FOLLOWERS`, `REMINDER_HISTORY`, `REMINDER_REPLIES`, `REMINDER_REPLY`, `SMS_BLACK_LIST`, `SMS_DETAIL`, `SMS_MASTER`, `SOURCE_MAP`, `STAFF_GROUP_ROLE`, `TASK`, `TEXT`, `TIME_CONFIG`, `USER_ROLE`, `VHR_EMPLOYEE`, `VHR_ORG`
+**Tổng hợp bảng chạm tới**: `ACTION_LOG_SERVICE`, `ALERT`, `AREA`, `CONFIG_SMS_MODULE`, `CONFIG_SMS_ORG`, `DOCUMENTINFORMALITYGROUPENTITY`, `DOCUMENT_INFORMALITY`, `DOCUMENT_INFORMALITY_ATTACH`, `DOCUMENT_INFORMALITY_STAFF`, `EMAIL_MASTER`, `EMPLOYEE_TYPE_PROCESS`, `FILE_ATTACHMENT`, `FILE_ATTACHMENT_MAPPER`, `IMAGE_ORG`, `NOTICE`, `NOTICE_DETAIL`, `NOTIFICATION`, `ORIENTATION`, `ORIENT_RECEIVE_ORG`, `READ_NOTICE_HISTORY`, `REMINDER`, `REMINDER_DOCUMENT_RELATIONS`, `REMINDER_FOLLOWERS`, `REMINDER_HISTORY`, `REMINDER_REPLIES`, `REMINDER_REPLY`, `SMS_BLACK_LIST`, `SMS_DETAIL`, `SMS_MASTER`, `SOURCE_MAP`, `STAFF_GROUP_ROLE`, `TASK`, `TEXT`, `TIME_CONFIG`, `USER_ROLE`, `VHR_EMPLOYEE`, `VHR_ORG`

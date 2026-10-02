@@ -7,10 +7,12 @@
 
 ## 1. Màn hình (web)
 
-Tổng: 60 màn hình, 6 VM không gắn zul trực tiếp.
+Tổng: 62 màn hình, 6 VM không gắn zul trực tiếp.
 
 | Màn hình (.zul) | ViewModel | Gọi BE qua (Business) | Legacy (remote/facade) | Nhãn |
 |---|---|---|---|---|
+| `document/reportSendReceiveDoc/popupVBScheduleMeeting.zul` | `vm.document.DocumentScheduleMeetingDetailVm` | `DocumentBusiness`, `DocumentRequestBusiness`, `MeetingBusiness`, `ScheduleToMeetingDocumentBusiness`, `WOPIBusiness` | `ICommon`, `IMeeting` | BE+LEGACY |
+| `document/requestToScheduleMeetingDoc/docScheduleMeeting.zul` | `vm.document.DocumentScheduleMeetingVM` | `ScheduleToMeetingDocumentBusiness` | — | BE |
 | `meeting/calendar/calendar.zul` | `vm.meeting.MeetingVM` | `DocumentBusiness`, `MeetingBusiness`, `SearchSolrBusiness`, `SysUserBusiness` | `ICommon`, `IMeeting`, `IMeetingFrequency`, `ISysOrganization`, `ISysUser` | BE+LEGACY |
 | `meeting/calendar/calendar_add.zul` | `vm.meeting.MeetingVM` | `DocumentBusiness`, `MeetingBusiness`, `SearchSolrBusiness`, `SysUserBusiness` | `ICommon`, `IMeeting`, `IMeetingFrequency`, `ISysOrganization`, `ISysUser` | BE+LEGACY |
 | `meeting/calendar_editor.zul` | `vm.meeting.MeetingVM` | `DocumentBusiness`, `MeetingBusiness`, `SearchSolrBusiness`, `SysUserBusiness` | `ICommon`, `IMeeting`, `IMeetingFrequency`, `ISysOrganization`, `ISysUser` | BE+LEGACY |

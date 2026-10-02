@@ -2,6 +2,12 @@
 
 **Phân hệ:** `van-ban/di` · **Ngày:** 2026-09-16 · Cây đơn vị: `2026-09-16-van-thu-phat-hanh-chuyen-vb-di-mobile.md` · Code web đối chiếu: `2026-09-16-van-thu-phat-hanh-chuyen-vb-di-web.md`
 
+> **Cập nhật 2026-10-02:** bỏ điều kiện "ngang cấp" — phạm vi giờ gồm **mọi đơn vị có mã định danh** (mọi cấp); thêm mọi đơn vị cấp 0 (không xét mã, với mọi đơn vị ban hành). API/field không đổi; mobile chỉ cần dùng đúng kết quả BE trả.
+
+> **Cập nhật 2026-10-02 (2) — phạm vi CÁ NHÂN thu hẹp, KHÁC phạm vi đơn vị:** cá nhân chỉ được chọn trong **đơn vị ban hành + toàn bộ con cháu**. Riêng đơn vị ban hành là **VPUB** (`sysOrganization.id.vpub` = `9133615`) thì thêm cá nhân của **chính đơn vị cha trực tiếp (UBND tỉnh)** — **không** lấy các Sở/đơn vị con khác của UBND. Đơn vị có mã / cấp 0 ngoài nhánh **chỉ áp dụng cho tab Đơn vị**, không áp dụng cho cá nhân. **Mobile không cần tự xét VPUB** — chỉ dùng `userRootOrg` + `userOrgIds` BE trả.
+> - API (1) `scope` thêm 2 field: **`userOrgIds`** (tập id cho ô tìm nhanh cá nhân) và **`userRootOrg`** (gốc cây cá nhân). **Không** còn dùng `selectableOrgIds` cho cá nhân.
+> - API (2) `org-ids` giữ URL/request nhưng **đổi kết quả**: chỉ trả id trong phạm vi cá nhân dưới node.
+
 Mục tiêu: **ẩn hẳn** (không phải disable) cá nhân thuộc đơn vị ngoài phạm vi. Lọc ở server để tổng số / phân trang đúng.
 
 ---
@@ -31,7 +37,7 @@ scopeBuiltOrgId = (đủ 5 điều kiện) ? document.builtGroupId : null
 ```
 Mở màn chọn người nhận (scopeBuiltOrgId != null)
  ├─(1) POST /api/vhr-org/get-doc-manager-transfer-scope   { builtOrgId }        → cache theo văn bản
- │        dùng cho: Ô TÌM NHANH cá nhân (toàn phạm vi)
+ │        dùng cho: Ô TÌM NHANH cá nhân (userOrgIds) + gốc cây cá nhân (userRootOrg)
  └─(2) POST /api/vhr-org/get-doc-manager-transfer-org-ids { builtOrgId, orgId } → cache theo node
           dùng cho: DANH SÁCH cán bộ khi chọn 1 đơn vị trên cây
                     ↓
@@ -61,13 +67,15 @@ Gọi **1 lần cho mỗi văn bản**, dùng cho ô tìm nhanh.
 | Field | Kiểu | Ý nghĩa | Mobile dùng làm gì |
 |---|---|---|---|
 | `builtOrg` | object | thông tin đơn vị ban hành (`sysOrganizationId`, `name`, `path`…) | hiển thị / kiểm tra nhanh `path.startsWith` |
-| `builtOrgDepth` | Integer | độ sâu path của đơn vị ban hành (số cấp) | chỉ để hiểu quy tắc "ngang cấp", không bắt buộc dùng |
-| `selectableOrgIds` | Long[] | tổ tiên + đơn vị ban hành + đơn vị ngang cấp có mã định danh (**không** gồm con cháu) | ghép vào `scopeIds` |
-| `descendantOrgIds` | Long[] | toàn bộ con cháu của đơn vị ban hành (còn hiệu lực) | ghép vào `scopeIds` |
+| `builtOrgDepth` | Integer | độ sâu path của đơn vị ban hành (số cấp; `2` = cấp 0) | chỉ tham khảo, không bắt buộc dùng |
+| `selectableOrgIds` | Long[] | phạm vi **ĐƠN VỊ**: tổ tiên + đơn vị ban hành + mọi đơn vị có mã + mọi đơn vị cấp 0 | **không dùng cho cá nhân** (chỉ tab/ô tìm Đơn vị) |
+| `descendantOrgIds` | Long[] | toàn bộ con cháu của đơn vị ban hành (còn hiệu lực) | đã nằm trong `userOrgIds` |
+| ⭐ `userOrgIds` | Long[] | phạm vi **CÁ NHÂN**: đơn vị ban hành + con cháu; VPUB thêm id **chính** UBND tỉnh | = `scopeIds` |
+| ⭐ `userRootOrg` | object | gốc cây cá nhân: đơn vị ban hành; VPUB thì là UBND tỉnh | dựng cây cá nhân (mục 6.3) |
 
 ### Tính tập id dùng cho ô tìm nhanh
 ```
-scopeIds = distinct( selectableOrgIds + [builtOrgId] + descendantOrgIds )
+scopeIds = userOrgIds          // KHÔNG ghép selectableOrgIds nữa
 ```
 
 ---
@@ -87,15 +95,13 @@ Gọi **mỗi khi người dùng chọn/đổi đơn vị trên cây**, dùng ch
 | `orgId` | Long | **đơn vị đang chọn trên cây** | id node người dùng vừa bấm; `null` = lấy toàn bộ phạm vi (dùng khi màn không có cây) |
 
 ### Response
-`result.data` = `Long[]` — id các đơn vị **chọn được** nằm dưới node đó (đã loại node "chỉ để mở cây").
+`result.data` = `Long[]` — id các đơn vị trong **phạm vi cá nhân** nằm dưới node đó (gồm chính node nếu nó thuộc phạm vi).
 
 | Trường hợp | Kết quả trả về | Mobile xử lý |
 |---|---|---|
 | Node là đơn vị ban hành / đơn vị con của nó | id node + con cháu | gọi (3) với list này |
-| Node là tổ tiên (vd UBND tỉnh) | id tổ tiên đó + đơn vị ban hành + con cháu + các đơn vị ngang cấp có mã nằm dưới | gọi (3) với list này |
-| Node là đơn vị ngang cấp có mã (vd Sở B) | chỉ id của chính nó | chỉ ra cán bộ Sở B |
-| Node "chỉ để mở cây" (vd Tỉnh ủy, Sở Xây dựng trong ví dụ) | chỉ id các đơn vị ngang cấp có mã nằm dưới nó | cán bộ của chính node đó **không** xuất hiện |
-| Không có đơn vị hợp lệ nào | `[]` hoặc null | **hiển thị danh sách rỗng, KHÔNG gọi (3)** |
+| Đơn vị ban hành = VPUB, node là UBND tỉnh | id UBND tỉnh + VPUB + con cháu VPUB (**không** có Sở/đơn vị con khác của UBND) | gọi (3) với list này |
+| Node ngoài phạm vi cá nhân (đơn vị có mã / cấp 0 ngoài nhánh…) | `[]` | **hiển thị danh sách rỗng, KHÔNG gọi (3)** |
 
 ---
 
@@ -176,6 +182,8 @@ onDebounce(400ms, keyword):
 
 ### 6.2 Danh sách cán bộ theo đơn vị trên cây
 
+Cây ở màn chọn cá nhân phải là **cây cá nhân** (mục 6.3), không dùng cây của tab Đơn vị — nếu không người dùng bấm vào đơn vị ngoài phạm vi sẽ thấy danh sách rỗng.
+
 ```
 onSelectOrgNode(node):
     if (scopeBuiltOrgId == null) → giữ luồng cũ; return
@@ -188,13 +196,27 @@ onLoadMore(page):
     getListUser(..., lstGroupId: ids /*dùng lại, KHÔNG gọi lại API 2*/, startRecord: page*20, pageSize:20)
 ```
 
+### 6.3 Cây cá nhân
+
+```
+root = scope.userRootOrg
+if (root.sysOrganizationId == builtOrgId):      // trường hợp thường
+    cây = builtOrg; mở con như cách app đang làm (lọc theo userOrgIds) — mọi con của đơn vị ban hành đều hợp lệ
+else:                                            // VPUB
+    cây = root (UBND tỉnh); lọc con theo userOrgIds → chỉ còn VPUB; VPUB mở tiếp như thường
+    bấm root → org-ids(builtOrgId, root.id) = UBND tỉnh + VPUB + con cháu VPUB
+```
+Cách app đang làm (mở node rồi lọc con bằng `getVhrOrgByCondition` với tập id cho phép, không ra gì thì dừng) **dùng được nguyên** cho cây cá nhân, chỉ cần: bắt đầu từ `userRootOrg` và tập id cho phép = `userOrgIds`. Phạm vi cá nhân là một nhánh liền (không có node "chỉ để mở đường"), VPUB thì bắt đầu từ UBND tỉnh, lọc theo `userOrgIds` sẽ chỉ còn 1 con là VPUB.
+
+Web làm đúng như vậy: `MultiTypeObjectLookupVM.buildDocManagerTree` → `userRoots` (VPUB: clone UBND `onlyCurrentOrg = true`, `listOrgLimitOneLevel = [VPUB]`).
+
 ---
 
 ## 7. Cache ở mobile — tránh gọi lại DB
 
 | Cache | Key | Giá trị | Vòng đời | Ghi chú |
 |---|---|---|---|---|
-| `scopeCache` | `builtOrgId` | `selectableOrgIds`, `descendantOrgIds`, `builtOrg.path`, `builtOrgDepth` | phiên chọn người nhận của 1 văn bản; TTL 10–15 phút | dữ liệu đơn vị gần như tĩnh; 1 văn bản chỉ cần gọi 1 lần |
+| `scopeCache` | `builtOrgId` | `userOrgIds`, `userRootOrg`, `selectableOrgIds`, `descendantOrgIds`, `builtOrg.path` | phiên chọn người nhận của 1 văn bản; TTL 10–15 phút | dữ liệu đơn vị gần như tĩnh; 1 văn bản chỉ cần gọi 1 lần |
 | `orgIdsCache` | `builtOrgId + "#" + nodeId` (`nodeId` null → `0`) | `Long[]` | như trên | quay lại node đã xem → **không gọi lại** (web làm đúng thế này) |
 | `treeChildrenCache` | `builtOrgId + "#" + parentOrgId` | danh sách node | như trên | đóng/mở lại nhánh không gọi lại API cây |
 | Danh sách user | — | — | **không cache lâu** (≤ 30–60s, hoặc chỉ giữ trong lúc cuộn) | trạng thái "đã nhận văn bản", nhân sự có thể đổi |
@@ -224,11 +246,11 @@ Nguyên tắc:
 ## 9. Checklist test
 
 1. Văn thư Sở A, màn Văn bản ban hành (Đã cấp số) → chọn người nhận:
-   - chọn **UBND tỉnh**: có cán bộ UBND tỉnh + Sở A và phòng của Sở A + các Sở ngang cấp có mã; **không** có cán bộ phòng của Sở khác.
-   - chọn **Sở B** (ngang cấp có mã): có cán bộ Sở B, **không** có cán bộ phòng dưới Sở B.
-   - chọn node chỉ để mở cây: **không** có cán bộ của chính node đó.
+   - cây cá nhân chỉ có **Sở A** và các phòng của Sở A; không có UBND tỉnh, Sở B, đơn vị cấp 0 khác.
+   - chọn **Sở A**: có cán bộ Sở A + các phòng; chọn 1 phòng: chỉ cán bộ phòng đó.
    - tổng số bản ghi + số trang khớp danh sách.
-2. Ô tìm nhanh: gõ tên cán bộ phòng thuộc Sở khác → không ra; gõ cán bộ Sở B / UBND tỉnh / phòng của Sở A → ra.
+2. Ô tìm nhanh (Sở A): gõ cán bộ Sở A / phòng của Sở A → ra; gõ cán bộ **Sở B**, **UBND tỉnh**, đơn vị cấp 0 khác → **không** ra.
+2b. Văn thư **VPUB** (đơn vị ban hành `9133615`): cây cá nhân = **UBND tỉnh** (chỉ 1 con là VPUB) → VPUB → phòng của VPUB. Chọn UBND tỉnh: cán bộ của chính UBND tỉnh + VPUB (+ phòng VPUB), **không** có cán bộ Sở. Ô tìm nhanh: gõ lãnh đạo UBND tỉnh → ra; gõ cán bộ một Sở → không ra.
 3. Gõ liên tục 10 ký tự → chỉ thấy **1** request `get-doc-manager-transfer-scope` trong log (cache + debounce hoạt động).
 4. Mở lại node đã xem → không có request `get-doc-manager-transfer-org-ids` mới.
 5. Phạm vi "Văn bản cá nhân" hoặc user không phải văn thư đơn vị ban hành → request `getListUser` **không** có `lstGroupId`/`onlyParentGroup`/`checkListGroup`, hành vi như cũ.

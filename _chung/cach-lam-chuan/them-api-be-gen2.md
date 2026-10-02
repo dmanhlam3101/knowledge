@@ -58,8 +58,9 @@ public interface XxxRepositoryJPA extends JpaRepository<XxxEntity, Long> {
 - [ ] Phân trang: `Pageable` / `Page<T>` (gen-2) hoặc `startRecord/pageSize` khi web cũ yêu cầu.
 - [ ] Soft delete, lọc `delFlag = 0` mọi query.
 - [ ] Lỗi nghiệp vụ: throw exception riêng hoặc `ResponseUtils.getResponseEntity(ErrorApp.X, null)`; message vào `messages_vi.properties`.
-- [ ] Nếu endpoint phục vụ ứng dụng ngoài/mobile: prefix `/ext-*` hoặc `/api/app-mobile` và kiểm tra `jwtIgnoreConfig` nếu cần bỏ JWT.
-- [ ] Ghi Swagger annotation nếu team đang dùng (`/voffice-api-docs`).
+- [ ] Nếu endpoint phục vụ ứng dụng ngoài/mobile: prefix `/ext-*` hoặc `/api/app-mobile`; ứng dụng ngoài phải được đăng ký (`EXT_APP`, nghiệp vụ gọi vào `EXT_SHARE_CONFIG` — `tich-hop` NV-01, NV-02). Danh sách bỏ JWT là khóa `jwt.ignore-apis`, so khớp **"chứa chuỗi"** — thêm một đường dẫn có thể mở luôn API khác (`tich-hop/dac-thu.md` bẫy 6) (sửa 2026-10-02: bản cũ ghi `jwtIgnoreConfig`).
+- [ ] Bảng mới: thêm cột vết đồng bộ hai site `VO_VERSION`, `VO_SOURCE`, `VO_LAST_UPDATED` + trigger `VO_SOURCE_<BẢNG>` như các script gần đây (`tich-hop` NV-13).
+- [ ] Ghi Swagger annotation nếu team đang dùng (`/voffice-api-docs`). `backend2.0/backendvoffice/postman/` hiện chỉ có collection quản lý cache — thử API bằng Swagger.
 - [ ] Thêm hàm tương ứng vào `web-spring/.../com/voffice/service/business/XxxBusiness` với key `"api.xxx.search"` (dấu `.` ↔ `/`).
 - [ ] Chạy `knowledge/_tools/scan.py && gen.py` — endpoint mới sẽ xuất hiện trong `ban-do.md` và `web-goi-be.md`.
 

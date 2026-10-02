@@ -14,6 +14,8 @@
 
 ### 1.1 Phạm vi
 
+> (sửa chéo 2026-10-02 theo `van-ban/luong-xu-ly`): chọn người ký tiếp theo theo luồng cấu hình, đổi người ký (`signers-switch`), danh sách lãnh đạo (`get-leaders`), đơn vị ban hành (`promulgation-units`) và **cập nhật luồng ký tuần tự / thêm người ký ngoài luồng** (`PUT /doc-out/{textId}/signing-flow`, `SIGN_FLOW_ORIGIN = 1`) mô tả ở `van-ban/luong-xu-ly` NV-10, NV-11.
+
 Menu cha **XỬ LÝ CÔNG VIỆC** (`SYS_MENU_ID = 441227`, `CODE = XU_LY_CONG_VIEC` — `SQL/12062026_tach_menu.sql:1-2`).
 Cây menu **thực tế trên DB DEV** (tra `SYS_MENU` ngày 2026-09-30, chỉ SELECT) — thay cho giả định "4 menu con" trước đây:
 
@@ -21,7 +23,7 @@ Cây menu **thực tế trên DB DEV** (tra `SYS_MENU` ngày 2026-09-30, chỉ S
 |---|---|---|---|---|---|---|
 | 0 | 439336 | `VBDT_FLOW` | **Dự thảo** | `/view/voffice/documentDraft/documentDraft.zul?view=1` → DDVM (tìm kiếm `documentDraft_search.zul` + soạn `documentDraft_add.zul`), `viewType = VBTK (1)` | 1 | Màn chính của phân hệ. `WEB/voffice/common/HomeVM.java:2737-2743`; `WEB/voffice/vm/brief/BriefInfoVM.java:4564-4586`; `ZUL/documentDraft/documentDraft.zul:7,29-34` |
 | 2 | 337199 | `VBXD` | **Văn bản trình duyệt** | `/view/voffice/requisition/requisition.zul?view=2` → RVM, `viewType = VBXD (2)` | 1 | Hộp việc của **văn thư xét duyệt** — thuộc menu này (trả lời Q11) |
-| 3 | 337342 | `VBKD1` | Văn bản ký duyệt | `/view/voffice/requisition/requisition.zul?view=5` | **2** | Trùng URL với `VBKD`; code web tham chiếu mã `VBKD1` (`WEB/voffice/common/HomeVM.java:2706-2707,2727-2736`) — [CẦN XÁC NHẬN] Q17 |
+| 3 | 337342 | `VBKD1` | Văn bản ký duyệt | `/view/voffice/requisition/requisition.zul?view=5` | **2** (khóa) | Trùng URL với `VBKD`; code web tham chiếu mã `VBKD1` (`WEB/voffice/common/HomeVM.java:2706-2707,2727-2736`) — [CẦN XÁC NHẬN] Q17 |
 | 6 | 337344 | `VBKD` | **Văn bản ký duyệt** | `/view/voffice/requisition/requisition.zul?view=5` → RVM, `viewType = 5` (tab Chờ xử lý / Chờ cho ý kiến / Chờ ký duyệt / Chờ phê duyệt / Đang xử lý / Đã phê duyệt / Trả lại) | 1 | NV-02 |
 | 7 | 441345 | `VBCYK` | Xin ý kiến | `/view/voffice/requisition/waitingGiveAdvice.zul?view=5` | 1 | **zul không tồn tại** trong `web-spring` |
 | 7 | 31745273539 | `VBDCYK` | Đã cho ý kiến | `/view/voffice/requisition/haveGivenAdvice.zul?view=5` | 1 | **zul không tồn tại** |
@@ -30,7 +32,7 @@ Cây menu **thực tế trên DB DEV** (tra `SYS_MENU` ngày 2026-09-30, chỉ S
 
 **Đã xác nhận (2026-09-30):** phương án menu riêng cho "xin ý kiến / cho ý kiến" đã bỏ, chuyển thành **tab mới** trong hộp việc
 (script `SQL/20260915_insert_sys_menu_xin_y_kien.sql:4-27` là di sản). Tuy nhiên trên DB DEV **4 dòng menu này vẫn đang bật**
-(`STATUS = 1`, `DEL_FLAG = 0`) và trỏ tới zul không tồn tại → người được phân quyền sẽ thấy menu mở ra trang lỗi — [CẦN XÁC NHẬN] Q16.
+(`STATUS = 1`, `DEL_FLAG = 0`) và trỏ tới zul không tồn tại → người được phân quyền sẽ thấy menu mở ra trang lỗi. **Nghiệp vụ (xác nhận 2026-10-02, Q16): không dùng 4 menu này** — coi là menu thừa còn sót trên DB (tắt / xóa là việc của DBA / migration, ngoài phạm vi tri thức).
 
 Phân hệ **gồm**: soạn/sửa/xóa dự thảo, các vùng file, kiểm tra thể thức-chính tả, tự động điền, chọn người xử lý tiếp theo
 và người xin ý kiến, trình ký / trình xin ý kiến, hủy luồng, trình ký lại/sao chép, cho ý kiến, ký nháy/ký duyệt/phê duyệt
@@ -744,8 +746,7 @@ Bằng chứng quan hệ: JOIN `submission_map sm ON sm.object_id = t.text_id AN
 
 ### 7.1 Còn mở
 
-- **Q16.** Trên DB DEV, 4 dòng `SYS_MENU` "Xin ý kiến / Chờ cho ý kiến / Đã cho ý kiến" (`441345`, `31745273537`, `31745273539`, `441385`) vẫn `STATUS = 1, DEL_FLAG = 0` và trỏ tới `waitingGiveAdvice.zul` / `haveGivenAdvice.zul` không tồn tại — có cần tắt/xóa không? (mục 1.1; việc của DBA/migration)
-- **Q17.** `SYS_MENU.STATUS = 2` (dòng `VBKD1`, 337342) nghĩa là gì so với `STATUS = 1`? Code web vẫn tham chiếu mã `VBKD1` (`WEB/voffice/common/HomeVM.java:2706-2707`).
+(Không còn — Q16 trả lời 2026-10-02.)
 
 ### 7.2 Đã xác nhận (2026-09-30, người trả lời: chủ dự án)
 
@@ -766,3 +767,5 @@ Bằng chứng quan hệ: JOIN `submission_map sm ON sm.object_id = t.text_id AN
 | Q14 | Cờ quyền `hasSave/Update/...Permission` luôn `true` | **Đúng thiết kế chung** của hệ thống (base), giữ nguyên | Mục 1 |
 | Q11 | Menu con của XỬ LÝ CÔNG VIỆC là màn nào; màn văn thư trình duyệt có thuộc menu không | Tra `SYS_MENU` trên DB DEV: menu có **8 mục con** (bảng mục 1.1); **`VBXD` Văn bản trình duyệt (văn thư) thuộc menu này** | Mục 1.1 |
 | Q15 | `DocumentDraftViewDetailVM` không được zul nào dùng | Ghi chú **không dùng** là đủ (không cần xóa) | `dac-thu.md` |
+| Q17 | `SYS_MENU.STATUS = 2` (dòng `VBKD1`) nghĩa là gì | Comment cột DB `MENU.STATUS`: **'Khóa 2/ mở khóa 1'** → 2 = menu bị khóa (trả lời 2026-10-01 khi chốt module Văn bản đến, Q10) | Mục 1.1 |
+| Q16 | 4 dòng `SYS_MENU` "Xin ý kiến / Chờ cho ý kiến / Đã cho ý kiến" (`441345`, `31745273537`, `31745273539`, `441385`) vẫn bật, trỏ zul không tồn tại | **Không dùng các menu này** (trả lời 2026-10-02) | Mục 1.1; `dac-thu.md` mục 2 bẫy 4 |

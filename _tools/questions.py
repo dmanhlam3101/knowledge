@@ -1,35 +1,58 @@
 # -*- coding: utf-8 -*-
-"""Gom mọi dòng có ❓ trong knowledge/ (trừ ban-do.md sinh tự động) -> _chung/cau-hoi-mo.md"""
+"""Gom câu hỏi còn mở của mọi phân hệ -> _chung/cau-hoi-mo.md (máy sinh, không sửa tay).
+
+Khung bài chuẩn (xem _chung/huong-dan-ra-soat-nghiep-vu.md): câu hỏi còn mở nằm ở mục "### 7.1" của
+`nghiep-vu.md`, mỗi câu một dòng bảng `| Qn | bối cảnh | câu hỏi |` (hoặc dòng danh sách `- **Qn.** ...`
+ở bài cũ). Mục 7.2 (đã xác nhận) không được gom. Trả lời xong: chuyển câu sang 7.2 trong file gốc, chạy lại.
+"""
 import os, re
 
 KNOW = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+ROW = re.compile(r'^\| (Q\d+) \| (.*?) \| (.*) \|\s*$')
+ITEM = re.compile(r'^- \*\*(Q\d+)\.?\*\*\.?\s*(.*)$')
+
+
+def short(t, n=220):
+    t = re.sub(r'\s+', ' ', t).strip()
+    return t if len(t) <= n else t[:n].rstrip() + '…'
+
+
 out = ['# Câu hỏi mở cần người xác nhận', '',
-       '> Sinh bởi `_tools/questions.py`. Trả lời xong: sửa file gốc (xóa ❓), chạy lại script. '
-       'Đây là danh sách việc cho BA / người biết nghiệp vụ.', '']
+       '> Sinh bởi `_tools/questions.py` từ mục **7.1** của từng `nghiep-vu.md`. Không sửa tay. '
+       'Trả lời xong: chuyển câu sang mục 7.2 của file gốc (kèm hệ quả ghi vào tri thức) rồi chạy lại script.', '']
 total = 0
-for root, _, files in os.walk(KNOW):
-    for f in sorted(files):
-        if not f.endswith('.md') or f in ('ban-do.md', 'cau-hoi-mo.md', 'README.md') or '_tools' in root or 'ban-do-tong' in root or 'mau-dau-ra' in root:
+sections = []
+for root, dirs, files in os.walk(KNOW):
+    dirs[:] = sorted(d for d in dirs if not d.startswith(('.', '_')))
+    if 'nghiep-vu.md' not in files:
+        continue
+    p = os.path.join(root, 'nghiep-vu.md')
+    rel = os.path.relpath(p, KNOW).replace('\\', '/')
+    text = open(p, encoding='utf-8').read()
+    i = text.find('### 7.1')
+    if i < 0:
+        continue
+    j = text.find('### 7.2', i)
+    block = text[i:j if j > 0 else len(text)].splitlines()[1:]
+    hits = []
+    for line in block:
+        m = ROW.match(line)
+        if m and m.group(1) != '#':
+            hits.append((m.group(1), short(m.group(3))))
             continue
-        p = os.path.join(root, f)
-        rel = os.path.relpath(p, KNOW).replace('\\', '/')
-        hits = []
-        in_q = False
-        for i, line in enumerate(open(p, encoding='utf-8'), 1):
-            st = line.strip()
-            if st.startswith('#'):
-                in_q = '❓' in st
-                continue
-            if (in_q and re.match(r'\d+\.', st)) or ('❓' in st):
-                hits.append((i, re.sub(r'\s+', ' ', st)))
-        if hits:
-            out.append('## %s (%d)' % (rel, len(hits)))
-            out.append('')
-            for i, t in hits:
-                out.append('- [ ] L%d: %s' % (i, t))
-            out.append('')
-            total += len(hits)
-out.insert(3, 'Tổng: **%d** câu.' % total)
-with open(os.path.join(KNOW, '_chung', 'cau-hoi-mo.md'), 'w', encoding='utf-8') as fh:
+        m = ITEM.match(line)
+        if m:
+            hits.append((m.group(1), short(m.group(2))))
+    if hits:
+        total += len(hits)
+        sec = ['## %s (%d)' % (rel, len(hits)), '']
+        sec += ['- [ ] **%s** — %s' % (q, t) for q, t in hits]
+        sec.append('')
+        sections.append(sec)
+out.append('Tổng: **%d** câu.' % total)
+out.append('')
+for sec in sections:
+    out += sec
+with open(os.path.join(KNOW, '_chung', 'cau-hoi-mo.md'), 'w', encoding='utf-8', newline='') as fh:
     fh.write('\n'.join(out))
 print('cau-hoi-mo.md:', total)

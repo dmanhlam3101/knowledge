@@ -21,12 +21,14 @@
 ## 3. Actor & quyền
 | Actor (vai trò hệ thống) | Được làm gì trong tính năng này |
 |---|---|
-| Văn thư (`SYS_ROLE_VT`) | … |
-| Lãnh đạo đơn vị (`SYS_ROLE_LDDV`) | … |
-| Chuyên viên (`SYS_ROLE_NV`) | … |
+| Văn thư (`VT`) | … |
+| Lãnh đạo đơn vị (`LDDV`) / Thủ trưởng (`TTDV`) | … |
+| Chuyên viên (`NV`) | … |
+
+> Mã vai trò thật và id trên DB DEV: `he-thong` mục 1.4. Quyền thao tác của hệ thống = menu được cấp + điều kiện hiện nút trên web (BE không kiểm người gọi) — ghi rõ nút nào hiện cho ai.
 
 ## 4. Nghiệp vụ hiện tại (as-is)
-Tóm tắt luồng hiện có mà yêu cầu chạm vào — lấy từ `knowledge/<phanhe>/nghiep-vu.md`. Nêu trạng thái hiện tại liên quan (tên hiển thị + mã).
+Tóm tắt luồng hiện có mà yêu cầu chạm vào — lấy từ `knowledge/<phanhe>/nghiep-vu.md` (trích `NV-xx` / `BR-xx`; sự thật đã chốt ở mục 7.2). Nêu trạng thái hiện tại liên quan (tên hiển thị + **giá trị số thật**). Chỗ bài còn câu hỏi mở (mục 7.1) thì nêu là giả định.
 
 ## 5. Nghiệp vụ đề xuất (to-be)
 ### 5.1 Luồng
@@ -58,7 +60,7 @@ sequenceDiagram
 
 ## 6. Tác động
 - Phân hệ khác bị ảnh hưởng: …
-- Mobile / ứng dụng ngoài / liên thông: …
+- Mobile / ứng dụng ngoài / liên thông: … (nghiệp vụ có bản sao ở tầng khác — web legacy ghi thẳng DB / BE gen-1 / gen-2 — phải đổi theo không; xem mục 1 `dac-thu.md` của phân hệ)
 - Báo cáo, dashboard, thống kê: …
 - Dữ liệu cũ (migration): …
 

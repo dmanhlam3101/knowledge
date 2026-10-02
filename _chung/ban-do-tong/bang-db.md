@@ -45,10 +45,10 @@
 | `DocumentInGroupEntity` | `DOCUMENT_IN_GROUP` | van-ban/den | `DocumentInGroupRepositoryJPA` |
 | `DocumentInListRequestEntity` | `DOCUMENT_IN_LIST_REQUEST` | van-ban/den | `DocumentInListRequestRepositoryJPA` |
 | `DocumentInStaffEntity` | `DOCUMENT_IN_STAFF` | van-ban/den | `DocumentInStaffRepositoryJPA` |
-| `DocumentInformality` | `DOCUMENT_INFORMALITY` | van-ban/den | `DocumentInformalityRepositoryJPA` |
-| `DocumentInformalityAttach` | `DOCUMENT_INFORMALITY_ATTACH` | van-ban/den | `DocumentInformalityAttachRepositoryJPA` |
-| `DocumentInformalityGroupEntity` | `DOCUMENTINFORMALITYGROUPENTITY` | van-ban/den | `DocumentInformalityGroupRepositoryJPA` |
-| `DocumentInformalityStaff` | `DOCUMENT_INFORMALITY_STAFF` | van-ban/den | `DocumentInformalityStaffRepositoryJPA` |
+| `DocumentInformality` | `DOCUMENT_INFORMALITY` | lich-nhac-viec | `DocumentInformalityRepositoryJPA` |
+| `DocumentInformalityAttach` | `DOCUMENT_INFORMALITY_ATTACH` | lich-nhac-viec | `DocumentInformalityAttachRepositoryJPA` |
+| `DocumentInformalityGroupEntity` | `DOCUMENTINFORMALITYGROUPENTITY` | lich-nhac-viec | `DocumentInformalityGroupRepositoryJPA` |
+| `DocumentInformalityStaff` | `DOCUMENT_INFORMALITY_STAFF` | lich-nhac-viec | `DocumentInformalityStaffRepositoryJPA` |
 | `DocumentLeaderCommentEntity` | `DOCUMENT_LEADER_COMMENT` | _chung | `DocumentLeaderCommentRepositoryJPA` |
 | `DocumentProcessEntity` | `DOCUMENT_PROCESS` | van-ban/quan-ly-chung | `DocumentProcessRepositoryJPA` |
 | `DocumentProposalDetailEntity` | `DOCUMENT_PROPOSAL_DETAIL` | van-ban/quan-ly-chung | `DocumentProposalDetailJpa` |

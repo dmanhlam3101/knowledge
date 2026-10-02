@@ -7,7 +7,7 @@
 
 ## 1. Màn hình (web)
 
-Tổng: 34 màn hình, 4 VM không gắn zul trực tiếp.
+Tổng: 35 màn hình, 4 VM không gắn zul trực tiếp.
 
 | Màn hình (.zul) | ViewModel | Gọi BE qua (Business) | Legacy (remote/facade) | Nhãn |
 |---|---|---|---|---|
@@ -40,6 +40,7 @@ Tổng: 34 màn hình, 4 VM không gắn zul trực tiếp.
 | `brief/widgets/shareBrief.zul` | `vm.brief.ShareBriefVM` | `BriefBusiness` | `IVps` | BE+LEGACY |
 | `brief/widgets/sourceLookupBrief.zul` | `vm.brief.SourceLookupBriefVM` | `BriefBusiness` | — | BE |
 | `brief/widgets/sourceLookupRadioBrief.zul` | `vm.brief.SourceLookupRadioBriefVM` | `BriefBusiness` | — | BE |
+| `document/reportSendReceiveDoc/documentFinance.zul` | `vm.document.DocumentFinanceVM` | `DocumentBusiness` | — | BE |
 | `shelve/shelve.zul` | `vm.shelve.ShelveVM` | `BoxsBusiness`, `ShelveBusiness`, `StoragesBusiness` | — | BE |
 | `storageManagement/storageManagement.zul` | `vm.storages.StoragesVM` | `ShelveBusiness`, `StoragesBusiness` | — | BE |
 | `widgets/popupSelectDocDraftForBrief.zul` | `widget.PopupSelectDocDraftForBriefVM` | — | — | — |
