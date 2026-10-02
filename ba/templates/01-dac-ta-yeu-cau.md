@@ -65,6 +65,7 @@
 
 # MỤC LỤC
 
+0. Phiếu ý tưởng
 1. Thông tin chung
 2. Phạm vi và vai trò
 3. Tổng quan yêu cầu chức năng
