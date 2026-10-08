@@ -1,0 +1,69 @@
+{
+  "ma": "VD_01",
+  "ten": "Ví dụ mẫu cách viết bước và tiền điều kiện",
+  "out": "AI Analysis/ba/_tools/_vi-du-ra.xlsx",
+  "sheets": [
+    {
+      "kenh": "Web",
+      "cao_dong_tien_dieu_kien": 300,
+      "precondition": "A: Các bước thực hiện\nPre- condition:\n1. Truy cập link: http://<máy chủ môi trường test>/app-view/theme/admin-ex/pages/main.zul\n2.  Login acc có vai trò lãnh đạo (at_ld/123), Văn thư (at_vt/123), Chuyên viên ( at_cv/123)\n3. Phạm vi: VB đến >> Xem chi tiết văn bản >> panel \"Danh sách người/ đơn vị cùng nhận\"\n4. Dữ liệu chuẩn bị (tạo bằng chức năng Chuyển văn bản, ghi lại số ký hiệu để dùng lại):\n- VB1: at_ld chuyển cho at_cv, nhập Hạn xử lý = 15/10/2026\n- VB2: at_ld chuyển cho at_cv, KHÔNG nhập Hạn xử lý\nB: Mô tả chức năng\nBổ sung cột \"Hạn xử lý\" vào panel \"Danh sách người/ đơn vị cùng nhận\", đặt ngay sau cột \"Thời gian chuyển\". Mỗi dòng hiển thị hạn của chính dòng nhận đó, không có hạn thì để trống, không tô màu quá hạn, cột chỉ đọc.\nC: Các bảng tác động\n- DOCUMENT_IN_STAFF, cột DEADLINE_DATE (chỉ đọc)\n- DOCUMENT_IN_GROUP, cột DEADLINE_DATE (chỉ đọc)\nKhông thêm bảng, không thêm cột, không cần migration.",
+      "rows": [
+        {
+          "loai": "G",
+          "text": "Giao diện (Phần này viết các trường hợp kiểm thử cho giao diên chung và các giao diện cho các control)"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra tổng thể giao diện màn hình",
+          "buoc": "1. Đăng nhập vào at_vt/123\n2. VB đến >> Chờ xử lý >> mở chi tiết VB1\n3. Mở panel \"Danh sách người/ đơn vị cùng nhận\"\n4. Kiểm tra title, bố cục, font chữ, cỡ chữ, chính tả của bảng",
+          "ket_qua": "1. Bố cục \n- Form được bố trí hợp lý và dễ sử dụng\n2. Font chữ và màu chữ: \n- Các text sử dụng cùng 1 loại font chữ, cỡ chữ\n- Màu chữ giống giao diện prototype\n3. Chính tả: Không có lỗi về chính tả, cấu trúc câu, ngữ pháp trên màn hình"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra vị trí và nhãn của cột Hạn xử lý",
+          "buoc": "1. Đăng nhập vào at_vt/123\n2. VB đến >> Chờ xử lý >> mở chi tiết VB1\n3. Mở panel \"Danh sách người/ đơn vị cùng nhận\"\n4. Đếm số cột và kiểm tra thứ tự các cột từ trái sang phải",
+          "ket_qua": "Bảng hiển thị 9 cột.\nCột \"Hạn xử lý\" nằm ở vị trí thứ 3, ngay sau cột \"Thời gian chuyển\" và trước cột \"Người chuyển\".\n7 cột cũ giữ nguyên tên và thứ tự tương đối."
+        },
+        {
+          "loai": "G",
+          "text": "Chức năng (Phần này viết các trường hợp kiểm thử kiểm tra các ràng buộc trong cơ sở dữ liệu và cho các luồng nghiệp vụ trong tài liệu giải pháp, tích hợp với các chức năng khác)"
+        },
+        {
+          "loai": "S",
+          "text": "Hiển thị hạn xử lý trên văn bản đến"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra hiển thị hạn của dòng nhận là cá nhân",
+          "buoc": "1. Đăng nhập vào at_ld/123\n2. VB đến >> Chờ xử lý >> mở chi tiết VB1 >> Chuyển văn bản\n3. Chọn at_cv, nhập Hạn xử lý = 15/10/2026 >> Chuyển\n4. VB đến >> Đã xử lý >> mở lại chi tiết VB1\n5. Mở panel \"Danh sách người/ đơn vị cùng nhận\" >> xem dòng có Người nhận là at_cv",
+          "ket_qua": "Cột Hạn xử lý của dòng at_cv hiển thị đúng 15/10/2026, trùng hạn đã nhập trong popup Chuyển văn bản.\nHiển thị dạng dd/MM/yyyy, không có giờ phút."
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra dòng nhận không được giao hạn",
+          "buoc": "1. Đăng nhập vào at_ld/123\n2. VB đến >> Chờ xử lý >> mở chi tiết VB2 >> Chuyển văn bản\n3. Chọn at_cv, để trống ô Hạn xử lý >> Chuyển\n4. Mở lại chi tiết VB2 >> mở panel >> xem ô Hạn xử lý của dòng at_cv",
+          "ket_qua": "Ô Hạn xử lý để trống hoàn toàn.\nKhông hiển thị chữ \"Không có hạn\", không hiển thị dấu gạch ngang, không hiển thị số 0.\nKhông lấy hạn của sổ văn bản đến để điền thay.",
+          "ghi_chu": "Cột Ghi chú dùng cho lưu ý khi chạy, ví dụ phụ thuộc điểm chưa chốt."
+        },
+        {
+          "loai": "G",
+          "text": "An toàn thông tin (Các trường hợp kiểm thử đảm bảo an toàn thông tin theo hướng dẫn kiểm thử an toàn thông tin)"
+        },
+        {
+          "loai": "N",
+          "text": "N/A - Yêu cầu chỉ bổ sung một cột hiển thị chỉ đọc, không thêm ô nhập liệu, không thêm tham số đầu vào, không thay đổi phân quyền."
+        },
+        {
+          "loai": "G",
+          "text": "Kiểm tra ảnh hưởng (Các trường hợp kiểm thử ảnh hưởng từ chức năng)"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra panel Danh sách đã gửi đi không bị ảnh hưởng",
+          "buoc": "1. Đăng nhập vào at_ld/123\n2. VB đến >> Đã xử lý >> mở chi tiết VB1\n3. Mở panel \"Danh sách đã gửi đi\"\n4. Đếm số cột, kiểm tra tên cột và dữ liệu\n5. Bấm nút Thu hồi trên 1 dòng rồi bấm Hủy",
+          "ket_qua": "Panel giữ nguyên số cột, tên cột, thứ tự cột và dữ liệu như trước khi sửa.\nNút Thu hồi hoạt động như cũ.\nKhông xuất hiện cột Hạn xử lý ở panel này."
+        }
+      ]
+    }
+  ]
+}

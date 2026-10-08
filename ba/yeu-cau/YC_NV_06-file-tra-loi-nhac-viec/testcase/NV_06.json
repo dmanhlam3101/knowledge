@@ -1,0 +1,448 @@
+{
+  "ma": "NV_06",
+  "ten": "Xem file văn bản trả lời nhắc việc",
+  "out": "AI Analysis/ba/yeu-cau/YC_NV_06-file-tra-loi-nhac-viec/testcase/NV_06_Xem file van ban tra loi nhac viec.xlsx",
+  "sheets": [
+    {
+      "kenh": "Web",
+      "cao_dong_tien_dieu_kien": 620,
+      "precondition": "A: Các bước thực hiện\nPre- condition:\n1. Truy cập link: <link môi trường test>\n2.  Login acc có vai trò lãnh đạo (at_ld/123), Văn thư (at_vt/123), Chuyên viên ( at_cv/123) — cùng thuộc đơn vị A (đơn vị giao nhắc việc). Cần thêm (người dùng điền tài khoản thật của môi trường test):\n- <TK_VT_X>: văn thư đơn vị X (đơn vị được nhắc, chủ trì)\n- <TK_VT_Y>: văn thư đơn vị Y (đơn vị được nhắc, phối hợp)\n- <TK_CV_X>: chuyên viên đơn vị X (dùng làm người được gán xử lý)\n- <TK_KLQ>: tài khoản không liên quan tới các nhắc việc dưới đây\n3. Phạm vi: VĂN BẢN ĐI >> Theo dõi nhắc việc >> lưới \"Danh sách nhắc việc\" >> cột mới \"File văn bản\" (cuối bảng) và popup \"Xem thêm\"\n4. Dữ liệu chuẩn bị (tạo bằng chức năng Văn bản đi / Tạo nhắc việc / Trả lời nhắc việc, ghi lại số ký hiệu và tên file để dùng lại):\n- VBG1: văn bản đi do đơn vị A ban hành, đã chuyển cho đơn vị X, Y, Z\n- NV1: at_vt tạo nhắc việc trên VBG1 (VĂN BẢN ĐI >> Theo dõi nhắc việc >> nút +): CT = đơn vị X, PH = đơn vị Y và đơn vị Z, hạn = hôm nay + 7 ngày, lãnh đạo theo dõi = at_ld, chuyên viên theo dõi = at_cv\n- VBTL1: văn bản đi do đơn vị X ban hành, có đúng 1 file \"VBTL1_file_chinh.pdf\", đã chuyển cho đơn vị A. <TK_VT_X> trả lời NV1 (nhập nội dung + chọn văn bản trả lời VBTL1) → dòng X ở \"Chờ duyệt\"\n- VBTL2: văn bản đi do đơn vị Y ban hành, có 4 file: 1 file chính tên dài trên 60 ký tự (ví dụ \"VBTL2_bao_cao_ket_qua_thuc_hien_nhac_viec_quy_III_nam_2026_ban_chinh_thuc.pdf\") + 3 phụ lục \"VBTL2_PL1.docx\", \"VBTL2_PL2.xlsx\", \"VBTL2_PL3.pdf\", đã chuyển cho đơn vị A. <TK_VT_Y> trả lời NV1 kèm VBTL2 → dòng Y ở \"Chờ duyệt\"\n- Dòng đơn vị Z của NV1: chưa trả lời → \"Chưa trả lời\"\n- NV2: at_vt tạo trên VBG1, CT = đơn vị X. <TK_VT_X> trả lời chỉ nhập nội dung, KHÔNG chọn văn bản trả lời → \"Chờ duyệt\"\n- NV3: at_vt tạo trên VBG1, CT = đơn vị X. <TK_VT_X> trả lời kèm VBTL3 (1 file \"VBTL3.pdf\", đã chuyển cho đơn vị A), at_ld Phê duyệt → \"Hoàn thành\"\n- NV4: at_vt tạo trên VBG1, CT = đơn vị X. <TK_VT_X> trả lời kèm VBTL4 (1 file), at_ld Trả lại (nhập ý kiến) → \"Xử lý lại\"\n- NV5: at_vt tạo trên VBG1, CT = đơn vị X, gán người xử lý = <TK_CV_X>. <TK_CV_X> trả lời kèm VBTL5 (1 file \"VBTL5.pdf\", đã chuyển cho đơn vị A) → \"Chờ duyệt\"\n- VBTL6 (chỉ khi hệ thống cho ban hành văn bản không có file): văn bản đi đơn vị X không có file nào; NV6 CT = đơn vị X, <TK_VT_X> trả lời kèm VBTL6\n- Nhóm \"Giao đi/Theo dõi\" >> \"Tất cả\" của at_vt có ít nhất 51 dòng (dùng lại nhắc việc sẵn có trên môi trường test, càng nhiều dòng có văn bản trả lời càng tốt)\n- Lưu ý: at_cv KHÔNG có tên trong danh sách người nhận VBTL1, VBTL2 (văn bản trả lời chỉ chuyển cho đơn vị A)\nB: Mô tả chức năng\nBổ sung cột \"File văn bản\" ở cuối lưới \"Danh sách nhắc việc\" (sau cột \"Ngày tạo\"). Mỗi dòng hiện file của đúng văn bản đang ở cột \"Số VB trả lời\" cùng dòng: tên file chính kèm biểu tượng tải; văn bản có hơn 1 file thì có thêm liên kết \"Xem thêm\" mở popup liệt kê mọi file. Bấm tên file để xem, bấm biểu tượng để tải file gốc. Dòng không kèm văn bản trả lời hoặc văn bản không có file thì ô để trống. Cột hiện ở mọi nhóm, mọi tab; ai thấy dòng thì xem / tải được file. Cột \"Số VB trả lời\" giữ nguyên.\nC: Các bảng tác động\n- REMINDER_REPLY (chỉ đọc)\n- REMINDER_DOCUMENT_RELATIONS, OBJECT_TYPE = 2 = văn bản trả lời (chỉ đọc)\n- DOCUMENT (chỉ đọc)\n- FILES_ATTACHMENT, cột DOCUMENT_ID, NAME, TYPE, FILE_ORDER (chỉ đọc)\nKhông thêm bảng, không thêm cột, không cần migration.",
+      "rows": [
+        {
+          "loai": "G",
+          "text": "Giao diện (Phần này viết các trường hợp kiểm thử cho giao diên chung và các giao diện cho các control)"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra tổng thể giao diện lưới sau khi thêm cột",
+          "buoc": "1. Đăng nhập vào at_vt/123\n2. VĂN BẢN ĐI >> Theo dõi nhắc việc >> Giao đi/Theo dõi >> Tất cả\n3. Kiểm tra title, bố cục, font chữ, cỡ chữ, màu chữ, chính tả của lưới \"Danh sách nhắc việc\"",
+          "ket_qua": "1. Bố cục\n- Form được bố trí hợp lý và dễ sử dụng\n2. Font chữ và màu chữ:\n- Các text sử dụng cùng 1 loại font chữ, cỡ chữ\n- Màu chữ giống giao diện prototype\n3. Chính tả: Không có lỗi về chính tả, cấu trúc câu, ngữ pháp trên màn hình"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra vị trí và nhãn của cột File văn bản",
+          "buoc": "1. Đăng nhập vào at_vt/123\n2. VĂN BẢN ĐI >> Theo dõi nhắc việc >> Giao đi/Theo dõi >> Tất cả\n3. Đếm số cột và kiểm tra tên, thứ tự các cột từ trái sang phải",
+          "ket_qua": "Lưới hiển thị 10 cột theo thứ tự: Thao tác · Số, Ký hiệu · Trích yếu · Nội dung giao việc · Đơn vị xử lý · Trạng thái · Số VB trả lời · Hạn xử lý · Ngày tạo · File văn bản.\nCột mới tên đúng \"File văn bản\", nằm cuối cùng, sau cột \"Ngày tạo\".\n9 cột cũ giữ nguyên tên và thứ tự; cột \"Số VB trả lời\" vẫn ở vị trí thứ 7.",
+          "ghi_chu": "BR-01. Nhãn cột theo TBD-03 (mặc định \"File văn bản\")"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra hiển thị ô khi văn bản trả lời có đúng 1 file",
+          "buoc": "1. Đăng nhập vào at_vt/123\n2. VĂN BẢN ĐI >> Theo dõi nhắc việc >> Giao đi/Theo dõi >> Tất cả\n3. Tìm dòng NV1 - đơn vị X\n4. Quan sát ô cột \"File văn bản\"",
+          "ket_qua": "Ô hiển thị tên file \"VBTL1_file_chinh.pdf\" dạng liên kết, kèm biểu tượng tải ngay cạnh tên file.\nKHÔNG hiển thị liên kết \"Xem thêm\".",
+          "ghi_chu": "BR-03, AC-03"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra hiển thị ô khi văn bản trả lời có nhiều file",
+          "buoc": "1. Đăng nhập vào at_vt/123\n2. VĂN BẢN ĐI >> Theo dõi nhắc việc >> Giao đi/Theo dõi >> Tất cả\n3. Tìm dòng NV1 - đơn vị Y\n4. Quan sát ô cột \"File văn bản\"",
+          "ket_qua": "Ô hiển thị tên file chính của VBTL2 kèm biểu tượng tải.\nDưới tên file có liên kết \"Xem thêm\", chữ nghiêng, gạch chân (giống cột File văn bản ở danh sách văn bản đi).\nÔ KHÔNG liệt kê cả 4 file ra ngoài lưới.",
+          "ghi_chu": "BR-03, AC-04"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra tên file dài",
+          "buoc": "1. Đăng nhập vào at_vt/123\n2. VĂN BẢN ĐI >> Theo dõi nhắc việc >> Giao đi/Theo dõi >> Tất cả\n3. Tìm dòng NV1 - đơn vị Y\n4. Quan sát tên file chính của VBTL2 trong ô",
+          "ket_qua": "Tên file dài tự xuống dòng trong ô, hiển thị đủ cả phần đuôi \".pdf\".\nKhông bị cắt mất chữ, không đè lên cột khác, biểu tượng tải vẫn nhìn thấy và bấm được.",
+          "ghi_chu": "NFR-06"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra lưới không tràn ngang ở độ phân giải 1366 px",
+          "buoc": "1. Đăng nhập vào at_vt/123\n2. Đặt cửa sổ trình duyệt rộng 1366 px\n3. VĂN BẢN ĐI >> Theo dõi nhắc việc >> Giao đi/Theo dõi >> Tất cả\n4. Quan sát lưới",
+          "ket_qua": "Lưới hiển thị đủ 10 cột trong khung, không xuất hiện thanh cuộn ngang của trang.\nCác cột \"Trạng thái\", \"Hạn xử lý\", \"Ngày tạo\" không bị thu hẹp tới mức cắt chữ.",
+          "ghi_chu": "NFR-06"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra giao diện popup Xem thêm",
+          "buoc": "1. Đăng nhập vào at_vt/123\n2. VĂN BẢN ĐI >> Theo dõi nhắc việc >> Giao đi/Theo dõi >> Tất cả\n3. Tìm dòng NV1 - đơn vị Y\n4. Bấm \"Xem thêm\" ở cột \"File văn bản\"\n5. Quan sát popup",
+          "ket_qua": "Popup mở tại chỗ, tiêu đề kèm số file \"(4)\".\nLiệt kê đủ 4 file của VBTL2, đánh số thứ tự 1 đến 4; mỗi dòng có tên file dạng liên kết và biểu tượng tải.\nGóc phải tiêu đề có nút đóng (×).",
+          "ghi_chu": "BR-03, UI-05, AC-04"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra di chuyển bằng phím Tab / Shift+Tab và Enter",
+          "buoc": "1. Đăng nhập vào at_vt/123\n2. VĂN BẢN ĐI >> Theo dõi nhắc việc >> Giao đi/Theo dõi >> Tất cả\n3. Nhấn Tab liên tục tới liên kết tên file ở cột \"File văn bản\" của dòng NV1 - đơn vị X\n4. Nhấn Shift+Tab để quay lại phần tử trước\n5. Nhấn Tab tới lại liên kết tên file rồi nhấn Enter",
+          "ket_qua": "Con trỏ di chuyển lần lượt qua các phần tử theo thứ tự từ trái sang phải, trên xuống dưới; Shift+Tab đi ngược lại.\nNhấn Enter trên liên kết tên file thì mở file giống như bấm chuột.",
+          "ghi_chu": "ui-ux-rule: bộ common GUI"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra phóng to / thu nhỏ trình duyệt",
+          "buoc": "1. Đăng nhập vào at_vt/123\n2. VĂN BẢN ĐI >> Theo dõi nhắc việc >> Giao đi/Theo dõi >> Tất cả\n3. Nhấn Ctrl+= 2 lần, quan sát lưới\n4. Nhấn Ctrl+- 4 lần, quan sát lưới",
+          "ket_qua": "Ở mọi mức phóng, cột \"File văn bản\" vẫn hiển thị đúng vị trí cuối bảng, tên file và biểu tượng tải không bị vỡ hay chồng lên nhau.",
+          "ghi_chu": "ui-ux-rule: bộ common GUI"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra cột hiển thị đúng khi đổi số dòng / trang và chuyển trang",
+          "buoc": "1. Đăng nhập vào at_vt/123\n2. VĂN BẢN ĐI >> Theo dõi nhắc việc >> Giao đi/Theo dõi >> Tất cả\n3. Đổi số dòng / trang lần lượt sang 20 rồi 50\n4. Chuyển sang trang 2\n5. Quan sát cột \"File văn bản\" ở mỗi lần đổi",
+          "ket_qua": "Ở mọi trang và mọi lựa chọn 10 / 20 / 50 dòng, cột \"File văn bản\" đều hiển thị.\nMỗi dòng hiện file của đúng văn bản ở cột \"Số VB trả lời\" cùng dòng, không còn file của trang trước.",
+          "ghi_chu": "EC-11"
+        },
+        {
+          "loai": "G",
+          "text": "Chức năng (Phần này viết các trường hợp kiểm thử kiểm tra các ràng buộc trong cơ sở dữ liệu và cho các luồng nghiệp vụ trong tài liệu giải pháp, tích hợp với các chức năng khác)"
+        },
+        {
+          "loai": "S",
+          "text": "Hiển thị file theo từng dòng"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra mỗi dòng hiện file của đúng văn bản trả lời cùng dòng",
+          "buoc": "1. Đăng nhập vào at_vt/123\n2. VĂN BẢN ĐI >> Theo dõi nhắc việc >> Giao đi/Theo dõi >> Tất cả\n3. Nhập trích yếu của VBG1 vào ô tìm kiếm nhanh >> bấm tìm\n4. Xem 3 dòng của NV1: đơn vị X, đơn vị Y, đơn vị Z\n5. So sánh cột \"Số VB trả lời\" và cột \"File văn bản\" của từng dòng",
+          "ket_qua": "Dòng X: Số VB trả lời = VBTL1, File văn bản = \"VBTL1_file_chinh.pdf\".\nDòng Y: Số VB trả lời = VBTL2, File văn bản = file chính của VBTL2 + \"Xem thêm\".\nDòng Z: cả hai cột để trống.\nKhông dòng nào hiện file của dòng khác, không dòng nào hiện file của văn bản giao việc VBG1.",
+          "ghi_chu": "BR-02, AC-05"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra dòng chưa trả lời",
+          "buoc": "1. Đăng nhập vào at_vt/123\n2. VĂN BẢN ĐI >> Theo dõi nhắc việc >> Giao đi/Theo dõi >> Tất cả\n3. Tìm dòng NV1 - đơn vị Z (trạng thái \"Chưa trả lời\")\n4. Quan sát ô cột \"File văn bản\"",
+          "ket_qua": "Ô để trống hoàn toàn: không có tên file, không có biểu tượng tải, không có \"Xem thêm\", không hiện chữ thay thế.",
+          "ghi_chu": "BR-05, AC-07"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra dòng Xử lý lại sau khi bị trả lại",
+          "buoc": "1. Đăng nhập vào at_vt/123\n2. VĂN BẢN ĐI >> Theo dõi nhắc việc >> Giao đi/Theo dõi >> Tất cả\n3. Tìm dòng NV4 - đơn vị X (trạng thái \"Xử lý lại\")\n4. Quan sát cột \"Số VB trả lời\" và \"File văn bản\"",
+          "ket_qua": "Cột \"Số VB trả lời\" trống (văn bản trả lời đã bị gỡ khi trả lại).\nÔ \"File văn bản\" để trống, không còn file của VBTL4.",
+          "ghi_chu": "BR-05, AC-07"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra trả lời không kèm văn bản",
+          "buoc": "1. Đăng nhập vào at_vt/123\n2. VĂN BẢN ĐI >> Theo dõi nhắc việc >> Giao đi/Theo dõi >> Tất cả\n3. Tìm dòng NV2 - đơn vị X (trạng thái \"Chờ duyệt\", trả lời không chọn văn bản)\n4. Quan sát ô cột \"File văn bản\"",
+          "ket_qua": "Ô để trống: không tên file, không biểu tượng tải, không \"Xem thêm\", không hiện chữ thay thế.",
+          "ghi_chu": "BR-05"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra văn bản trả lời không có file nào",
+          "buoc": "1. Đăng nhập vào at_vt/123\n2. VĂN BẢN ĐI >> Theo dõi nhắc việc >> Giao đi/Theo dõi >> Tất cả\n3. Tìm dòng NV6 - đơn vị X\n4. Quan sát ô cột \"File văn bản\"",
+          "ket_qua": "Cột \"Số VB trả lời\" hiện VBTL6; ô \"File văn bản\" để trống, không biểu tượng tải, không \"Xem thêm\".",
+          "ghi_chu": "BR-05, EC-02. Chỉ chạy được nếu hệ thống cho ban hành văn bản không có file; không dựng được VBTL6 thì ghi BLOCKED kèm lý do"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra dòng đã Hoàn thành vẫn hiện file",
+          "buoc": "1. Đăng nhập vào at_vt/123\n2. VĂN BẢN ĐI >> Theo dõi nhắc việc >> Giao đi/Theo dõi >> Đã hoàn thành\n3. Tìm dòng NV3 - đơn vị X\n4. Quan sát ô cột \"File văn bản\"",
+          "ket_qua": "Ô hiển thị tên file \"VBTL3.pdf\" kèm biểu tượng tải, giống dòng Chờ duyệt.",
+          "ghi_chu": "BR-02, BR-04"
+        },
+        {
+          "loai": "S",
+          "text": "Hiển thị ở mọi nhóm, mọi tab và mọi đường vào"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra nhóm Giao đi/Theo dõi - các tab",
+          "buoc": "1. Đăng nhập vào at_vt/123\n2. VĂN BẢN ĐI >> Theo dõi nhắc việc >> Giao đi/Theo dõi >> Chưa hoàn thành, tìm dòng NV1 - đơn vị X\n3. Giao đi/Theo dõi >> Đã hoàn thành, tìm dòng NV3 - đơn vị X\n4. Giao đi/Theo dõi >> Tất cả, tìm lại hai dòng trên",
+          "ket_qua": "Ở cả 3 tab, lưới đều có cột \"File văn bản\".\nDòng NV1 - X hiện \"VBTL1_file_chinh.pdf\"; dòng NV3 - X hiện \"VBTL3.pdf\"; nội dung giống nhau giữa các tab.",
+          "ghi_chu": "BR-04, AC-06"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra nhóm Cần xử lý của lãnh đạo theo dõi",
+          "buoc": "1. Đăng nhập vào at_ld/123\n2. VĂN BẢN ĐI >> Theo dõi nhắc việc >> Cần xử lý >> Chờ duyệt, tìm dòng NV1 - đơn vị X và NV1 - đơn vị Y\n3. Cần xử lý >> Hoàn thành, tìm dòng NV3 - đơn vị X\n4. Cần xử lý >> Tất cả, tìm lại các dòng trên",
+          "ket_qua": "Ở mọi tab, cột \"File văn bản\" hiển thị; dòng NV1 - X hiện \"VBTL1_file_chinh.pdf\", dòng NV1 - Y hiện file chính của VBTL2 + \"Xem thêm\", dòng NV3 - X hiện \"VBTL3.pdf\".",
+          "ghi_chu": "BR-04, AC-03, AC-06"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra nhóm Cần xử lý của đơn vị được nhắc",
+          "buoc": "1. Đăng nhập vào <TK_VT_X>\n2. VĂN BẢN ĐI >> Theo dõi nhắc việc >> Cần xử lý >> Chờ duyệt\n3. Tìm dòng NV1 của đơn vị mình\n4. Bấm tên file \"VBTL1_file_chinh.pdf\"",
+          "ket_qua": "Lưới có cột \"File văn bản\"; dòng NV1 hiện \"VBTL1_file_chinh.pdf\" kèm biểu tượng tải.\nBấm tên file mở được file văn bản trả lời của đơn vị mình.",
+          "ghi_chu": "BR-04, BR-07, AC-11"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra kết quả tìm kiếm nhanh và tìm kiếm nâng cao",
+          "buoc": "1. Đăng nhập vào at_vt/123\n2. VĂN BẢN ĐI >> Theo dõi nhắc việc >> Giao đi/Theo dõi >> Tất cả\n3. Nhập số ký hiệu VBG1 vào ô tìm kiếm nhanh >> bấm tìm, quan sát cột \"File văn bản\"\n4. Bấm \"Tìm kiếm nâng cao\" >> chọn Đơn vị chủ trì = đơn vị X, chọn khoảng Ngày tạo chứa ngày tạo NV1 >> Tìm kiếm\n5. Quan sát cột \"File văn bản\" của kết quả",
+          "ket_qua": "Ở cả hai cách tìm, lưới kết quả có cột \"File văn bản\".\nDòng NV1 - X hiện \"VBTL1_file_chinh.pdf\"; các dòng khác hiện đúng file của văn bản trả lời cùng dòng.",
+          "ghi_chu": "BR-04, AC-06"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra mở màn từ ô Nhắc việc ở trang chủ",
+          "buoc": "1. Đăng nhập vào at_ld/123\n2. Trang chủ >> ô \"Nhắc việc\" >> bấm ô \"Chờ duyệt\"\n3. Tìm dòng NV1 - đơn vị X trong màn vừa mở",
+          "ket_qua": "Màn Theo dõi nhắc việc mở đúng tab Chờ duyệt, lưới có cột \"File văn bản\", dòng NV1 - X hiện \"VBTL1_file_chinh.pdf\".",
+          "ghi_chu": "BR-04, AC-06"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra mở danh sách từ Báo cáo nhắc việc",
+          "buoc": "1. Đăng nhập vào at_vt/123\n2. VĂN BẢN ĐI >> Báo cáo nhắc việc\n3. Bấm vào ô số của đơn vị X (cột có nhắc việc NV1)\n4. Quan sát lưới danh sách vừa mở",
+          "ket_qua": "Danh sách mở ra có cột \"File văn bản\"; dòng NV1 - X hiện \"VBTL1_file_chinh.pdf\".",
+          "ghi_chu": "Phạm vi 1.4 mục 4 của đặc tả: ⚠ chưa xác minh báo cáo mở cùng lưới, kiểm ở vòng kiểm lớp 3"
+        },
+        {
+          "loai": "S",
+          "text": "Xem và tải file"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra bấm tên file để xem",
+          "buoc": "1. Đăng nhập vào at_vt/123\n2. VĂN BẢN ĐI >> Theo dõi nhắc việc >> Giao đi/Theo dõi >> Tất cả\n3. Tìm dòng NV1 - đơn vị X\n4. Bấm tên file \"VBTL1_file_chinh.pdf\" ở cột \"File văn bản\"",
+          "ket_qua": "Hệ thống mở trình xem file, hiển thị đúng nội dung file VBTL1_file_chinh.pdf.\nKhông mở popup chi tiết văn bản, không mở popup chi tiết nhắc việc.",
+          "ghi_chu": "BR-06, AC-08"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra bấm biểu tượng để tải file",
+          "buoc": "1. Đăng nhập vào at_vt/123\n2. VĂN BẢN ĐI >> Theo dõi nhắc việc >> Giao đi/Theo dõi >> Tất cả\n3. Tìm dòng NV1 - đơn vị X\n4. Bấm biểu tượng tải cạnh tên file\n5. Mở file vừa tải về máy",
+          "ket_qua": "Trình duyệt tải về file gốc \"VBTL1_file_chinh.pdf\"; file mở được, nội dung trùng file đã đính kèm vào VBTL1.",
+          "ghi_chu": "BR-06, AC-09"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra xem và tải từng file trong popup Xem thêm",
+          "buoc": "1. Đăng nhập vào at_vt/123\n2. VĂN BẢN ĐI >> Theo dõi nhắc việc >> Giao đi/Theo dõi >> Tất cả\n3. Tìm dòng NV1 - đơn vị Y >> bấm \"Xem thêm\"\n4. Bấm tên file số 3 \"VBTL2_PL2.xlsx\"\n5. Quay lại popup, bấm biểu tượng tải của file số 4 \"VBTL2_PL3.pdf\"",
+          "ket_qua": "Bước 4: mở trình xem đúng file VBTL2_PL2.xlsx.\nBước 5: tải về đúng file gốc VBTL2_PL3.pdf, mở được.",
+          "ghi_chu": "BR-03, BR-06, AC-04"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra đóng popup Xem thêm",
+          "buoc": "1. Đăng nhập vào at_vt/123\n2. VĂN BẢN ĐI >> Theo dõi nhắc việc >> Giao đi/Theo dõi >> Tất cả\n3. Chuyển sang trang 2, nhập từ khóa tìm kiếm nhanh bất kỳ có kết quả chứa dòng NV1 - đơn vị Y\n4. Bấm \"Xem thêm\" ở dòng NV1 - đơn vị Y\n5. Bấm nút đóng (×) của popup",
+          "ket_qua": "Popup đóng, quay lại lưới.\nLưới giữ nguyên trang đang đứng, từ khóa và bộ lọc đang chọn, không tải lại về trang 1.",
+          "ghi_chu": "UI-05"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra đổi trang khi popup Xem thêm đang mở",
+          "buoc": "1. Đăng nhập vào at_vt/123\n2. VĂN BẢN ĐI >> Theo dõi nhắc việc >> Giao đi/Theo dõi >> Tất cả\n3. Bấm \"Xem thêm\" ở dòng NV1 - đơn vị Y\n4. Không đóng popup, bấm sang trang tiếp theo của lưới",
+          "ket_qua": "Popup đang mở tự đóng; lưới hiển thị trang mới với cột \"File văn bản\" đúng theo dòng của trang mới.",
+          "ghi_chu": "EC-11"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra cột Số VB trả lời vẫn mở chi tiết văn bản",
+          "buoc": "1. Đăng nhập vào at_vt/123\n2. VĂN BẢN ĐI >> Theo dõi nhắc việc >> Giao đi/Theo dõi >> Tất cả\n3. Tìm dòng NV1 - đơn vị X\n4. Bấm vào nội dung cột \"Số VB trả lời\"",
+          "ket_qua": "Mở popup chi tiết văn bản VBTL1 như trước khi cập nhật; mục \"File đính kèm\" trong popup hiển thị \"VBTL1_file_chinh.pdf\", trùng với file ở cột \"File văn bản\".",
+          "ghi_chu": "BR-01, AC-02"
+        },
+        {
+          "loai": "S",
+          "text": "Ai thấy dòng thì xem / tải được file"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra chuyên viên theo dõi không phải người nhận văn bản trả lời",
+          "buoc": "1. Đăng nhập vào at_cv/123\n2. VĂN BẢN ĐI >> Theo dõi nhắc việc >> Giao đi/Theo dõi >> Tất cả\n3. Tìm dòng NV1 - đơn vị X\n4. Bấm tên file \"VBTL1_file_chinh.pdf\"\n5. Bấm biểu tượng tải cạnh tên file",
+          "ket_qua": "Bước 4: mở được file để xem.\nBước 5: tải được file gốc.\nKHÔNG xuất hiện thông báo không có quyền xem file.",
+          "ghi_chu": "BR-07, AC-10, EC-08. Tải file phụ thuộc TBD-02 (a) — đặc tả đang giả định cho tải"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra lãnh đạo theo dõi xem / tải file",
+          "buoc": "1. Đăng nhập vào at_ld/123\n2. VĂN BẢN ĐI >> Theo dõi nhắc việc >> Cần xử lý >> Chờ duyệt\n3. Tìm dòng NV1 - đơn vị Y >> bấm \"Xem thêm\"\n4. Bấm tên file số 1, rồi bấm biểu tượng tải của file số 2",
+          "ket_qua": "Xem được file số 1, tải được file số 2; không có thông báo không có quyền.",
+          "ghi_chu": "BR-07"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra người được gán xử lý xem file",
+          "buoc": "1. Đăng nhập vào <TK_CV_X>\n2. VĂN BẢN ĐI >> Theo dõi nhắc việc >> Cần xử lý >> Chờ duyệt\n3. Tìm dòng NV5 (được gán cho mình)\n4. Bấm tên file \"VBTL5.pdf\"",
+          "ket_qua": "Dòng NV5 hiện \"VBTL5.pdf\" kèm biểu tượng tải; bấm tên file mở được file.",
+          "ghi_chu": "BR-07"
+        },
+        {
+          "loai": "S",
+          "text": "Không thay đổi dữ liệu và đối chiếu cơ sở dữ liệu"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra xem / tải file không đổi trạng thái và số đếm",
+          "buoc": "1. Đăng nhập vào at_ld/123\n2. Trang chủ >> ghi lại số trên ô \"Nhắc việc\" >> \"Chờ duyệt\"\n3. VĂN BẢN ĐI >> Theo dõi nhắc việc >> Cần xử lý >> ghi lại số trên nhãn tab \"Chờ duyệt\"\n4. Tại tab Chờ duyệt, xem file và tải file của dòng NV1 - đơn vị X\n5. Nhấn F5 tải lại màn, quay lại Trang chủ",
+          "ket_qua": "Dòng NV1 - X vẫn ở \"Chờ duyệt\".\nSố trên nhãn tab \"Chờ duyệt\" và số trên ô trang chủ không đổi so với bước 2, 3.",
+          "ghi_chu": "BR-09, AC-13"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Đối chiếu danh sách file trên lưới với cơ sở dữ liệu",
+          "buoc": "1. Đăng nhập vào at_vt/123\n2. VĂN BẢN ĐI >> Theo dõi nhắc việc >> Giao đi/Theo dõi >> Tất cả >> tìm 3 dòng của NV1, mở \"Xem thêm\" ở dòng đơn vị Y\n3. Chạy câu lệnh sau trên CSDL DEV (CHỈ SELECT, CSDL dùng chung — không INSERT / UPDATE / DELETE):\nSELECT rr.REMINDER_REPLY_ID, rr.ORG_ID, rr.STATUS,\n       d.DOCUMENT_ID, d.CODE,\n       f.FILE_ATTACHMENT_ID, f.NAME, f.TYPE, f.FILE_ORDER\n  FROM REMINDER_REPLY rr\n  JOIN REMINDER_DOCUMENT_RELATIONS rdr\n    ON rdr.OBJECT_ID = rr.REMINDER_REPLY_ID\n   AND rdr.OBJECT_TYPE = 2 AND rdr.DEL_FLAG = 0\n  JOIN DOCUMENT d ON d.DOCUMENT_ID = rdr.DOCUMENT_ID\n  LEFT JOIN FILES_ATTACHMENT f ON f.DOCUMENT_ID = d.DOCUMENT_ID\n WHERE rr.REMINDER_ID = <mã NV1>\n   AND rr.DEL_FLAG = 0\n ORDER BY rr.ORG_ID, f.TYPE, f.FILE_ORDER;\n-- Kỳ vọng: dòng đơn vị X có 1 file VBTL1_file_chinh.pdf; dòng đơn vị Y có 4 file của VBTL2; không có dòng nào cho đơn vị Z\n4. So sánh kết quả với lưới và popup",
+          "ket_qua": "Tên file và số file của từng đơn vị trên lưới / popup khớp đúng kết quả câu lệnh.\nFile hiển thị ở ô (file chính) là file có TYPE / FILE_ORDER đứng đầu của VBTL2.\nĐơn vị Z không có dòng nào trong kết quả và ô trên lưới để trống.",
+          "ghi_chu": "TBD-06: tên cột FILES_ATTACHMENT lấy từ code, chưa đối chiếu DB DEV — sai tên cột thì sửa câu lệnh theo DB thật"
+        },
+        {
+          "loai": "G",
+          "text": "An toàn thông tin (Các trường hợp kiểm thử đảm bảo an toàn thông tin theo hướng dẫn kiểm thử an toàn thông tin)"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra không xem được file của dòng mình không thấy bằng cách sửa mã trên yêu cầu",
+          "buoc": "1. Đăng nhập vào at_vt/123\n2. VĂN BẢN ĐI >> Theo dõi nhắc việc >> Giao đi/Theo dõi >> Tất cả >> mở công cụ bắt gói tin (Burp Suite hoặc DevTools >> Network)\n3. Bấm tên file \"VBTL1_file_chinh.pdf\" ở dòng NV1 - đơn vị X, ghi lại yêu cầu xem file và mã văn bản / mã file trong yêu cầu\n4. Đăng xuất, đăng nhập vào <TK_KLQ>\n5. Gửi lại yêu cầu xem file ở bước 3 bằng phiên đăng nhập của <TK_KLQ>\n6. Lặp lại bước 5 với yêu cầu tải file",
+          "ket_qua": "Hệ thống từ chối, báo không có quyền hoặc không tìm thấy; KHÔNG trả nội dung file VBTL1_file_chinh.pdf cho <TK_KLQ>.",
+          "ghi_chu": "NFR-02, AC-16"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra truy cập đường dẫn xem / tải file khi đã đăng xuất",
+          "buoc": "1. Đăng nhập vào at_vt/123\n2. VĂN BẢN ĐI >> Theo dõi nhắc việc >> Giao đi/Theo dõi >> Tất cả\n3. Bấm biểu tượng tải ở dòng NV1 - đơn vị X, sao chép đường dẫn tải (DevTools >> Network)\n4. Đăng xuất\n5. Dán đường dẫn ở bước 3 vào thanh địa chỉ trình duyệt >> Enter",
+          "ket_qua": "Hệ thống chuyển về màn đăng nhập hoặc báo hết phiên; không tải được file.",
+          "ghi_chu": "NFR-02"
+        },
+        {
+          "loai": "N",
+          "text": "N/A - Kiểm tra SQL Injection / XSS trên ô nhập: yêu cầu không thêm ô nhập liệu nào, cột File văn bản chỉ hiển thị và mở file sẵn có."
+        },
+        {
+          "loai": "G",
+          "text": "Kiểm tra ảnh hưởng (Các trường hợp kiểm thử ảnh hưởng từ chức năng)"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra 9 cột cũ và thao tác trên dòng không đổi",
+          "buoc": "1. Đăng nhập vào at_vt/123\n2. VĂN BẢN ĐI >> Theo dõi nhắc việc >> Giao đi/Theo dõi >> Tất cả\n3. Kiểm tra nội dung 9 cột cũ của dòng NV1 - đơn vị X\n4. Kiểm tra icon Sửa, Xóa ở cột Thao tác của các dòng NV1\n5. Bấm vào cột Trích yếu của dòng NV1 - đơn vị X",
+          "ket_qua": "Nội dung 9 cột cũ giống trước khi cập nhật.\nIcon Sửa / Xóa hiện đúng như trước (chỉ người tạo; Sửa ẩn với dòng Chờ duyệt / Hoàn thành).\nBấm Trích yếu mở popup chi tiết nhắc việc như cũ.",
+          "ghi_chu": "9.3 đặc tả"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra số đếm và số dòng không đổi",
+          "buoc": "1. Đăng nhập vào at_ld/123 trên bản CŨ (trước khi triển khai)\n2. VĂN BẢN ĐI >> Theo dõi nhắc việc >> lần lượt từng tab của Cần xử lý và Giao đi/Theo dõi, ghi lại số trên nhãn tab và tổng số dòng ở thanh phân trang\n3. Trang chủ >> ô \"Nhắc việc\", ghi lại số từng ô con\n4. Sau khi triển khai bản mới: đăng nhập lại at_ld/123\n5. Lặp lại bước 2 và 3, ghi lại số",
+          "ket_qua": "Mọi số ở bước 5 bằng đúng số ghi ở bước 2, 3 (cùng dữ liệu).\nMột trả lời kèm 1 văn bản không bị lặp thành nhiều dòng.",
+          "ghi_chu": "9.3, 10.6 đặc tả. Cần chụp số trên bản cũ trước khi triển khai"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra popup chi tiết nhắc việc, Trả lời, Duyệt, Trả lại, Hủy trả lời",
+          "buoc": "1. Đăng nhập vào <TK_VT_X>\n2. VĂN BẢN ĐI >> Theo dõi nhắc việc >> Cần xử lý >> Chưa trả lời >> mở chi tiết một nhắc việc mới (tạo thêm nếu cần) >> Trả lời kèm một văn bản trả lời có 1 file >> Lưu\n3. Mở lại chi tiết >> Hủy trả lời\n4. Trả lời lại kèm văn bản đó\n5. Đăng nhập vào at_ld/123 >> VĂN BẢN ĐI >> Theo dõi nhắc việc >> Cần xử lý >> Chờ duyệt >> mở chi tiết dòng đó >> Phê duyệt",
+          "ket_qua": "Mọi thao tác chạy như trước khi cập nhật.\nSau bước 2 và 4: cột \"File văn bản\" của dòng hiện file của văn bản vừa chọn.\nSau bước 3: dòng về \"Xử lý lại\", ô \"File văn bản\" trống.\nSau bước 5: dòng \"Hoàn thành\", ô vẫn hiện file.",
+          "ghi_chu": "9.3 đặc tả"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra quyền xem văn bản trả lời ở đường khác không bị nới",
+          "buoc": "1. Đăng nhập vào at_cv/123\n2. Tra cứu văn bản (VĂN BẢN ĐI) >> nhập số ký hiệu VBTL1 >> Tìm kiếm\n3. Nếu có kết quả, bấm mở chi tiết VBTL1",
+          "ket_qua": "Kết quả giống hệt trước khi cập nhật: at_cv không phải người nhận VBTL1 nên không được thêm quyền xem VBTL1 qua đường tra cứu (không ra kết quả hoặc báo không xác định được chi tiết văn bản như trước).",
+          "ghi_chu": "10.6 đặc tả. So sánh với hành vi bản cũ"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra cột File văn bản ở danh sách văn bản đi không bị ảnh hưởng",
+          "buoc": "1. Đăng nhập vào at_vt/123\n2. VĂN BẢN ĐI >> danh sách văn bản đi đã ban hành >> tìm VBG1\n3. Kiểm tra cột \"File văn bản\", bấm \"Xem thêm\" (nếu có), bấm tên file và biểu tượng tải",
+          "ket_qua": "Cột \"File văn bản\" của danh sách văn bản đi hiển thị và hoạt động như trước khi cập nhật.",
+          "ghi_chu": "Màn mẫu có thể bị dùng lại khi code (10.2 đặc tả)"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra thời gian tải lưới với 50 dòng",
+          "buoc": "1. Đăng nhập vào at_vt/123\n2. VĂN BẢN ĐI >> Theo dõi nhắc việc >> Giao đi/Theo dõi >> Tất cả\n3. Đổi số dòng / trang sang 50, mở DevTools >> Network, ghi thời gian tải danh sách\n4. So sánh với thời gian đo trên bản cũ cùng dữ liệu",
+          "ket_qua": "Lưới hiện đủ 50 dòng, cột \"File văn bản\" đúng ở mọi dòng.\nThời gian tải không tăng quá 20% so với bản cũ.",
+          "ghi_chu": "NFR-01, AC-15. Cần đo trên bản cũ trước khi triển khai"
+        }
+      ]
+    },
+    {
+      "kenh": "App",
+      "cao_dong_tien_dieu_kien": 560,
+      "precondition": "A: Các bước thực hiện\nPre- condition:\n1. Cài ứng dụng di động bản có hỗ trợ hiển thị file văn bản trả lời, trỏ về môi trường test: <link môi trường test>\n2.  Login acc có vai trò lãnh đạo (at_ld/123), Văn thư (at_vt/123), Chuyên viên ( at_cv/123) — cùng thuộc đơn vị A (đơn vị giao nhắc việc). Cần thêm (người dùng điền tài khoản thật của môi trường test):\n- <TK_VT_X>: văn thư đơn vị X (đơn vị được nhắc, chủ trì)\n- <TK_VT_Y>: văn thư đơn vị Y (đơn vị được nhắc, phối hợp)\n- <TK_CV_X>: chuyên viên đơn vị X (dùng làm người được gán xử lý)\n- <TK_KLQ>: tài khoản không liên quan tới các nhắc việc dưới đây\n3. Phạm vi: ứng dụng di động >> Nhắc việc >> danh sách nhắc việc >> thông tin file văn bản trả lời của từng dòng (giao diện theo TBD-01)\n4. Dữ liệu chuẩn bị (tạo bằng chức năng Văn bản đi / Tạo nhắc việc / Trả lời nhắc việc, ghi lại số ký hiệu và tên file để dùng lại):\n- VBG1: văn bản đi do đơn vị A ban hành, đã chuyển cho đơn vị X, Y, Z\n- NV1: at_vt tạo nhắc việc trên VBG1 (VĂN BẢN ĐI >> Theo dõi nhắc việc >> nút +): CT = đơn vị X, PH = đơn vị Y và đơn vị Z, hạn = hôm nay + 7 ngày, lãnh đạo theo dõi = at_ld, chuyên viên theo dõi = at_cv\n- VBTL1: văn bản đi do đơn vị X ban hành, có đúng 1 file \"VBTL1_file_chinh.pdf\", đã chuyển cho đơn vị A. <TK_VT_X> trả lời NV1 (nhập nội dung + chọn văn bản trả lời VBTL1) → dòng X ở \"Chờ duyệt\"\n- VBTL2: văn bản đi do đơn vị Y ban hành, có 4 file: 1 file chính tên dài trên 60 ký tự (ví dụ \"VBTL2_bao_cao_ket_qua_thuc_hien_nhac_viec_quy_III_nam_2026_ban_chinh_thuc.pdf\") + 3 phụ lục \"VBTL2_PL1.docx\", \"VBTL2_PL2.xlsx\", \"VBTL2_PL3.pdf\", đã chuyển cho đơn vị A. <TK_VT_Y> trả lời NV1 kèm VBTL2 → dòng Y ở \"Chờ duyệt\"\n- Dòng đơn vị Z của NV1: chưa trả lời → \"Chưa trả lời\"\n- NV2: at_vt tạo trên VBG1, CT = đơn vị X. <TK_VT_X> trả lời chỉ nhập nội dung, KHÔNG chọn văn bản trả lời → \"Chờ duyệt\"\n- NV3: at_vt tạo trên VBG1, CT = đơn vị X. <TK_VT_X> trả lời kèm VBTL3 (1 file \"VBTL3.pdf\", đã chuyển cho đơn vị A), at_ld Phê duyệt → \"Hoàn thành\"\n- NV4: at_vt tạo trên VBG1, CT = đơn vị X. <TK_VT_X> trả lời kèm VBTL4 (1 file), at_ld Trả lại (nhập ý kiến) → \"Xử lý lại\"\n- NV5: at_vt tạo trên VBG1, CT = đơn vị X, gán người xử lý = <TK_CV_X>. <TK_CV_X> trả lời kèm VBTL5 (1 file \"VBTL5.pdf\", đã chuyển cho đơn vị A) → \"Chờ duyệt\"\n- VBTL6 (chỉ khi hệ thống cho ban hành văn bản không có file): văn bản đi đơn vị X không có file nào; NV6 CT = đơn vị X, <TK_VT_X> trả lời kèm VBTL6\n- Lưu ý: at_cv KHÔNG có tên trong danh sách người nhận VBTL1, VBTL2 (văn bản trả lời chỉ chuyển cho đơn vị A)\nB: Mô tả chức năng\nBổ sung cột \"File văn bản\" ở cuối lưới \"Danh sách nhắc việc\" (sau cột \"Ngày tạo\"). Mỗi dòng hiện file của đúng văn bản đang ở cột \"Số VB trả lời\" cùng dòng: tên file chính kèm biểu tượng tải; văn bản có hơn 1 file thì có thêm liên kết \"Xem thêm\" mở popup liệt kê mọi file. Bấm tên file để xem, bấm biểu tượng để tải file gốc. Dòng không kèm văn bản trả lời hoặc văn bản không có file thì ô để trống. Cột hiện ở mọi nhóm, mọi tab; ai thấy dòng thì xem / tải được file. Cột \"Số VB trả lời\" giữ nguyên.\nC: Các bảng tác động\n- REMINDER_REPLY (chỉ đọc)\n- REMINDER_DOCUMENT_RELATIONS, OBJECT_TYPE = 2 = văn bản trả lời (chỉ đọc)\n- DOCUMENT (chỉ đọc)\n- FILES_ATTACHMENT, cột DOCUMENT_ID, NAME, TYPE, FILE_ORDER (chỉ đọc)\nKhông thêm bảng, không thêm cột, không cần migration.",
+      "rows": [
+        {
+          "loai": "G",
+          "text": "Giao diện (Phần này viết các trường hợp kiểm thử cho giao diên chung và các giao diện cho các control)"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra tổng thể giao diện danh sách nhắc việc trên ứng dụng",
+          "buoc": "1. Đăng nhập ứng dụng di động bằng at_vt/123\n2. Nhắc việc >> danh sách nhắc việc (đường đi theo thiết kế màn hình di động đã duyệt)\n3. Kiểm tra bố cục, font chữ, chính tả",
+          "ket_qua": "1. Bố cục\n- Form được bố trí hợp lý và dễ sử dụng\n2. Font chữ và màu chữ:\n- Các text sử dụng cùng 1 loại font chữ, cỡ chữ\n- Màu chữ giống giao diện prototype\n3. Chính tả: Không có lỗi về chính tả, cấu trúc câu, ngữ pháp trên màn hình",
+          "ghi_chu": "Phụ thuộc TBD-01: chưa xác định màn nhắc việc trên ứng dụng di động (YC_NV_01 ghi nhận di động chưa có màn này) — chưa chạy được thì ghi BLOCKED"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra vị trí hiển thị file văn bản trả lời",
+          "buoc": "1. Đăng nhập ứng dụng di động bằng at_vt/123\n2. Nhắc việc >> danh sách nhắc việc (đường đi theo thiết kế màn hình di động đã duyệt)\n3. Tìm dòng NV1 - đơn vị X và NV1 - đơn vị Y",
+          "ket_qua": "Dòng X hiện tên file \"VBTL1_file_chinh.pdf\"; dòng Y hiện file chính của VBTL2 và lối mở danh sách đủ 4 file, theo đúng thiết kế màn hình di động đã duyệt.\nTên file dài không bị cắt mất phần đuôi.",
+          "ghi_chu": "Phụ thuộc TBD-01: chưa xác định màn nhắc việc trên ứng dụng di động (YC_NV_01 ghi nhận di động chưa có màn này) — chưa chạy được thì ghi BLOCKED. BR-10"
+        },
+        {
+          "loai": "G",
+          "text": "Chức năng (Phần này viết các trường hợp kiểm thử kiểm tra các ràng buộc trong cơ sở dữ liệu và cho các luồng nghiệp vụ trong tài liệu giải pháp, tích hợp với các chức năng khác)"
+        },
+        {
+          "loai": "S",
+          "text": "Hiển thị và mở file"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra file đúng của văn bản trả lời cùng dòng",
+          "buoc": "1. Đăng nhập ứng dụng di động bằng at_vt/123\n2. Nhắc việc >> danh sách nhắc việc (đường đi theo thiết kế màn hình di động đã duyệt)\n3. Xem 3 dòng của NV1 (đơn vị X, Y, Z), so sánh với Web",
+          "ket_qua": "Dòng X: VBTL1_file_chinh.pdf; dòng Y: 4 file của VBTL2; dòng Z: không có file.\nKết quả trùng với Web.",
+          "ghi_chu": "Phụ thuộc TBD-01: chưa xác định màn nhắc việc trên ứng dụng di động (YC_NV_01 ghi nhận di động chưa có màn này) — chưa chạy được thì ghi BLOCKED. BR-02, BR-10"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra dòng không có văn bản trả lời",
+          "buoc": "1. Đăng nhập ứng dụng di động bằng at_vt/123\n2. Nhắc việc >> danh sách nhắc việc (đường đi theo thiết kế màn hình di động đã duyệt)\n3. Xem dòng NV2 - đơn vị X (trả lời không kèm văn bản) và NV4 - đơn vị X (Xử lý lại)",
+          "ket_qua": "Cả hai dòng không hiện file, không hiện chữ thay thế, không lỗi hiển thị.",
+          "ghi_chu": "Phụ thuộc TBD-01: chưa xác định màn nhắc việc trên ứng dụng di động (YC_NV_01 ghi nhận di động chưa có màn này) — chưa chạy được thì ghi BLOCKED. BR-05"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra xem danh sách nhiều file",
+          "buoc": "1. Đăng nhập ứng dụng di động bằng at_vt/123\n2. Nhắc việc >> danh sách nhắc việc (đường đi theo thiết kế màn hình di động đã duyệt)\n3. Tại dòng NV1 - đơn vị Y, mở danh sách file",
+          "ket_qua": "Hiển thị đủ 4 file của VBTL2, đúng tên, đánh số thứ tự.",
+          "ghi_chu": "Phụ thuộc TBD-01: chưa xác định màn nhắc việc trên ứng dụng di động (YC_NV_01 ghi nhận di động chưa có màn này) — chưa chạy được thì ghi BLOCKED. BR-03"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra mở file để xem",
+          "buoc": "1. Đăng nhập ứng dụng di động bằng at_vt/123\n2. Nhắc việc >> danh sách nhắc việc (đường đi theo thiết kế màn hình di động đã duyệt)\n3. Tại dòng NV1 - đơn vị X, chạm vào tên file \"VBTL1_file_chinh.pdf\"",
+          "ket_qua": "Ứng dụng mở file, hiển thị đúng nội dung.",
+          "ghi_chu": "Phụ thuộc TBD-01: chưa xác định màn nhắc việc trên ứng dụng di động (YC_NV_01 ghi nhận di động chưa có màn này) — chưa chạy được thì ghi BLOCKED. BR-06"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra tải file về thiết bị",
+          "buoc": "1. Đăng nhập ứng dụng di động bằng at_vt/123\n2. Nhắc việc >> danh sách nhắc việc (đường đi theo thiết kế màn hình di động đã duyệt)\n3. Tại dòng NV1 - đơn vị X, chạm biểu tượng tải\n4. Mở file vừa tải trong thư mục tải về của thiết bị",
+          "ket_qua": "File gốc VBTL1_file_chinh.pdf được tải về, mở được.",
+          "ghi_chu": "Phụ thuộc TBD-01: chưa xác định màn nhắc việc trên ứng dụng di động (YC_NV_01 ghi nhận di động chưa có màn này) — chưa chạy được thì ghi BLOCKED. BR-06"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra chuyên viên theo dõi xem được file",
+          "buoc": "1. Đăng nhập ứng dụng di động bằng at_cv/123\n2. Nhắc việc >> danh sách nhắc việc (đường đi theo thiết kế màn hình di động đã duyệt)\n3. Tại dòng NV1 - đơn vị X, chạm vào tên file",
+          "ket_qua": "Mở được file; không có thông báo không có quyền.",
+          "ghi_chu": "Phụ thuộc TBD-01: chưa xác định màn nhắc việc trên ứng dụng di động (YC_NV_01 ghi nhận di động chưa có màn này) — chưa chạy được thì ghi BLOCKED. BR-07"
+        },
+        {
+          "loai": "G",
+          "text": "An toàn thông tin (Các trường hợp kiểm thử đảm bảo an toàn thông tin theo hướng dẫn kiểm thử an toàn thông tin)"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra không lấy được file của dòng mình không thấy",
+          "buoc": "1. Đăng nhập ứng dụng di động bằng at_vt/123, bật công cụ bắt gói tin (proxy Burp Suite trên thiết bị)\n2. Nhắc việc >> danh sách nhắc việc (đường đi theo thiết kế màn hình di động đã duyệt) >> chạm tên file ở dòng NV1 - đơn vị X, ghi lại yêu cầu xem file\n3. Đăng xuất, đăng nhập ứng dụng bằng <TK_KLQ>\n4. Gửi lại yêu cầu ở bước 2 bằng phiên của <TK_KLQ>",
+          "ket_qua": "Hệ thống từ chối, không trả nội dung file.",
+          "ghi_chu": "Phụ thuộc TBD-01: chưa xác định màn nhắc việc trên ứng dụng di động (YC_NV_01 ghi nhận di động chưa có màn này) — chưa chạy được thì ghi BLOCKED. NFR-02"
+        },
+        {
+          "loai": "N",
+          "text": "N/A - Kiểm tra SQL Injection / XSS trên ô nhập: yêu cầu không thêm ô nhập liệu nào trên ứng dụng."
+        },
+        {
+          "loai": "G",
+          "text": "Kiểm tra ảnh hưởng (Các trường hợp kiểm thử ảnh hưởng từ chức năng)"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra tương thích với bản ứng dụng cũ",
+          "buoc": "1. Đăng nhập ứng dụng di động bản hiện hành (chưa cập nhật) bằng at_vt/123\n2. Nhắc việc >> danh sách nhắc việc (nếu bản cũ có màn này)\n3. VB đến >> Chờ xử lý >> mở chi tiết một văn bản bất kỳ",
+          "ket_qua": "Ứng dụng chạy bình thường, không văng, không báo lỗi; chỉ không hiển thị file văn bản trả lời.",
+          "ghi_chu": "NFR-05, EC-07"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra danh sách nhắc việc trên ứng dụng không đổi số dòng",
+          "buoc": "1. Đăng nhập ứng dụng di động bằng at_ld/123\n2. Nhắc việc >> danh sách nhắc việc (đường đi theo thiết kế màn hình di động đã duyệt)\n3. Đếm số dòng, so sánh với Web cùng tài khoản, cùng bộ lọc",
+          "ket_qua": "Số dòng và nội dung các thông tin cũ trùng với Web, không bị lặp dòng.",
+          "ghi_chu": "Phụ thuộc TBD-01: chưa xác định màn nhắc việc trên ứng dụng di động (YC_NV_01 ghi nhận di động chưa có màn này) — chưa chạy được thì ghi BLOCKED"
+        }
+      ]
+    }
+  ]
+}

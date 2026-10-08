@@ -17,7 +17,11 @@ AI Analysis/ba/
 │   ├── 04-acceptance-criteria.md      Bảng AC + luật viết + ví dụ tốt/chưa tốt
 │   ├── 05-phan-tich-anh-huong.md      Ảnh hưởng GÓC NGHIỆP VỤ (BA tự làm, không cần đọc code)
 │   ├── 06-danh-sach-cau-hoi.md        Danh sách câu hỏi gửi khách hàng/nghiệp vụ chốt
-│   └── 07-so-loi-kiem-tra.md          SỔ LỖI của vòng kiểm tra lặp (AI ghi, BA xử lý, giữ mã qua các vòng)
+│   ├── 07-so-loi-kiem-tra.md          SỔ LỖI của vòng kiểm tra lặp (AI ghi, BA xử lý, giữ mã qua các vòng)
+│   └── 08-kich-ban-kiem-thu.xlsx      KHUÔN Excel kịch bản kiểm thử của đội kiểm thử (5 sheet) — skill `kich-ban-kiem-thu`
+├── _tools/
+│   ├── gen_kich_ban_kiem_thu.py       Sinh file .xlsx kịch bản kiểm thử từ khuôn + spec JSON
+│   └── vi-du-kich-ban.json            Spec mẫu, đúng chuẩn viết bước và tiền điều kiện
 ├── checklist/
 │   ├── 01-ra-soat-truoc-khi-gui.md    Tự chấm theo 13 + 12 tiêu chí của /ba-review
 │   ├── 02-cau-hoi-lam-ro.md           Ngân hàng câu hỏi 9 nhóm (2.9 = đặc thù Văn phòng số)
@@ -62,6 +66,8 @@ L4 là phép thử quyết định: tài liệu "DEV làm được" khi AI đón
 - **BA tự viết, chỉ nhờ kiểm:** bỏ bước 2–4, viết thẳng theo mẫu 01/02 rồi bắt đầu từ bước 6.
 - **Có sẵn file .docx:** `/ba-assistant viet-lai <file.docx>` → AI chuyển sang mẫu, ghi chỗ thiếu thành câu hỏi → tiếp từ bước 3.
 - **Chấm chính thức có lưu hồ sơ** trong `features/<MA>/ba/`: dùng `/ba-review <MA> <BA-id>` (cùng chuẩn chấm, có gate duyệt).
+- **Xuất kịch bản kiểm thử cho đội kiểm thử** sau khi đặc tả đạt: `/kich-ban-kiem-thu <MÃ>` → file `.xlsx` theo khuôn
+  `templates/08-kich-ban-kiem-thu.xlsx`, lưu ở `yeu-cau/<YC>/testcase/`. Khác `/gen-testcase` (KBKT của pipeline DEV).
 
 ## Cách dùng thủ công (không có AI)
 
