@@ -17,7 +17,8 @@
 - [ ] Đọc mục 10.7 ràng buộc triển khai, nhất là yêu cầu **sửa đủ mọi nhánh truy vấn**.
 - [ ] Xác nhận phạm vi di động: TBD-01 đã chốt chưa. Chưa chốt thì làm phần web trước, phần dữ liệu vẫn làm vì web và
       di động dùng chung một hàm.
-- [ ] Mở `features/<MA>/.ai-snapshot/` hoặc chạy `scripts/snapshot_code.ps1 <MA>` để có mốc so sánh trước khi sửa.
+- [ ] Ghi lại nhánh và commit đang đứng (`git log -1 --oneline` trong `web-spring/` và `backend2.0/`) để có mốc so sánh
+      trước khi sửa.
 
 ## 1. Tầng dữ liệu — truy vấn
 

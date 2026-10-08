@@ -17,16 +17,15 @@
 
 > **HƯỚNG DẪN DÙNG MẪU** *(xóa khối này khi hoàn thiện)*
 >
-> **Nguồn dựng mẫu:** khung 11 mục lấy từ tài liệu YC17 v2.1
-> (`features/XULYCONGVIEC/ba/BA-01-yc17-du-thao/input/spec.md`) · các cột/mục bổ sung lấy từ lỗi mà
-> `ba-review-report.md` của YC17 đã chỉ ra · tiêu chí `[A1..A13]` từ `docs/rules/ba-spec-rule.md` ·
+> **Nguồn dựng mẫu:** khung 11 mục lấy từ tài liệu mẫu YC17 v2.1 của dự án (đã gỡ khỏi repo) · các cột/mục
+> bổ sung lấy từ lỗi mà lần review YC17 đã chỉ ra · tiêu chí `[A1..A13]` từ `checklist/00-chuan-cham-dac-ta.md` ·
 > mã vai trò từ `knowledge/_chung/thuat-ngu.md` · mục NFR (3.3) theo nhóm yêu cầu phi chức năng của
 > ISO/IEC/IEEE 29148 và Volere.
 >
 > - Dùng cho yêu cầu **cỡ M/L** (chức năng mới, bổ sung nghiệp vụ, tích hợp). Yêu cầu nhỏ (đổi
 >   giao diện/điều hướng) dùng `02-yeu-cau-nho.md`.
-> - Mỗi mục có ghi `[A..]` = mã tiêu chí cấu trúc tương ứng trong rule. Viết theo mẫu thì
->   `/ba-review` chấm được ngay.
+> - Mỗi mục có ghi `[A..]` = mã tiêu chí cấu trúc tương ứng trong chuẩn chấm. Viết theo mẫu thì
+>   `/ba-assistant kiem` chấm được ngay.
 > - **Ai viết mục nào** (nhãn cạnh tiêu đề): 🟦 **BA** — ý muốn nghiệp vụ, chỉ BA viết được · 🟩 **AI** — AI điền
 >   từ `knowledge/` + code (hiện trạng, mapping, kỹ thuật), BA không phải viết · 🟨 **AI soạn → BA chốt** — AI soạn
 >   từ lời BA + hiện trạng, BA đọc, sửa, đồng ý. Làm cùng AI: skill `ba-assistant` (xem `README.md` "Quy trình từng bước").
@@ -363,7 +362,8 @@ sequenceDiagram
 # 10. PHẠM VI KỸ THUẬT, KIẾN TRÚC VÀ MAPPING CSDL `[A12]` · 🟩 (BA không phải viết)
 
 > **PTYC xác định WHAT/WHY; code + DAO + DB xác định HOW.** BA không bắt buộc tự trace code —
-> có thể nhờ DEV hoặc chạy `/ba-review` phase feasibility. Nhưng mọi dòng phải có **nhãn độ tin cậy**:
+> AI điền mục này khi soạn (`/ba-assistant soan`) và kiểm lại ở lớp L3 (`/ba-assistant kiem`), hoặc nhờ DEV. Nhưng
+> mọi dòng phải có **nhãn độ tin cậy**:
 > `VERIFIED_DB` · `VERIFIED_CODE` · `VERIFIED_BASELINE` · `PARTIAL` · `TBD_NOT_CONFIRMED`.
 > Tham khảo `ban-do.md` của phân hệ trong `knowledge/`.
 

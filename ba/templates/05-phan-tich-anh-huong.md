@@ -1,11 +1,11 @@
 # {{MÃ YC}} — PHÂN TÍCH ẢNH HƯỞNG (GÓC NGHIỆP VỤ)
 
 > **Nguồn:** mục "Tác động" của `knowledge/_chung/mau-dau-ra/giai-phap-ba.md` + bảng "Từ khóa → phân
-> hệ" trong `knowledge/README.md` + mục 10.6–10.7 (phạm vi không đổi, regression) của YC17.
+> hệ" trong `knowledge/README.md` + mục 10.6–10.7 (phạm vi không đổi, regression) của tài liệu mẫu YC17.
 >
 > **Phạm vi file này:** BA tự đánh giá ảnh hưởng **về nghiệp vụ** trước khi gửi tài liệu — không cần
-> đọc code. Ảnh hưởng **về code** (file nào, hàm nào, cần migration không) do `/ba-review` phase
-> feasibility sinh ra ở `ba-feasibility.md` — không viết trùng ở đây.
+> đọc code. Ảnh hưởng **về code** (file nào, hàm nào, cần migration không) nằm ở mục 10 của `dac-ta.md` (AI điền)
+> và lớp L3 của vòng kiểm; hỏi nhanh thì dùng `/ba-assistant anh-huong <YC>` — không viết trùng ở đây.
 >
 > Mỗi dòng phải trả lời **Có / Không** kèm căn cứ. Ghi "Không" mà không có căn cứ = chưa kiểm tra.
 

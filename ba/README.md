@@ -21,12 +21,15 @@ AI Analysis/ba/
 │   └── 08-kich-ban-kiem-thu.xlsx      KHUÔN Excel kịch bản kiểm thử của đội kiểm thử (5 sheet) — skill `kich-ban-kiem-thu`
 ├── _tools/
 │   ├── gen_kich_ban_kiem_thu.py       Sinh file .xlsx kịch bản kiểm thử từ khuôn + spec JSON
-│   └── vi-du-kich-ban.json            Spec mẫu, đúng chuẩn viết bước và tiền điều kiện
+│   ├── vi-du-kich-ban.json            Spec mẫu, đúng chuẩn viết bước và tiền điều kiện
+│   └── md_to_figma_svg.py             Render figma.md → SVG dán vào Figma — skill `figma-dac-ta`
 ├── checklist/
-│   ├── 01-ra-soat-truoc-khi-gui.md    Tự chấm theo 13 + 12 tiêu chí của /ba-review
+│   ├── 00-chuan-cham-dac-ta.md        CHUẨN CHẤM chính thức: 13 mục A + 12 tiêu chí B + đối chiếu code C + cách kết luận
+│   ├── 01-ra-soat-truoc-khi-gui.md    Bản ô tick của chuẩn chấm để BA tự rà trước khi gửi
 │   ├── 02-cau-hoi-lam-ro.md           Ngân hàng câu hỏi 9 nhóm (2.9 = đặc thù Văn phòng số)
 │   └── 03-loi-hay-gap.md              Lỗi thật đã gặp khi review (bổ sung dần)
 └── yeu-cau/                           NƠI LÀM VIỆC: mỗi yêu cầu một thư mục <YCxx>-<ten-ngan>/
+                                       (dac-ta.md · cau-hoi.md · so-loi.md · input/design/ · testcase/ · figma.md)
 ```
 
 ## Quy trình từng bước — từ lúc nhận yêu cầu đến lúc DEV làm được
@@ -46,7 +49,7 @@ Mỗi yêu cầu có một thư mục `yeu-cau/<YCxx>-<ten-ngan>/` gồm 3 file:
 | **7. BA xử lý sổ lỗi** | Với từng lỗi `Mở`: sửa tài liệu rồi ghi `Đã sửa` · hoặc `Không đồng ý: <lý do>` · hoặc `Chuyển câu hỏi` nếu cần người khác chốt | Có thể sửa hộ nếu BA nói "sửa theo đề xuất E-03, E-05" | Không còn lỗi `Mở` BA chưa xử lý |
 | **8. Lặp 6 → 7** | — | Từ vòng 2 chỉ kiểm lại **chỗ đã sửa + chỗ bị kéo theo + lỗi còn mở**; lỗi `Đã sửa` thật sự ổn → `Đóng`, chưa ổn → `Mở lại` | Kết luận **ĐẠT — DEV LÀM ĐƯỢC** (điều kiện ở cuối mẫu 07) |
 | **9. Bàn giao DEV** | Gửi `dac-ta.md` cho DEV; DEV đọc kèm **danh sách việc + testcase gợi ý** (phần lớp 4 trong `so-loi.md`) và ký mục Phê duyệt | Đổi trạng thái tài liệu `READY_FOR_DEV` | DEV ký duyệt |
-| **10. Mở việc** | Báo AI "mở CR" (hoặc chạy `/ba-review` nếu cần chấm chính thức có lưu hồ sơ) | Mở CR (`scripts/new_cr.ps1`), copy đặc tả làm đầu vào; câu trả lời nào làm rõ **hệ thống hiện tại** → cập nhật vào `knowledge/` | CR đã mở |
+| **10. Đóng yêu cầu** | Giao việc cho DEV / Tester theo kênh của dự án. Cần thêm: kịch bản kiểm thử (`/kich-ban-kiem-thu YC20`), bản mô tả dán Figma (`/figma-dac-ta YC20`) | Câu trả lời nào làm rõ **hệ thống hiện tại** (không phải tính năng mới) → cập nhật vào `knowledge/` (mục "Cập nhật ngược tri thức" của skill `ba-assistant`) | Tri thức đã cập nhật |
 
 **Luật dừng:** sau **3 vòng** vẫn còn lỗi CHẶN → AI dừng kiểm, liệt kê các điểm cần **họp chốt** với người quyết định.
 
@@ -54,20 +57,23 @@ Mỗi yêu cầu có một thư mục `yeu-cau/<YCxx>-<ten-ngan>/` gồm 3 file:
 
 | Lớp | Câu hỏi lớp đó trả lời | AI kiểm gì | Dựa vào |
 |---|---|---|---|
-| **L1 · Hình thức** | Viết đúng chuẩn chưa? | Đủ 13 mục A1–A13, 12 tiêu chí B1–B12; mã BR/AC liên tục; từ mơ hồ; thông báo nguyên văn | `docs/rules/ba-spec-rule.md`, `checklist/01`, `checklist/03` |
+| **L1 · Hình thức** | Viết đúng chuẩn chưa? | Đủ 13 mục A1–A13, 12 tiêu chí B1–B12; mã BR/AC liên tục; từ mơ hồ; thông báo nguyên văn | `checklist/00` (Phần A, B), `checklist/01`, `checklist/03` |
 | **L2 · Đúng nghiệp vụ hiện tại** | Tài liệu có hiểu đúng hệ thống đang chạy không? | Hiện trạng (AS-IS) khớp tri thức; vai trò, trạng thái, menu là **giá trị thật**; BR mới có **mâu thuẫn** quy tắc [Đã xác nhận] không; có đụng câu hỏi còn mở (mục 7.1) không | `knowledge/<phân hệ>/tom-tat.md`, `nghiep-vu.md` |
-| **L3 · Làm được trên code** | Code / DB có chỗ để làm không? | Màn / field / nút có thật; bảng / cột có trong DB (thiếu → cần migration); chỗ bị sửa có bao nhiêu nơi khác gọi tới (rủi ro hồi quy); nghiệp vụ có bản sao ở tầng khác (web cũ, BE cũ / mới, mobile) | code `kha_develop` + DB DEV (chỉ đọc) |
+| **L3 · Làm được trên code** | Code / DB có chỗ để làm không? | Màn / field / nút có thật; bảng / cột có trong DB (thiếu → cần migration); chỗ bị sửa có bao nhiêu nơi khác gọi tới (rủi ro hồi quy); nghiệp vụ có bản sao ở tầng khác (web cũ, BE cũ / mới, mobile) | `checklist/00` (Phần C) · code `kha_develop` + DB DEV (chỉ đọc) |
 | **L4 · Thử làm DEV / Tester** | DEV và Tester có làm được mà **không phải hỏi lại** không? | AI tự lập **danh sách việc DEV** và **danh sách testcase** chỉ từ tài liệu; mỗi chỗ phải đoán = một lỗi | chính tài liệu |
 
 L4 là phép thử quyết định: tài liệu "DEV làm được" khi AI đóng vai DEV/Tester mà không còn câu nào phải hỏi.
 
-### Hai cách dùng khác
+### Các cách dùng khác
 
 - **BA tự viết, chỉ nhờ kiểm:** bỏ bước 2–4, viết thẳng theo mẫu 01/02 rồi bắt đầu từ bước 6.
 - **Có sẵn file .docx:** `/ba-assistant viet-lai <file.docx>` → AI chuyển sang mẫu, ghi chỗ thiếu thành câu hỏi → tiếp từ bước 3.
-- **Chấm chính thức có lưu hồ sơ** trong `features/<MA>/ba/`: dùng `/ba-review <MA> <BA-id>` (cùng chuẩn chấm, có gate duyệt).
+- **Hỏi nhanh "yêu cầu này đụng vào đâu":** `/ba-assistant anh-huong <YC>` — phân hệ, màn, quy tắc, dữ liệu bị đụng,
+  rủi ro hồi quy; không viết đặc tả.
 - **Xuất kịch bản kiểm thử cho đội kiểm thử** sau khi đặc tả đạt: `/kich-ban-kiem-thu <MÃ>` → file `.xlsx` theo khuôn
-  `templates/08-kich-ban-kiem-thu.xlsx`, lưu ở `yeu-cau/<YC>/testcase/`. Khác `/gen-testcase` (KBKT của pipeline DEV).
+  `templates/08-kich-ban-kiem-thu.xlsx`, lưu ở `yeu-cau/<YC>/testcase/`.
+- **Đưa mô tả lên Figma:** `/figma-dac-ta <MÃ>` → `yeu-cau/<YC>/figma.md` (bản rút gọn, BA sửa được) +
+  `figma-light.svg` (kéo thả vào Figma, không cần kết nối Figma).
 
 ## Cách dùng thủ công (không có AI)
 
@@ -78,9 +84,9 @@ Nhận yêu cầu
   → Đi qua checklist/02 (câu hỏi làm rõ) → câu chưa rõ ghi vào templates/06 gửi người chốt
   → Viết tài liệu (UC theo templates/03, AC theo templates/04)
   → Điền templates/05 (ảnh hưởng nghiệp vụ)
-  → Tự rà bằng checklist/01 + checklist/03
-  → Gửi DEV/Tester hoặc chạy /ba-review (chấm điểm + đánh giá ảnh hưởng code)
-  → Lỗi mới phát hiện khi review → thêm vào checklist/03
+  → Tự rà bằng checklist/01 + checklist/03 (chuẩn chấm đầy đủ ở checklist/00)
+  → Gửi DEV/Tester, hoặc nhờ AI kiểm: /ba-assistant kiem <YC> (chấm điểm + đối chiếu code)
+  → Lỗi mới phát hiện khi kiểm → thêm vào checklist/03
 ```
 
 **Chọn cỡ yêu cầu:**
@@ -96,20 +102,22 @@ Nhận yêu cầu
 Mọi nội dung đều lấy từ tài liệu **có sẵn trong dự án**, trừ phần NFR tham khảo chuẩn quốc tế.
 Mỗi file đều ghi nguồn ở đầu file.
 
+Khung 11 mục, use case, AC, mapping CSDL, TBD của mẫu 01 và các lỗi trong checklist 03 ban đầu được đúc kết từ một
+tài liệu đặc tả mẫu của dự án và báo cáo review của nó. Hai tài liệu đó **đã gỡ khỏi repo** (cùng bộ quy trình DEV
+cũ); phần cần dùng đã chép hết vào mẫu và checklist, không cần tra lại.
+
 | Nguồn | Dùng cho |
 |---|---|
-| `features/XULYCONGVIEC/ba/BA-01-yc17-du-thao/input/spec.md` — tài liệu YC17 v2.1, "chuẩn vàng" của dự án | Khung 11 mục, use case, AC, mapping CSDL, TBD |
-| `features/XULYCONGVIEC/ba/BA-01-yc17-du-thao/ba-review-report.md` — báo cáo review YC17 | Các cột/mục bổ sung để không bị trừ điểm; checklist 03 |
-| `docs/rules/ba-spec-rule.md` — bộ tiêu chí `/ba-review` dùng để chấm | Mã `[A1..A13]` trong mẫu; checklist 01 |
+| `checklist/00-chuan-cham-dac-ta.md` — chuẩn chấm chính thức | Mã `[A1..A13]` trong mẫu; checklist 01; lớp L1, L3; kết luận vòng |
 | `knowledge/_chung/thuat-ngu.md`, `knowledge/he-thong/tom-tat.md` | Mã vai trò thật (`VT` / `LDDV` / `TTDV` / `NV`…), mã trạng thái ký, `SEND_TYPE`, `DEL_FLAG` |
 | `knowledge/README.md` | Bảng từ khóa → phân hệ; bước đối chiếu tri thức |
 | `knowledge/_chung/mau-dau-ra/giai-phap-ba.md` + `knowledge/yeu-cau/2026-09-15-loc-don-vi-nhan-khi-ban-hanh.md` | Mẫu 02 (rút gọn), mẫu 05 (ảnh hưởng) |
 | ISO/IEC/IEEE 29148:2018 · Volere Requirements Specification Template | Nhóm yêu cầu phi chức năng (mục 3.3 mẫu 01, nhóm 2.8 checklist 02) |
 
-## Quan hệ với các file khác trong repo
+## Quan hệ giữa các file
 
-- `docs/rules/ba-spec-rule.md` vẫn là **bộ tiêu chí chấm chính thức** của `/ba-review`. Bộ này không
-  thay thế mà giúp BA viết đạt chuẩn đó ngay từ đầu. Sửa rule → cập nhật `checklist/01` cho khớp.
-- `docs/templates/ba-review-report.template.md` và `ba-feasibility.template.md` là **đầu ra của
-  `/ba-review`**, không phải mẫu cho BA viết.
-- Mục NFR (3.3 trong mẫu 01) **chưa được tính điểm** trong `ba-spec-rule.md`.
+- `checklist/00-chuan-cham-dac-ta.md` là **chuẩn chấm chính thức**; mẫu 01 và checklist 01 giúp BA viết đạt chuẩn đó
+  ngay từ đầu. Sửa chuẩn chấm → cập nhật `checklist/01` và điều kiện cuối mẫu 07 cho khớp.
+- Mục NFR (3.3 trong mẫu 01) **chưa được tính điểm** trong chuẩn chấm.
+- Skill dùng bộ này nằm ở `.claude/skills/` của repo: `ba-assistant` (soạn + kiểm), `kich-ban-kiem-thu` (Excel cho đội
+  kiểm thử), `figma-dac-ta` (mô tả dán Figma). Luật chung cho AI: `.claude/CLAUDE.md`.

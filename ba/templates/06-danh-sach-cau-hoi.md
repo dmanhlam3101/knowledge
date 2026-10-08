@@ -1,7 +1,7 @@
 # {{MÃ YC}} — DANH SÁCH CÂU HỎI CẦN XÁC NHẬN
 
-> **Nguồn:** bảng TBD mục 11 của YC17 + cột "Ai chốt / Hạn / Mức" bổ sung theo review YC17
-> (`ba-review-report.md` mục 2.2) + tiêu chí A13, B8 trong `docs/rules/ba-spec-rule.md`.
+> **Nguồn:** bảng TBD mục 11 của tài liệu mẫu YC17 (đã gỡ khỏi repo) + cột "Ai chốt / Hạn / Mức" bổ sung theo review
+> YC17 + tiêu chí A13, B8 trong `checklist/00-chuan-cham-dac-ta.md`.
 >
 > **Dùng khi** cần gửi riêng danh sách câu hỏi cho khách hàng / đại diện nghiệp vụ / DEV trước khi
 > hoàn thiện đặc tả. Câu hỏi lấy từ `checklist/02-cau-hoi-lam-ro.md`.

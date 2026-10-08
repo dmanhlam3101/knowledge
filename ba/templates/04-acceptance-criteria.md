@@ -1,8 +1,7 @@
 # MẪU ACCEPTANCE CRITERIA
 
-> **Nguồn:** bảng AC của YC17 (`features/XULYCONGVIEC/ba/BA-01-yc17-du-thao/input/spec.md` mục 8)
-> + tiêu chí B2, B3, B4, B8 trong `docs/rules/ba-spec-rule.md` + các lỗi AC mà review YC17 đã chỉ ra
-> (`ba-review-report.md` mục 2.3 và B8).
+> **Nguồn:** bảng AC (mục 8) của tài liệu mẫu YC17 (đã gỡ khỏi repo)
+> + tiêu chí B2, B3, B4, B8 trong `checklist/00-chuan-cham-dac-ta.md` + các lỗi AC mà review YC17 đã chỉ ra.
 >
 > Dùng để viết **mục 8** của `01-dac-ta-yeu-cau.md` hoặc **mục 9** của `02-yeu-cau-nho.md`.
 

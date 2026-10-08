@@ -20,7 +20,8 @@
       trò) với BA. · *Bằng chứng:* ba dòng kết luận điền vào mục 11 `dac-ta.md`. · Đường dẫn: ______
 - [ ] **B0-2** SELECT trên con test lấy ID lớn nhất đang dùng của bảng danh mục ô, chọn ID mới không trùng (script repo
       đang dùng tới 46 — **không đoán**). · *Bằng chứng:* ảnh chụp kết quả SELECT + ngày. · Đường dẫn: ______
-- [ ] **B0-3** Chụp mốc mã nguồn: `scripts/snapshot_code.ps1`. · *Bằng chứng:* file trong `.ai-snapshot/`. · ______
+- [ ] **B0-3** Ghi mốc mã nguồn: nhánh + commit đang đứng (`git log -1 --oneline` trong `web-spring/` và `backend2.0/`).
+      · *Bằng chứng:* hai dòng commit dán vào đây. · ______
 - [ ] **B0-4** **Đo số TRƯỚC khi sửa** trên con test: thời gian tải trang chủ + số của 8 ô, với ≥1 văn thư và ≥1 chuyên
       viên. Không có số trước thì không chứng minh được là không gãy. · *Bằng chứng:* bảng số đo, ghi tài khoản + giờ. · ______
 

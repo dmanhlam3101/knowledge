@@ -1,8 +1,8 @@
 # MẪU USE CASE
 
-> **Nguồn:** khối UC trong YC17 (`features/XULYCONGVIEC/ba/BA-01-yc17-du-thao/input/spec.md` mục 5)
+> **Nguồn:** khối UC (mục 5) của tài liệu mẫu YC17 (đã gỡ khỏi repo)
 > + các thiếu sót review YC17 đã chỉ ra (UC không có Actor, không trỏ tới ngoại lệ) + tiêu chí A7
-> trong `docs/rules/ba-spec-rule.md`.
+> trong `checklist/00-chuan-cham-dac-ta.md`.
 >
 > Dùng để viết **mục 5** của `01-dac-ta-yeu-cau.md`. Mỗi UC một khối. Mỗi UC = một mục tiêu của một
 > actor (VD "Tạo dự thảo từ văn bản đến"), không gộp nhiều mục tiêu vào một UC.

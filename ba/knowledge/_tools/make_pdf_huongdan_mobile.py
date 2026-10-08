@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Sinh PDF huong dan mobile (tieng Viet) bang reportlab."""
 import io
+import os
 from reportlab.lib import colors
 from reportlab.lib.enums import TA_LEFT
 from reportlab.lib.pagesizes import A4
@@ -160,7 +161,8 @@ def footer(canv, doc):
     canv.restoreState()
 
 
-out = r'D:\AdvanceTech\VOKhanhHoa\knowledge\yeu-cau\HuongDan-Mobile-Loc-Can-Bo-Theo-Pham-Vi.pdf'
+out = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'yeu-cau',
+                   'HuongDan-Mobile-Loc-Can-Bo-Theo-Pham-Vi.pdf')
 doc = BaseDocTemplate(out, pagesize=A4, leftMargin=18 * mm, rightMargin=18 * mm,
                       topMargin=16 * mm, bottomMargin=20 * mm,
                       title=u'Huong dan Mobile - loc can bo theo pham vi',

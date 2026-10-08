@@ -8,7 +8,7 @@
 > - **CHẶN** — DEV không code được hoặc sẽ code sai: mâu thuẫn nội bộ; mô tả sai hiện trạng hệ thống; mâu thuẫn với
 >   quy tắc đã xác nhận; TBD chặn code chưa có người chốt; field / bảng / màn không tồn tại mà không nói là làm mới;
 >   lớp 4 phải đoán ý.
-> - **NẶNG** — thiếu mục / tiêu chí của `docs/rules/ba-spec-rule.md`; BR không có AC; AC thiếu vế; thông báo chưa
+> - **NẶNG** — thiếu mục / tiêu chí của `checklist/00-chuan-cham-dac-ta.md`; BR không có AC; AC thiếu vế; thông báo chưa
 >   nguyên văn; từ mơ hồ ở BR / AC; thiếu phạm vi KHÔNG đổi.
 > - **NHẸ** — câu chữ, định dạng, đánh số, thuật ngữ chưa thống nhất.
 >
@@ -51,7 +51,7 @@
 
 - [ ] 0 lỗi CHẶN ở trạng thái Mở / Mở lại
 - [ ] 0 TBD mức BLOCKING chưa có câu trả lời
-- [ ] Cấu trúc ≥ 11/13 và nội dung ≥ 10/12 theo `docs/rules/ba-spec-rule.md`; không có mâu thuẫn (B7)
+- [ ] Cấu trúc ≥ 11/13 và nội dung ≥ 10/12 theo `checklist/00-chuan-cham-dac-ta.md`; không có mâu thuẫn (B7)
 - [ ] Mọi BR có ≥ 1 AC; mọi AC truy về BR
 - [ ] Lớp 3: không còn BR nào "CHƯA RÕ" trên code; mapping bảng / cột khớp DB (thiếu cột → đã ghi cần migration)
 - [ ] Lớp 4: lập được đủ việc DEV và testcase mà không phải đoán

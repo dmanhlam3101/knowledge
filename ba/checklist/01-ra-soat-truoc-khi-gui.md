@@ -1,14 +1,13 @@
 # CHECKLIST 01 — RÀ SOÁT TÀI LIỆU TRƯỚC KHI GỬI
 
 > **Nguồn:** 13 tiêu chí cấu trúc (A1–A13) và 12 tiêu chí nội dung (B1–B12) của
-> `docs/rules/ba-spec-rule.md` — chính là bộ tiêu chí `/ba-review` dùng để chấm — viết lại dạng ô
-> tick cho BA tự rà. Mục 3 lấy từ quy trình "Cách dùng khi nhận một yêu cầu" trong `knowledge/README.md`.
+> `00-chuan-cham-dac-ta.md` — chuẩn chấm AI dùng khi kiểm — viết lại dạng ô tick cho BA tự rà. Mục 3 lấy từ quy
+> trình "Cách dùng khi nhận một yêu cầu" trong `knowledge/README.md`.
 >
 > **Dùng khi:** BA tự rà trước bước 6 của quy trình (README) — AI cũng kiểm đúng các ô này ở lớp L1. Viết xong tài liệu theo `templates/01-dac-ta-yeu-cau.md` (hoặc `02-yeu-cau-nho.md`),
-> trước khi gửi DEV/Tester hoặc chạy `/ba-review`.
+> trước khi gửi DEV/Tester hoặc nhờ AI kiểm (`/ba-assistant kiem <YC>`).
 >
-> **Ngưỡng `/ba-review` chấm ĐỦ ĐỂ CODE:** cấu trúc ≥ 11/13 · nội dung ≥ 10/12 · không có TBD
-> BLOCKING · không có mâu thuẫn (B7).
+> **Ngưỡng chấm ĐỦ ĐỂ CODE:** cấu trúc ≥ 11/13 · nội dung ≥ 10/12 · không có TBD BLOCKING · không có mâu thuẫn (B7).
 
 **Tài liệu:** {{MÃ YC}} · **Phiên bản:** {{…}} · **Người rà:** {{…}} · **Ngày:** {{dd/mm/yyyy}}
 

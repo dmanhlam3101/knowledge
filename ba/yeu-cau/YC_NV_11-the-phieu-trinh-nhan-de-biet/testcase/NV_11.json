@@ -1,0 +1,226 @@
+{
+  "ma": "NV_11",
+  "ten": "Thêm ô Nhận để biết vào nhóm Phiếu trình trên trang chủ",
+  "out": "AI Analysis/ba/yeu-cau/YC_NV_11-the-phieu-trinh-nhan-de-biet/testcase/NV_11_Them o Nhan de biet vao nhom Phieu trinh tren trang chu.xlsx",
+  "sheets": [
+    {
+      "kenh": "Web",
+      "cao_dong_tien_dieu_kien": 460,
+      "precondition": "A: Các bước thực hiện\nPre- condition:\n1. Truy cập link: <link môi trường test>\n2.  Login acc có vai trò lãnh đạo (at_ld/123), Văn thư (at_vt/123), Chuyên viên ( at_cv/123)\n3. Phạm vi: Trang chủ >> thẻ \"Phiếu trình\" >> ô \"Nhận để biết\" (ô thứ 6, sau ô \"Xin ý kiến\")\n   Khung người dùng góc phải >> Cấu hình trang chủ (dòng \"Nhận để biết\" dưới nhóm \"Phiếu trình\")\n   Khung người dùng góc phải >> chế độ trang chủ đơn giản\n   PHIẾU TRÌNH >> Phiếu trình nhận để biết (màn đích khi bấm ô)\n4. Dữ liệu chuẩn bị (tạo bằng chức năng Phiếu trình, ghi lại tiêu đề phiếu để dùng lại):\nCách tạo một phiếu trình đã phê duyệt rồi chuyển tiếp để biết (dùng lại cho mọi phiếu PT bên dưới):\n  b1. at_vt đăng nhập >> PHIẾU TRÌNH >> Trình xin ý kiến >> Thêm mới\n  b2. Nhập Đơn vị ban hành, Ngày trình, Nội dung trình, Cơ quan trình\n  b3. Chọn người xin ý kiến là at_ld, hành động \"Phê duyệt\" >> Lưu >> Trình\n  b4. at_ld đăng nhập >> PHIẾU TRÌNH >> Trình quyết định >> tab Chờ xử lý >> mở phiếu >> nhập ý kiến >> Phê duyệt\n      (phiếu chuyển sang trạng thái \"Đã phê duyệt\")\n  b5. at_vt >> PHIẾU TRÌNH >> Trình xin ý kiến >> chọn phiếu >> Chuyển tiếp >> chọn người nhận >> Gửi\n- PT1: at_vt chuyển để biết cho at_cv. Sau đó at_cv MỞ CHI TIẾT phiếu (để phiếu ở trạng thái đã đọc)\n- PT2: at_vt chuyển để biết cho at_cv. at_cv KHÔNG mở chi tiết (giữ chưa đọc, dòng in đậm)\n- PT3: at_vt chuyển để biết cho CẢ at_ld VÀ at_cv. Sau đó at_ld >> PHIẾU TRÌNH >> Phiếu trình nhận để biết >> chọn PT3 >> Chuyển tiếp >> chọn at_cv >> Gửi (at_cv nhận cùng một phiếu 2 lần)\n- PT4: at_vt chuyển để biết cho at_cv. Nhờ DEV/DBA cập nhật SUBMISSION_FORWARD.SEND_DATE của dòng này về quá 365 ngày (ví dụ sysdate-400). Không tạo được bằng giao diện\n- PT5: at_vt chuyển để biết cho at_ld\n=> Số phiếu nhận để biết trong 365 ngày: at_cv = 3 (PT1, PT2, PT3) · at_ld = 2 (PT3, PT5) · at_vt = 0\n- at_vt không được chuyển để biết phiếu nào, dùng làm tài khoản kiểm trường hợp số 0\nB: Mô tả chức năng\nThêm ô thứ 6 tên \"Nhận để biết\" vào cuối nhóm ô \"Phiếu trình\" trên trang chủ, sau ô \"Xin ý kiến\".\nCon số trên ô = tổng số phiếu trình trong hộp \"Phiếu trình nhận để biết\" của chính người đăng nhập, tính cả phiếu đã đọc và chưa đọc, mỗi phiếu tính 1 lần dù được chuyển nhiều lần, chỉ đếm phiếu có ngày chuyển trong 365 ngày gần nhất.\nKhông có phiếu nào thì ô vẫn hiện và ghi số 0. Bấm vào ô mở màn \"Phiếu trình nhận để biết\" với bộ lọc mặc định của màn, không áp thêm bộ lọc.\nÔ mặc định bật cho mọi người dùng, tự bật/tắt được tại \"Cấu hình trang chủ\", và hiện cả ở chế độ trang chủ đơn giản cho mọi vai trò kể cả văn thư.\nÔ chỉ đọc: hiển thị và bấm ô không đánh dấu đã đọc, không đổi trạng thái phiếu.\nC: Các bảng tác động\n- SUBMISSION_FORWARD: RECEIVER_ID, SUBMISSION_FORM_ID, SEND_DATE, IS_READ (CHỈ ĐỌC - dùng để đếm)\n- SUBMISSION_FORM: SUBMISSION_FORM_ID, TITLE, STATUS (CHỈ ĐỌC)\n- HOME_WIDGET: thêm 1 dòng khai báo ô mới (PARENT_CODE = 'PHIEU_TRINH', SIMPLE_MODE = 3)\n- Cấu hình bật/tắt ô của từng người: không có bảng, chỉ nằm trong bộ nhớ đệm của máy chủ\nKhông thêm bảng, không thêm cột, không cần migration dữ liệu nghiệp vụ.",
+      "rows": [
+        {
+          "loai": "G",
+          "text": "Giao diện (Phần này viết các trường hợp kiểm thử cho giao diên chung và các giao diện cho các control)"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra tổng thể giao diện thẻ \"Phiếu trình\" trên trang chủ",
+          "buoc": "1. Đăng nhập vào at_cv/123\n2. Hệ thống mở Trang chủ >> kéo tới thẻ \"Phiếu trình\"\n3. Kiểm tra tiêu đề thẻ, bố cục các ô, font chữ, cỡ chữ, màu chữ, chính tả\n4. Kiểm tra ô \"Nhận để biết\" dùng cùng kiểu trình bày với 5 ô còn lại (cùng kích thước, cùng cách đặt nhãn và số)",
+          "ket_qua": "1. Bố cục\n- Thẻ \"Phiếu trình\" hiển thị 6 ô, xếp 2 cột 3 hàng, không có ô nào bị tràn hay xuống dòng lạ\n2. Font chữ và màu chữ\n- Ô \"Nhận để biết\" dùng cùng font, cỡ chữ, cách trình bày nhãn và số như 5 ô còn lại\n3. Chính tả\n- Nhãn ghi đúng \"Nhận để biết\", không có lỗi chính tả, không viết thành \"Phiếu trình nhận để biết\""
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra vị trí và thứ tự ô \"Nhận để biết\" trong thẻ Phiếu trình",
+          "buoc": "1. Đăng nhập vào at_cv/123\n2. Trang chủ >> thẻ \"Phiếu trình\"\n3. Đếm số ô và đọc tên các ô theo thứ tự từ trái sang phải, từ trên xuống dưới",
+          "ket_qua": "Thẻ hiển thị 6 ô theo đúng thứ tự: Chờ xử lý, Đang xử lý, Đã phê duyệt, Tất cả, Xin ý kiến, Nhận để biết.\nÔ \"Nhận để biết\" đứng cuối cùng, ngay sau ô \"Xin ý kiến\".\n5 ô cũ giữ nguyên tên và thứ tự tương đối như trước khi sửa."
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra dòng \"Nhận để biết\" trong màn Cấu hình trang chủ",
+          "buoc": "1. Đăng nhập vào at_cv/123\n2. Bấm khung người dùng ở góc phải trên >> chọn \"Cấu hình trang chủ\"\n3. Tìm nhóm \"Phiếu trình\" trong danh sách\n4. Đọc các dòng con của nhóm theo thứ tự và kiểm tra trạng thái ô tick của dòng \"Nhận để biết\"\n5. Kiểm tra cột Thao tác của dòng \"Nhận để biết\"",
+          "ket_qua": "Nhóm \"Phiếu trình\" có 6 dòng con, dòng \"Nhận để biết\" nằm cuối, ngay sau dòng \"Xin ý kiến\".\nÔ tick của dòng \"Nhận để biết\" đang được tick sẵn.\nCột Thao tác của dòng này để trống, không có biểu tượng xóa (chỉ ô do người dùng tự tạo mới có)."
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra cách trình bày ô ở chế độ trang chủ đơn giản",
+          "buoc": "1. Đăng nhập vào at_cv/123\n2. Bấm khung người dùng ở góc phải trên >> chọn chế độ trang chủ đơn giản\n3. Kéo tới thẻ \"Phiếu trình\"\n4. Kiểm tra cách trình bày của ô \"Nhận để biết\": dấu tròn màu bên trái nhãn, con số nằm trong viên thuốc bên phải",
+          "ket_qua": "Ô \"Nhận để biết\" hiển thị dạng một dòng: dấu tròn màu xám bên trái, nhãn \"Nhận để biết\", con số 3 trong viên thuốc bên phải.\nÔ \"Chờ xử lý\" giữ dấu tròn đỏ như hiện tại.\nKhông hiển thị biểu tượng hình ảnh ở chế độ này."
+        },
+        {
+          "loai": "G",
+          "text": "Chức năng (Phần này viết các trường hợp kiểm thử kiểm tra các ràng buộc trong cơ sở dữ liệu và cho các luồng nghiệp vụ trong tài liệu giải pháp, tích hợp với các chức năng khác)"
+        },
+        {
+          "loai": "S",
+          "text": "Con số trên ô \"Nhận để biết\""
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra ô đếm cả phiếu đã đọc và phiếu chưa đọc",
+          "buoc": "1. Đăng nhập vào at_cv/123\n2. Trang chủ >> thẻ \"Phiếu trình\" >> đọc số trên ô \"Nhận để biết\"\n3. PHIẾU TRÌNH >> Phiếu trình nhận để biết >> đếm số dòng và xem dòng nào in đậm",
+          "ket_qua": "Ô \"Nhận để biết\" hiển thị số 3 (PT1 đã đọc, PT2 chưa đọc, PT3 chưa đọc).\nMàn Phiếu trình nhận để biết hiển thị đúng 3 dòng, trong đó PT2 và PT3 in đậm, PT1 không in đậm.\nSố trên ô không trừ phiếu đã đọc, không hiển thị dạng \"x/y\"."
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra một phiếu được chuyển nhiều lần chỉ tính một",
+          "buoc": "1. Đăng nhập vào at_cv/123\n2. Trang chủ >> thẻ \"Phiếu trình\" >> ghi lại số trên ô \"Nhận để biết\"\n3. PHIẾU TRÌNH >> Phiếu trình nhận để biết >> tìm phiếu PT3 (phiếu được at_vt và at_ld cùng chuyển cho at_cv)\n4. Đếm số dòng của PT3 trong danh sách",
+          "ket_qua": "PT3 chỉ hiện 1 dòng trong danh sách (lấy lần chuyển mới nhất).\nSố trên ô là 3, không phải 4 - PT3 chỉ được tính 1 lần dù được hai người chuyển tới."
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra phiếu được chuyển quá 365 ngày không được tính",
+          "buoc": "1. Đăng nhập vào at_cv/123\n2. Trang chủ >> thẻ \"Phiếu trình\" >> đọc số trên ô \"Nhận để biết\"\n3. Bấm vào ô \"Nhận để biết\" để mở màn Phiếu trình nhận để biết\n4. Đếm số dòng với bộ lọc mặc định và tìm phiếu PT4\n5. Sửa bộ lọc Ngày gửi về khoảng bao trùm ngày chuyển của PT4 >> Tìm kiếm",
+          "ket_qua": "Số trên ô là 3, không tính PT4.\nVới bộ lọc mặc định, màn hiển thị 3 dòng và không có PT4 - số trên ô khớp số dòng nhìn thấy.\nKhi nới bộ lọc Ngày gửi, PT4 mới hiện ra; số trên ô vẫn là 3, không đổi theo bộ lọc người dùng tự chọn.",
+          "ghi_chu": "Cần DEV/DBA chỉnh SEND_DATE của PT4 về quá 365 ngày trước khi chạy (xem phần Dữ liệu chuẩn bị)."
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra người chưa từng được chuyển phiếu nào",
+          "buoc": "1. Đăng nhập vào at_vt/123 (tài khoản không được chuyển để biết phiếu nào)\n2. Trang chủ >> thẻ \"Phiếu trình\"\n3. Kiểm tra ô \"Nhận để biết\" có hiển thị hay không và giá trị hiển thị\n4. Bấm vào ô \"Nhận để biết\"",
+          "ket_qua": "Ô \"Nhận để biết\" VẪN hiển thị, ghi số 0.\nÔ không bị ẩn, không bị làm mờ, không hiển thị dấu gạch ngang hay chữ \"Không có\".\nBấm vào ô vẫn mở được màn Phiếu trình nhận để biết, danh sách không có dòng nào."
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra mỗi người chỉ thấy số của riêng mình",
+          "buoc": "1. Đăng nhập vào at_cv/123 >> Trang chủ >> ghi lại số trên ô \"Nhận để biết\" >> Đăng xuất\n2. Đăng nhập vào at_ld/123 >> Trang chủ >> ghi lại số trên ô \"Nhận để biết\" >> Đăng xuất\n3. Đăng nhập vào at_vt/123 >> Trang chủ >> ghi lại số trên ô \"Nhận để biết\"",
+          "ket_qua": "at_cv hiển thị 3, at_ld hiển thị 2 (PT3 và PT5), at_vt hiển thị 0.\nMỗi tài khoản chỉ đếm phiếu được chuyển cho chính mình, không cộng dồn phiếu của người khác.\nÔ hiển thị cho cả ba vai trò, không vai trò nào bị ẩn ô."
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Đối chiếu số trên ô với dữ liệu trong cơ sở dữ liệu",
+          "buoc": "1. Đăng nhập vào at_cv/123 >> Trang chủ >> ghi lại số trên ô \"Nhận để biết\"\n2. Lấy EMPLOYEE_ID của at_cv (hỏi DEV hoặc xem màn Quản lý người dùng)\n3. Chạy câu lệnh sau trên CSDL môi trường test (CHỈ ĐỌC, không ghi - đây là CSDL dùng chung):\nSELECT COUNT(*) FROM (\n  SELECT SF.SUBMISSION_FORM_ID\n    FROM SUBMISSION_FORWARD SF\n   WHERE SF.RECEIVER_ID = <EMPLOYEE_ID cua at_cv>\n     AND SF.SEND_DATE >= TRUNC(SYSDATE) - 365\n     AND SF.SEND_DATE <  TRUNC(SYSDATE) + 1\n   GROUP BY SF.SUBMISSION_FORM_ID\n)\n4. So sánh kết quả câu lệnh với số trên ô",
+          "ket_qua": "Kết quả câu lệnh bằng đúng số hiển thị trên ô (3).\nCâu lệnh chỉ đọc, không làm thay đổi dữ liệu."
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra số trên ô cập nhật sau khi được chuyển thêm phiếu mới",
+          "buoc": "1. Đăng nhập vào at_cv/123 >> Trang chủ >> ghi lại số trên ô \"Nhận để biết\" (3)\n2. Đăng nhập at_vt/123 ở trình duyệt khác >> PHIẾU TRÌNH >> Trình xin ý kiến >> chọn PT5 (đã phê duyệt) >> Chuyển tiếp >> chọn at_cv >> Gửi\n3. Quay lại tài khoản at_cv >> tải lại Trang chủ\n4. Đọc lại số trên ô \"Nhận để biết\"",
+          "ket_qua": "Số trên ô tăng từ 3 lên 4.\nMàn Phiếu trình nhận để biết của at_cv có thêm dòng PT5, đang in đậm vì chưa đọc.\nSau khi kiểm xong, trả lại dữ liệu như ban đầu để các testcase khác dùng đúng số 3.",
+          "ghi_chu": "Chạy testcase này sau các testcase đếm số, vì nó làm thay đổi số liệu chuẩn bị."
+        },
+        {
+          "loai": "S",
+          "text": "Bấm vào ô \"Nhận để biết\""
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra điều hướng và bộ lọc mặc định khi bấm ô",
+          "buoc": "1. Đăng nhập vào at_cv/123\n2. Trang chủ >> thẻ \"Phiếu trình\" >> bấm vào ô \"Nhận để biết\"\n3. Kiểm tra màn được mở và các ô lọc trên màn\n4. Đếm số dòng trong danh sách",
+          "ket_qua": "Hệ thống mở màn \"Phiếu trình nhận để biết\" (đúng màn của menu PHIẾU TRÌNH >> Phiếu trình nhận để biết).\nBộ lọc Ngày gửi mặc định từ hôm nay trừ 365 ngày đến hôm nay.\nÔ lọc Tiêu đề để trống, ô lọc Người gửi để trống, KHÔNG có bộ lọc chỉ phiếu chưa đọc.\nDanh sách hiển thị 3 dòng, PT2 và PT3 in đậm."
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra bấm ô không làm phiếu thành đã đọc",
+          "buoc": "1. Đăng nhập vào at_cv/123\n2. Trang chủ >> ghi lại số trên ô \"Nhận để biết\" (3) và ghi lại phiếu nào đang in đậm\n3. Bấm vào ô \"Nhận để biết\" để mở màn danh sách\n4. KHÔNG mở chi tiết phiếu nào, quay lại Trang chủ\n5. Mở lại màn Phiếu trình nhận để biết và kiểm tra lại các dòng in đậm",
+          "ket_qua": "PT2 và PT3 VẪN in đậm (vẫn là chưa đọc).\nSố trên ô vẫn là 3, không đổi.\nKhông phát sinh dòng chuyển tiếp mới, không có thông báo hay SMS nào được gửi."
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra bấm ô hai lần liên tiếp",
+          "buoc": "1. Đăng nhập vào at_cv/123\n2. Trang chủ >> thẻ \"Phiếu trình\" >> bấm vào ô \"Nhận để biết\" hai lần liên tiếp\n3. Đếm số tab đang mở trên thanh tab",
+          "ket_qua": "Màn Phiếu trình nhận để biết chỉ được mở một lần, không mở trùng hai tab.\nKhông hiện lỗi, dữ liệu trên màn vẫn đúng 3 dòng."
+        },
+        {
+          "loai": "S",
+          "text": "Bật / tắt ô tại màn Cấu hình trang chủ"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra tắt ô \"Nhận để biết\"",
+          "buoc": "1. Đăng nhập vào at_cv/123\n2. Khung người dùng góc phải >> Cấu hình trang chủ\n3. Bỏ tick dòng \"Nhận để biết\" dưới nhóm \"Phiếu trình\"\n4. Bấm nút Lưu >> chọn OK ở popup xác nhận\n5. Mở lại Trang chủ và đếm số ô của thẻ \"Phiếu trình\"",
+          "ket_qua": "Hiện thông báo lưu thành công.\nThẻ \"Phiếu trình\" còn 5 ô: Chờ xử lý, Đang xử lý, Đã phê duyệt, Tất cả, Xin ý kiến.\nKhông còn ô \"Nhận để biết\"; 5 ô còn lại giữ nguyên số đếm và vị trí như trước khi tắt."
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra bật lại ô \"Nhận để biết\"",
+          "buoc": "1. Đăng nhập vào at_cv/123 (đang ở trạng thái đã tắt ô ở testcase trước)\n2. Khung người dùng góc phải >> Cấu hình trang chủ\n3. Tick lại dòng \"Nhận để biết\"\n4. Bấm nút Lưu >> chọn OK ở popup xác nhận\n5. Mở lại Trang chủ",
+          "ket_qua": "Ô \"Nhận để biết\" hiện lại ở cuối thẻ \"Phiếu trình\", sau ô \"Xin ý kiến\".\nSố trên ô là 3, đúng như trước khi tắt."
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra bỏ tick cả 6 ô của nhóm Phiếu trình",
+          "buoc": "1. Đăng nhập vào at_cv/123\n2. Khung người dùng góc phải >> Cấu hình trang chủ\n3. Bỏ tick lần lượt cả 6 dòng con của nhóm \"Phiếu trình\"\n4. Bấm Lưu >> OK\n5. Mở lại Trang chủ\n6. Quay lại Cấu hình trang chủ, tick lại cả 6 dòng >> Lưu >> OK để trả về trạng thái ban đầu",
+          "ket_qua": "Sau bước 5: thẻ \"Phiếu trình\" không hiển thị trên trang chủ, kể cả ô mới.\nDòng nhóm \"Phiếu trình\" ở màn cấu hình cũng tự bỏ tick.\nSau bước 6: thẻ hiển thị lại đủ 6 ô."
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra người đã lưu cấu hình trang chủ riêng từ trước vẫn thấy ô mới",
+          "buoc": "1. Đăng nhập vào at_ld/123\n2. Khung người dùng góc phải >> Cấu hình trang chủ >> bỏ tick một ô bất kỳ của nhóm khác (ví dụ nhóm \"Văn bản đến\") >> Lưu >> OK\n   (bước này giả lập người dùng đã từng tự sửa cấu hình trang chủ)\n3. Nhờ DEV khai lại ô \"Nhận để biết\" hoặc khởi động lại ứng dụng để mô phỏng việc ô mới được thêm sau\n4. Đăng nhập lại at_ld/123 >> Khung người dùng góc phải >> Cấu hình trang chủ\n5. Kiểm tra dòng \"Nhận để biết\" và mở Trang chủ",
+          "ket_qua": "Dòng \"Nhận để biết\" có mặt trong danh sách và ĐANG ĐƯỢC TICK.\nTrang chủ của at_ld hiển thị ô \"Nhận để biết\" với số 2.\nÔ mà at_ld đã tự tắt trước đó vẫn ở trạng thái tắt, không bị bật lại.",
+          "ghi_chu": "Bước 3 cần DEV hỗ trợ; nếu môi trường test đã có sẵn tài khoản từng lưu cấu hình riêng thì dùng luôn tài khoản đó."
+        },
+        {
+          "loai": "S",
+          "text": "Chế độ trang chủ đơn giản"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra ô hiển thị ở chế độ đơn giản với người không phải văn thư",
+          "buoc": "1. Đăng nhập vào at_cv/123\n2. Khung người dùng góc phải >> chọn chế độ trang chủ đơn giản\n3. Kéo tới thẻ \"Phiếu trình\" và đếm số ô\n4. Đọc số trên ô \"Nhận để biết\"",
+          "ket_qua": "Thẻ \"Phiếu trình\" hiển thị 2 ô: \"Chờ xử lý\" và \"Nhận để biết\".\nÔ \"Nhận để biết\" hiển thị số 3, bằng đúng số ở chế độ đầy đủ.\nCác ô Đang xử lý, Đã phê duyệt, Tất cả, Xin ý kiến vẫn không hiện ở chế độ này như hiện tại."
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra ô hiển thị ở chế độ đơn giản với tài khoản văn thư",
+          "buoc": "1. Đăng nhập vào at_vt/123\n2. Khung người dùng góc phải >> chọn chế độ trang chủ đơn giản\n3. Kéo tới thẻ \"Phiếu trình\" và đếm số ô\n4. Đọc số trên ô \"Nhận để biết\"",
+          "ket_qua": "Thẻ \"Phiếu trình\" hiển thị 2 ô: \"Chờ xử lý\" và \"Nhận để biết\".\nÔ \"Nhận để biết\" hiển thị số 0 và không bị ẩn.\nVăn thư và người không phải văn thư đều thấy ô này ở chế độ đơn giản."
+        },
+        {
+          "loai": "S",
+          "text": "Trường hợp đặc biệt"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra khi phép đếm quá thời gian chờ",
+          "buoc": "1. Đăng nhập vào at_cv/123\n2. Nhờ DEV mô phỏng phép đếm của thẻ \"Phiếu trình\" chạy quá 20 giây trên môi trường test\n3. Tải lại Trang chủ >> thẻ \"Phiếu trình\" và chờ trang tải xong\n4. Đọc số trên ô \"Nhận để biết\" và kiểm tra các thẻ khác của trang chủ",
+          "ket_qua": "Ô \"Nhận để biết\" hiển thị số 0.\nTrang chủ vẫn tải xong, không treo, không hiện thông báo lỗi cho người dùng.\nCác thẻ khác của trang chủ vẫn hiển thị bình thường.",
+          "ghi_chu": "Cần DEV hỗ trợ dựng tình huống; không tạo được bằng thao tác giao diện."
+        },
+        {
+          "loai": "G",
+          "text": "An toàn thông tin (Các trường hợp kiểm thử đảm bảo an toàn thông tin theo hướng dẫn kiểm thử an toàn thông tin)"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra ô chỉ đếm dữ liệu của chính người đăng nhập",
+          "buoc": "1. Đăng nhập vào at_cv/123 >> Trang chủ >> ghi lại số trên ô \"Nhận để biết\" (3)\n2. Bấm vào ô >> ghi lại tiêu đề các phiếu trong danh sách\n3. Đăng xuất, đăng nhập vào at_vt/123\n4. Trang chủ >> đọc số trên ô \"Nhận để biết\" >> bấm vào ô và xem danh sách",
+          "ket_qua": "at_vt thấy số 0 và danh sách rỗng.\nat_vt KHÔNG thấy các phiếu PT1, PT2, PT3 đã được chuyển cho at_cv.\nKhông có cách nào từ trang chủ xem được số hay phiếu của tài khoản khác."
+        },
+        {
+          "loai": "N",
+          "text": "N/A - Yêu cầu chỉ bổ sung một ô đếm chỉ đọc trên trang chủ: không thêm ô nhập liệu, không thêm tham số đầu vào do người dùng nhập, không thay đổi phân quyền và không thêm điểm tiếp nhận dữ liệu mới, nên không áp dụng các trường hợp SQL Injection và XSS."
+        },
+        {
+          "loai": "G",
+          "text": "Kiểm tra ảnh hưởng (Các trường hợp kiểm thử ảnh hưởng từ chức năng)"
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra màn Phiếu trình nhận để biết không bị thay đổi",
+          "buoc": "1. Đăng nhập vào at_cv/123\n2. PHIẾU TRÌNH >> Phiếu trình nhận để biết (vào bằng menu như trước đây)\n3. Đếm số cột, đọc tên cột, kiểm tra các ô lọc và nút trên màn\n4. Lọc theo Tiêu đề, lọc theo Người gửi, đổi trang\n5. Mở chi tiết PT2 rồi quay lại danh sách",
+          "ket_qua": "Màn giữ nguyên số cột, tên cột, thứ tự cột, các ô lọc và phân trang như trước khi sửa.\nKhông xuất hiện tab mới, bộ lọc mới hay cột mới.\nSau khi mở chi tiết PT2, PT2 chuyển sang không in đậm (đã đọc) như hiện tại; số trên ô trang chủ vẫn là 3."
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra 5 ô phiếu trình cũ không bị ảnh hưởng",
+          "buoc": "1. Đăng nhập vào at_ld/123\n2. Trang chủ >> thẻ \"Phiếu trình\" >> ghi lại số của 5 ô: Chờ xử lý, Đang xử lý, Đã phê duyệt, Tất cả, Xin ý kiến\n3. Bấm lần lượt vào từng ô và ghi lại màn được mở\n4. So sánh với kết quả trước khi triển khai (hoặc với môi trường chưa cập nhật)",
+          "ket_qua": "5 ô giữ nguyên số đếm, nhãn và vị trí.\nBấm vào từng ô vẫn mở đúng màn và đúng tab như trước khi sửa.\nViệc thêm ô thứ 6 không làm sai số của 5 ô này."
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra các thẻ khác của trang chủ không bị ảnh hưởng",
+          "buoc": "1. Đăng nhập vào at_vt/123\n2. Trang chủ >> lần lượt kiểm tra các thẻ Văn bản đến, Văn bản đi, Nhiệm vụ, Lịch họp, Nhắc việc\n3. Đếm số ô của từng thẻ và ghi lại số đếm\n4. Bấm thử một ô ở mỗi thẻ",
+          "ket_qua": "Các thẻ giữ nguyên số ô, tên ô, thứ tự ô và số đếm.\nKhông thẻ nào bị mất ô hoặc đổi vị trí do thêm ô mới ở thẻ Phiếu trình.\nBấm ô ở các thẻ khác vẫn mở đúng màn như trước."
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra màn Cấu hình trang chủ vẫn hoạt động như cũ",
+          "buoc": "1. Đăng nhập vào at_cv/123\n2. Khung người dùng góc phải >> Cấu hình trang chủ\n3. Bỏ tick một ô của nhóm khác (ví dụ \"Văn bản đến\") >> Lưu >> OK >> kiểm tra trang chủ\n4. Quay lại Cấu hình trang chủ >> tick lại ô đó >> Lưu >> OK\n5. Tạo một ô tự tạo, sau đó xóa ô tự tạo đó\n6. Mở Cấu hình trang chủ, bấm Lưu rồi chọn Hủy ở popup xác nhận",
+          "ket_qua": "Bật/tắt ô của nhóm khác hoạt động đúng, trang chủ thay đổi theo.\nTạo và xóa ô tự tạo vẫn hoạt động, ô tự tạo vẫn có biểu tượng xóa.\nChọn Hủy ở popup xác nhận thì không lưu, cấu hình giữ như trước."
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra chức năng chuyển tiếp để biết và thông báo không đổi",
+          "buoc": "1. Đăng nhập vào at_vt/123\n2. PHIẾU TRÌNH >> Trình xin ý kiến >> chọn một phiếu đã phê duyệt >> Chuyển tiếp\n3. Chọn người nhận là at_cv, nhập ý kiến >> Gửi\n4. Thử chuyển tiếp một phiếu đang ở trạng thái Đang xử lý\n5. Đăng nhập at_cv/123 kiểm tra thông báo và tin nhắn nhận được",
+          "ket_qua": "Chuyển tiếp phiếu đã phê duyệt thành công như trước khi sửa.\nPhiếu chưa phê duyệt vẫn không chuyển tiếp được (nút không hiện hoặc bị chặn như hiện tại).\nat_cv vẫn nhận được thông báo và tin nhắn như trước; bấm thông báo vẫn mở màn Phiếu trình nhận để biết."
+        },
+        {
+          "loai": "D",
+          "muc_dich": "Kiểm tra ô \"Nhận để biết\" của thẻ Văn bản đến không bị ảnh hưởng",
+          "buoc": "1. Đăng nhập vào at_cv/123\n2. Trang chủ >> thẻ \"Văn bản đến\" >> tìm ô \"Nhận để biết\"\n3. Ghi lại số trên ô và bấm vào ô\n4. So sánh với thẻ \"Phiếu trình\"",
+          "ket_qua": "Ô \"Nhận để biết\" của thẻ Văn bản đến giữ nguyên số đếm và vẫn mở màn Văn bản nhận để biết.\nHai ô cùng tên ở hai thẻ khác nhau đếm hai loại dữ liệu khác nhau, không lẫn số.\nBấm ô ở thẻ Văn bản đến không mở màn Phiếu trình nhận để biết."
+        }
+      ]
+    }
+  ]
+}

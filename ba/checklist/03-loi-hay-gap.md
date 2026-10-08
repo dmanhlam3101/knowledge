@@ -1,11 +1,10 @@
 # CHECKLIST 03 — LỖI HAY GẶP TRONG TÀI LIỆU BA
 
-> **Nguồn:** các phát hiện trong báo cáo review thật
-> `features/XULYCONGVIEC/ba/BA-01-yc17-du-thao/ba-review-report.md` (YC17 v2.1, kết luận CHƯA ĐỦ,
-> cấu trúc 10/13, nội dung 6/12).
+> **Nguồn:** các phát hiện trong báo cáo review thật của tài liệu mẫu YC17 v2.1 (kết luận CHƯA ĐỦ, cấu trúc 10/13,
+> nội dung 6/12; tài liệu và báo cáo đã gỡ khỏi repo — cột "Nguồn" ghi YC17 là lỗi rút từ đó) + các vòng kiểm sau này.
 >
-> **Cách dùng:** rà nhanh trước khi gửi. **Mỗi lần `/ba-review` phát hiện lỗi mới đáng nhắc → thêm
-> một dòng**, ghi rõ tài liệu nguồn. File này lớn dần theo dự án.
+> **Cách dùng:** rà nhanh trước khi gửi. **Mỗi lần vòng kiểm (`/ba-assistant kiem`) phát hiện lỗi mới đáng nhắc → thêm
+> một dòng**, ghi rõ tài liệu nguồn (mã YC). File này lớn dần theo dự án.
 
 | # | Lỗi | Tiêu chí | Ví dụ thực tế | Cách tránh | Nguồn |
 |---|---|---|---|---|---|

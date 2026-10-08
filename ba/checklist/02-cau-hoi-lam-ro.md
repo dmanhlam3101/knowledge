@@ -3,8 +3,8 @@
 > **Nguồn:**
 > - Câu hỏi về nghiệp vụ VOffice (vai trò, ký nháy/ký duyệt, chủ trì/phối hợp, liên thông, văn bản mật,
 >   ủy quyền): từ `knowledge/_chung/thuat-ngu.md` và bảng "Từ khóa → phân hệ" trong `knowledge/README.md`.
-> - Câu hỏi về file, COPY/REFERENCE, đổi/bỏ nguồn, hủy giữa chừng: rút từ 12 TBD của YC17
->   (`features/XULYCONGVIEC/ba/BA-01-yc17-du-thao/input/spec.md` mục 11).
+> - Câu hỏi về file, COPY/REFERENCE, đổi/bỏ nguồn, hủy giữa chừng: rút từ 12 TBD (mục 11) của tài liệu mẫu YC17
+>   (đã gỡ khỏi repo).
 > - Câu hỏi về phạm vi đơn vị, cấp cha/ngang cấp, Mobile: rút từ câu hỏi mở của
 >   `knowledge/yeu-cau/2026-09-15-loc-don-vi-nhan-khi-ban-hanh.md`.
 > - Nhóm phi chức năng (2.8): theo nhóm NFR của ISO/IEC/IEEE 29148 và Volere.
