@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 888 180" width="888" height="180">
+  <rect x="0" y="0" width="888" height="180" fill="#f3f6f7"/>
+<g font-family="IBM Plex Sans, sans-serif">
+            <text x="20" y="18" font-size="12" font-weight="600" fill="#7b8d96" letter-spacing="1.4">BỐN TRẠNG THÁI PHẢI CÓ FRAME RIÊNG</text>
+            <g><rect x="20" y="32" width="200" height="84" rx="7" fill="#eef3f4" stroke="#b9c6cc"/><text x="36" y="70" font-size="26" font-weight="600" fill="#15232c">0</text><text x="36" y="94" font-size="13" fill="#4d5f6a">Chờ xử lý cá nhân</text></g>
+            <text x="20" y="136" font-size="12" fill="#4d5f6a">Không có việc: vẫn hiện,</text><text x="20" y="152" font-size="12" fill="#4d5f6a">giá trị 0, bấm được.</text>
+            <g><rect x="236" y="32" width="200" height="84" rx="7" fill="#eef3f4" stroke="#b9c6cc"/><text x="252" y="70" font-size="26" font-weight="600" fill="#15232c">1248</text><text x="252" y="94" font-size="13" fill="#4d5f6a">Chờ xử lý đơn vị</text></g>
+            <text x="236" y="136" font-size="12" fill="#4d5f6a">Số 4 chữ số không được</text><text x="236" y="152" font-size="12" fill="#4d5f6a">đè lên nhãn hay badge.</text>
+            <g><rect x="452" y="32" width="200" height="84" rx="7" fill="#eef3f4" stroke="#b9c6cc"/><text x="468" y="70" font-size="26" font-weight="600" fill="#15232c">3</text><text x="468" y="94" font-size="13" fill="#4d5f6a">Chờ xử lý cá nhân</text><rect x="604" y="42" width="34" height="20" rx="10" fill="#8a5500"/><text x="621" y="56" font-size="11" font-weight="600" fill="#ffffff" text-anchor="middle">+2</text></g>
+            <text x="452" y="136" font-size="12" fill="#4d5f6a">Badge nhắc việc, đúng kiểu</text><text x="452" y="152" font-size="12" fill="#4d5f6a">badge đang dùng.</text>
+            <g><rect x="668" y="32" width="200" height="84" rx="7" fill="#eef3f4" stroke="#b9c6cc"/><rect x="684" y="48" width="56" height="22" rx="4" fill="#d4dde1"/><rect x="684" y="82" width="120" height="12" rx="4" fill="#d4dde1"/></g>
+            <text x="668" y="136" font-size="12" fill="#4d5f6a">Đang tải số: giữ đúng khung,</text><text x="668" y="152" font-size="12" fill="#4d5f6a">không nhảy bố cục.</text>
+          </g>
+</svg>

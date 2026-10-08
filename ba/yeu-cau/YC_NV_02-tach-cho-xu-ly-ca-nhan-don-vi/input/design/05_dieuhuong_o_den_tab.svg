@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 888 330" width="888" height="330">
+  <rect x="0" y="0" width="888" height="330" fill="#f3f6f7"/>
+<g font-family="IBM Plex Sans, sans-serif">
+            <g><rect x="20" y="40" width="190" height="72" rx="7" fill="#f8ecd7" stroke="#8a5500" stroke-width="2"/><text x="36" y="74" font-size="22" font-weight="600" fill="#15232c">3</text><text x="36" y="97" font-size="12.5" fill="#4d5f6a">Chờ xử lý cá nhân</text></g>
+            <path d="M216 76h58" stroke="#7b8d96" stroke-width="1.6"/><path d="M274 76l-8-5v10z" fill="#7b8d96"/>
+            <rect x="286" y="28" width="582" height="96" rx="8" fill="#eef3f4" stroke="#b9c6cc"/>
+            <text x="304" y="50" font-size="12.5" font-weight="600" fill="#15232c">Văn bản chờ xử lý</text>
+            <rect x="304" y="60" width="130" height="26" rx="4" fill="none" stroke="#b9c6cc"/><text x="369" y="77" font-size="12" fill="#7b8d96" text-anchor="middle">Văn bản đơn vị</text>
+            <rect x="442" y="60" width="140" height="26" rx="4" fill="#0b6b74"/><text x="512" y="77" font-size="12" font-weight="600" fill="#ffffff" text-anchor="middle">Văn bản cá nhân</text>
+            <text x="600" y="77" font-size="12" fill="#4d5f6a">tab đang chọn · danh sách 3 văn bản</text>
+            <line x1="304" y1="98" x2="850" y2="98" stroke="#b9c6cc"/><line x1="304" y1="110" x2="700" y2="110" stroke="#d4dde1"/>
+
+            <g><rect x="20" y="186" width="190" height="72" rx="7" fill="#e0eeef" stroke="#0b6b74" stroke-width="2" stroke-dasharray="7 4"/><text x="36" y="220" font-size="22" font-weight="600" fill="#15232c">12</text><text x="36" y="243" font-size="12.5" fill="#4d5f6a">Chờ xử lý đơn vị</text></g>
+            <path d="M216 222h58" stroke="#7b8d96" stroke-width="1.6"/><path d="M274 222l-8-5v10z" fill="#7b8d96"/>
+            <rect x="286" y="174" width="582" height="96" rx="8" fill="#eef3f4" stroke="#b9c6cc"/>
+            <text x="304" y="196" font-size="12.5" font-weight="600" fill="#15232c">Văn bản chờ xử lý</text>
+            <rect x="304" y="206" width="130" height="26" rx="4" fill="#0b6b74"/><text x="369" y="223" font-size="12" font-weight="600" fill="#ffffff" text-anchor="middle">Văn bản đơn vị</text>
+            <rect x="442" y="206" width="140" height="26" rx="4" fill="none" stroke="#b9c6cc"/><text x="512" y="223" font-size="12" fill="#7b8d96" text-anchor="middle">Văn bản cá nhân</text>
+            <text x="600" y="223" font-size="12" fill="#4d5f6a">tab đang chọn · danh sách 12 văn bản</text>
+            <line x1="304" y1="244" x2="850" y2="244" stroke="#b9c6cc"/><line x1="304" y1="256" x2="700" y2="256" stroke="#d4dde1"/>
+          </g>
+          <text x="20" y="302" font-family="IBM Plex Sans, sans-serif" font-size="12.5" fill="#4d5f6a">Người không phải văn thư không có hàng tab này: bấm ô cá nhân là mở thẳng danh sách như hiện nay.</text>
+          <text x="20" y="320" font-family="IBM Plex Sans, sans-serif" font-size="12.5" fill="#4d5f6a">Sau khi mở, bộ lọc là bộ lọc mặc định của hộp việc, không mang theo gì từ trang chủ.</text>
+</svg>

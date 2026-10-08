@@ -1,0 +1,555 @@
+<title>YC_NV_02 Tách ô Chờ xử lý</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: tài liệu một cột 68ch cho phần đọc, các hình wireframe tràn khung trong hộp cuộn ngang riêng */
+:root{
+  --paper:#f3f6f7; --card:#ffffff; --card-2:#eef3f4;
+  --ink:#15232c; --ink-2:#4d5f6a; --ink-3:#7b8d96;
+  --line:#d4dde1; --line-2:#b9c6cc;
+  --accent:#0b6b74; --accent-soft:#e0eeef;
+  --new:#0b6b74; --new-soft:#e0eeef;
+  --chg:#8a5500; --chg-soft:#f8ecd7;
+  --stop:#9b2c2c; --stop-soft:#f8e5e5;
+  --font-display:"Be Vietnam Pro","Segoe UI",system-ui,sans-serif;
+  --font-body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0f1518; --card:#161f24; --card-2:#1c272d;
+  --ink:#e6eef1; --ink-2:#a3b4bc; --ink-3:#7d8f98;
+  --line:#2a3940; --line-2:#3b4d56;
+  --accent:#5cbcc5; --accent-soft:#16323a;
+  --new:#5cbcc5; --new-soft:#16323a;
+  --chg:#e2b263; --chg-soft:#342a17;
+  --stop:#e38b8b; --stop-soft:#36201f;
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --paper:#0f1518; --card:#161f24; --card-2:#1c272d;
+  --ink:#e6eef1; --ink-2:#a3b4bc; --ink-3:#7d8f98;
+  --line:#2a3940; --line-2:#3b4d56;
+  --accent:#5cbcc5; --accent-soft:#16323a;
+  --new:#5cbcc5; --new-soft:#16323a;
+  --chg:#e2b263; --chg-soft:#342a17;
+  --stop:#e38b8b; --stop-soft:#36201f;
+  color-scheme:dark;
+}
+body{background:var(--paper);color:var(--ink);font-family:var(--font-body);line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:62rem;margin:0 auto;padding-inline:20px;padding-block:28px 64px}
+h1,h2,h3,h4{font-family:var(--font-display);text-wrap:balance;margin:0}
+h1{font-size:clamp(1.6rem,4.4vw,2.3rem);font-weight:700;letter-spacing:-.015em;line-height:1.15}
+h2{font-size:1.3rem;font-weight:700;letter-spacing:-.01em}
+h3{font-size:1.02rem;font-weight:600}
+h4{font-size:.9rem;font-weight:600}
+p,li{font-size:.94rem}
+p{margin:.6em 0;max-width:68ch}
+a{color:var(--accent)}
+code,.mono{font-family:var(--font-mono);font-size:.86em;background:var(--card-2);padding:.08em .34em;border-radius:3px;word-break:break-word}
+.eyebrow{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:600;font-family:var(--font-body)}
+header.top{border-bottom:2px solid var(--ink);padding-bottom:18px;margin-bottom:26px}
+header.top .meta{display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:14px;font-size:.84rem;color:var(--ink-2)}
+header.top .meta b{color:var(--ink);font-weight:600}
+.lede{font-size:1.02rem;color:var(--ink-2);max-width:66ch;margin-top:10px}
+.audience{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:20px}
+.audience div{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:0 6px 6px 0;padding:12px 14px;min-width:0}
+.audience strong{display:block;font-family:var(--font-display);font-size:.95rem;margin-bottom:2px}
+.audience span{font-size:.86rem;color:var(--ink-2)}
+section.part{margin-top:46px;scroll-margin-top:16px}
+.part-head{display:flex;align-items:baseline;gap:12px;border-bottom:1px solid var(--line-2);padding-bottom:8px;margin-bottom:8px;flex-wrap:wrap}
+.part-head .num{font-family:var(--font-mono);font-size:.8rem;color:var(--accent);font-weight:500;letter-spacing:.06em}
+.block{margin-top:26px}
+figure{margin:14px 0 0;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px}
+figure .scroller{overflow-x:auto}
+figure svg{display:block;min-width:620px;width:100%;height:auto}
+figcaption{font-size:.82rem;color:var(--ink-2);margin-top:10px;padding-top:9px;border-top:1px dashed var(--line);max-width:70ch}
+figcaption b{color:var(--ink)}
+table{border-collapse:collapse;width:100%;font-size:.86rem;margin-top:12px}
+.t-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--card)}
+th,td{text-align:left;padding:8px 11px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.73rem;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);font-weight:600;background:var(--card-2);white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+td.num,th.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.chip{display:inline-block;font-family:var(--font-body);font-size:.68rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:99px;white-space:nowrap}
+.chip.new{background:var(--new-soft);color:var(--new);border:1px solid var(--new)}
+.chip.chg{background:var(--chg-soft);color:var(--chg);border:1px solid var(--chg)}
+.chip.keep{background:var(--card-2);color:var(--ink-3);border:1px solid var(--line-2)}
+.chip.stop{background:var(--stop-soft);color:var(--stop);border:1px solid var(--stop)}
+.note{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--chg);border-radius:0 6px 6px 0;padding:12px 14px;margin-top:16px}
+.note.stop{border-left-color:var(--stop)}
+.note p{margin:.3em 0}
+.note h4{margin-bottom:4px}
+ul.tight{margin:.5em 0;padding-left:1.15rem}
+ul.tight li{margin:.28em 0;max-width:68ch}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:14px}
+.two>div{min-width:0}
+.ck{background:var(--card);border:1px solid var(--line);border-radius:8px;margin-top:12px;overflow:hidden}
+.ck>h3{padding:11px 14px;background:var(--card-2);border-bottom:1px solid var(--line);display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.ck>h3 .k{font-family:var(--font-mono);font-size:.78rem;color:var(--accent)}
+.ck-item{display:grid;grid-template-columns:26px 1fr;gap:10px;padding:11px 14px;border-bottom:1px solid var(--line)}
+.ck-item:last-child{border-bottom:0}
+.ck-item input{width:17px;height:17px;margin-top:3px;accent-color:var(--accent)}
+.ck-item .body{min-width:0}
+.ck-item .what{font-size:.92rem;font-weight:500}
+.ck-item .how{font-size:.85rem;color:var(--ink-2);margin-top:3px}
+.ck-item .ev{font-size:.79rem;color:var(--ink-3);margin-top:4px;font-family:var(--font-body)}
+.ck-item .ev b{color:var(--ink-2);font-weight:600}
+.ck-item input:checked ~ .body .what{text-decoration:line-through;color:var(--ink-3)}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);border-bottom:1px solid var(--line);padding:9px 0;margin-bottom:18px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.bar .prog{font-family:var(--font-mono);font-size:.82rem;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.bar button{font-family:var(--font-body);font-size:.8rem;border:1px solid var(--line-2);background:var(--card);color:var(--ink);padding:5px 11px;border-radius:5px;cursor:pointer}
+.bar button:hover{border-color:var(--accent);color:var(--accent)}
+.bar .track{flex:1;min-width:120px;height:6px;background:var(--card-2);border-radius:99px;overflow:hidden;border:1px solid var(--line)}
+.bar .track i{display:block;height:100%;background:var(--accent);width:0}
+footer{margin-top:52px;padding-top:16px;border-top:1px solid var(--line);font-size:.82rem;color:var(--ink-3)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (prefers-reduced-motion:no-preference){.bar .track i{transition:width .25s ease}}
+</style>
+
+<div class="wrap">
+
+<header class="top">
+  <div class="eyebrow">Hệ thống Văn bản và Điều hành tỉnh Khánh Hòa</div>
+  <h1>Tách ô “Chờ xử lý” thành cá nhân và đơn vị</h1>
+  <p class="lede">Trang chủ hiện có một ô <i>Chờ xử lý</i> gộp hai loại việc. Với văn thư, ô này chỉ đếm văn bản của
+  đơn vị, nên văn bản gửi đích danh họ không có chỗ nào trên trang chủ. Yêu cầu này tách thành hai ô riêng.</p>
+  <div class="meta">
+    <span><b>Mã yêu cầu</b> YC_NV_02</span>
+    <span><b>Phân hệ</b> Trang chủ (he-thong) · Văn bản đến</span>
+    <span><b>Cỡ</b> L</span>
+    <span><b>Kênh</b> Web + ứng dụng di động</span>
+    <span><b>Ngày</b> 08/10/2026</span>
+  </div>
+  <div class="audience">
+    <div><strong>Designer đọc Phần A</strong><span>Năm nhóm hình cần dựng trong Figma, kèm nhãn chính xác, thứ tự ô và điều kiện hiển thị theo vai trò.</span></div>
+    <div><strong>DEV và Tester đọc Phần B</strong><span>Checklist bắt buộc chạy trên con test trước khi bàn giao, chia theo việc phải làm, cách kiểm và bằng chứng phải nộp.</span></div>
+  </div>
+</header>
+
+<!-- ============================ PHẦN A ============================ -->
+<section class="part" id="phan-a">
+  <div class="part-head"><span class="num">PHẦN A</span><h2>Mô tả nghiệp vụ để dựng Figma</h2></div>
+  <p>Toàn bộ thay đổi nằm trong một nhóm ô của trang chủ, một màn cấu hình và một bước điều hướng. Không có màn hình mới,
+  không có nút thao tác mới trên văn bản.</p>
+
+  <div class="block">
+    <h3>A1. Hiện trạng — vì sao phải tách</h3>
+    <figure>
+      <div class="scroller">
+        <svg viewBox="0 0 888 262" role="img" aria-label="Nhóm ô Văn bản đến hiện tại gồm tám ô, ô Chờ xử lý đang đếm theo phạm vi đơn vị">
+          <text x="20" y="18" font-family="IBM Plex Sans, sans-serif" font-size="12" font-weight="600" fill="var(--ink-3)" letter-spacing="1.4">TRANG CHỦ · NHÓM “VĂN BẢN ĐẾN” · VAI TRÒ VĂN THƯ · HIỆN TẠI</text>
+          <g font-family="IBM Plex Sans, sans-serif">
+            <g><rect x="20" y="32" width="200" height="84" rx="7" fill="var(--card-2)" stroke="var(--line-2)"/><text x="36" y="70" font-size="26" font-weight="600" fill="var(--ink)">12</text><text x="36" y="94" font-size="13" fill="var(--ink-2)">Chờ tiếp nhận</text></g>
+            <g><rect x="236" y="32" width="200" height="84" rx="7" fill="var(--chg-soft)" stroke="var(--chg)" stroke-width="2"/><text x="252" y="70" font-size="26" font-weight="600" fill="var(--ink)">12</text><text x="252" y="94" font-size="13" fill="var(--ink-2)">Chờ xử lý</text><circle cx="412" cy="52" r="12" fill="var(--chg)"/><text x="412" y="56" font-size="12" font-weight="600" fill="var(--card)" text-anchor="middle">!</text></g>
+            <g><rect x="452" y="32" width="200" height="84" rx="7" fill="var(--card-2)" stroke="var(--line-2)"/><text x="468" y="70" font-size="26" font-weight="600" fill="var(--ink)">4</text><text x="468" y="94" font-size="13" fill="var(--ink-2)">Sắp đến hạn</text></g>
+            <g><rect x="668" y="32" width="200" height="84" rx="7" fill="var(--card-2)" stroke="var(--line-2)"/><text x="684" y="70" font-size="26" font-weight="600" fill="var(--ink)">2</text><text x="684" y="94" font-size="13" fill="var(--ink-2)">Quá hạn</text></g>
+            <g><rect x="20" y="132" width="200" height="84" rx="7" fill="var(--card-2)" stroke="var(--line-2)"/><text x="36" y="170" font-size="26" font-weight="600" fill="var(--ink)">1</text><text x="36" y="194" font-size="13" fill="var(--ink-2)">Đề nghị trả lại</text></g>
+            <g><rect x="236" y="132" width="200" height="84" rx="7" fill="var(--card-2)" stroke="var(--line-2)"/><text x="252" y="170" font-size="26" font-weight="600" fill="var(--ink)">28</text><text x="252" y="194" font-size="13" fill="var(--ink-2)">Đã xử lý</text></g>
+            <g><rect x="452" y="132" width="200" height="84" rx="7" fill="var(--card-2)" stroke="var(--line-2)"/><text x="468" y="170" font-size="26" font-weight="600" fill="var(--ink)">26</text><text x="468" y="194" font-size="13" fill="var(--ink-2)">Đã hoàn thành</text></g>
+            <g><rect x="668" y="132" width="200" height="84" rx="7" fill="var(--card-2)" stroke="var(--line-2)"/><text x="684" y="170" font-size="26" font-weight="600" fill="var(--ink)">5</text><text x="684" y="194" font-size="13" fill="var(--ink-2)">Nhận để biết</text></g>
+          </g>
+          <text x="20" y="242" font-family="IBM Plex Sans, sans-serif" font-size="12.5" fill="var(--chg)">Số 12 chỉ là văn bản của đơn vị. Ba văn bản gửi đích danh văn thư không được ô nào đếm, và bấm ô chỉ mở tab Văn bản đơn vị.</text>
+        </svg>
+      </div>
+      <figcaption><b>Hình 1.</b> Nhóm ô hiện tại, nhìn từ tài khoản văn thư. Ô có viền đậm là ô sẽ bị tách.</figcaption>
+    </figure>
+  </div>
+
+  <div class="block">
+    <h3>A2. Trang chủ sau khi sửa — vai trò văn thư</h3>
+    <figure>
+      <div class="scroller">
+        <svg viewBox="0 0 888 372" role="img" aria-label="Nhóm ô Văn bản đến sau khi sửa với văn thư gồm chín ô, thêm ô Chờ xử lý đơn vị">
+          <text x="20" y="18" font-family="IBM Plex Sans, sans-serif" font-size="12" font-weight="600" fill="var(--ink-3)" letter-spacing="1.4">TRANG CHỦ · VAI TRÒ VĂN THƯ · SAU KHI SỬA · 9 Ô</text>
+          <g font-family="IBM Plex Sans, sans-serif">
+            <g><rect x="20" y="32" width="200" height="84" rx="7" fill="var(--card-2)" stroke="var(--line-2)"/><text x="36" y="70" font-size="26" font-weight="600" fill="var(--ink)">12</text><text x="36" y="94" font-size="13" fill="var(--ink-2)">Chờ tiếp nhận</text></g>
+            <g><rect x="236" y="32" width="200" height="84" rx="7" fill="var(--new-soft)" stroke="var(--new)" stroke-width="2" stroke-dasharray="7 4"/><text x="252" y="70" font-size="26" font-weight="600" fill="var(--ink)">3</text><text x="252" y="94" font-size="13" fill="var(--ink-2)">Chờ xử lý cá nhân</text><rect x="376" y="42" width="44" height="18" rx="9" fill="var(--new)"/><text x="398" y="55" font-size="10.5" font-weight="600" fill="var(--card)" text-anchor="middle" letter-spacing=".8">MỚI</text></g>
+            <g><rect x="452" y="32" width="200" height="84" rx="7" fill="var(--chg-soft)" stroke="var(--chg)" stroke-width="2"/><text x="468" y="70" font-size="26" font-weight="600" fill="var(--ink)">12</text><text x="468" y="94" font-size="13" fill="var(--ink-2)">Chờ xử lý đơn vị</text><rect x="564" y="42" width="72" height="18" rx="9" fill="var(--chg)"/><text x="600" y="55" font-size="10.5" font-weight="600" fill="var(--card)" text-anchor="middle" letter-spacing=".8">ĐỔI NHÃN</text></g>
+            <g><rect x="668" y="32" width="200" height="84" rx="7" fill="var(--card-2)" stroke="var(--line-2)"/><text x="684" y="70" font-size="26" font-weight="600" fill="var(--ink)">4</text><text x="684" y="94" font-size="13" fill="var(--ink-2)">Sắp đến hạn</text></g>
+            <g><rect x="20" y="132" width="200" height="84" rx="7" fill="var(--card-2)" stroke="var(--line-2)"/><text x="36" y="170" font-size="26" font-weight="600" fill="var(--ink)">2</text><text x="36" y="194" font-size="13" fill="var(--ink-2)">Quá hạn</text></g>
+            <g><rect x="236" y="132" width="200" height="84" rx="7" fill="var(--card-2)" stroke="var(--line-2)"/><text x="252" y="170" font-size="26" font-weight="600" fill="var(--ink)">1</text><text x="252" y="194" font-size="13" fill="var(--ink-2)">Đề nghị trả lại</text></g>
+            <g><rect x="452" y="132" width="200" height="84" rx="7" fill="var(--card-2)" stroke="var(--line-2)"/><text x="468" y="170" font-size="26" font-weight="600" fill="var(--ink)">28</text><text x="468" y="194" font-size="13" fill="var(--ink-2)">Đã xử lý</text></g>
+            <g><rect x="668" y="132" width="200" height="84" rx="7" fill="var(--card-2)" stroke="var(--line-2)"/><text x="684" y="170" font-size="26" font-weight="600" fill="var(--ink)">26</text><text x="684" y="194" font-size="13" fill="var(--ink-2)">Đã hoàn thành</text></g>
+            <g><rect x="20" y="232" width="200" height="84" rx="7" fill="var(--card-2)" stroke="var(--line-2)"/><text x="36" y="270" font-size="26" font-weight="600" fill="var(--ink)">5</text><text x="36" y="294" font-size="13" fill="var(--ink-2)">Nhận để biết</text></g>
+          </g>
+          <text x="252" y="268" font-family="IBM Plex Sans, sans-serif" font-size="12.5" fill="var(--chg)">Ô “Chờ xử lý đơn vị” chính là ô cũ, chỉ đổi nhãn.</text>
+          <text x="252" y="286" font-family="IBM Plex Sans, sans-serif" font-size="12.5" fill="var(--new)">Ô “Chờ xử lý cá nhân” mới là ô thêm mới.</text>
+          <text x="20" y="348" font-family="IBM Plex Sans, sans-serif" font-size="12.5" fill="var(--ink-2)">Số trên ô phải bằng đúng số dòng trong danh sách khi bấm vào. Mặc định văn thư thấy cả hai ô ở trạng thái bật.</text>
+        </svg>
+      </div>
+      <figcaption><b>Hình 2.</b> Với văn thư, ô đơn vị là ô đang chạy — giữ nguyên số và giữ nguyên việc mở tab Văn bản đơn vị, chỉ đổi nhãn; ô cá nhân là ô thêm mới. Bố cục 4 ô một hàng chỉ để thể hiện <b>thứ tự</b>. Số ô trên một hàng do khung trang chủ
+      hiện tại quyết định, designer giữ đúng lưới đang dùng.</figcaption>
+    </figure>
+  </div>
+
+  <div class="block">
+    <h3>A3. Trang chủ sau khi sửa — vai trò không phải văn thư</h3>
+    <figure>
+      <div class="scroller">
+        <svg viewBox="0 0 888 272" role="img" aria-label="Nhóm ô Văn bản đến với chuyên viên gồm tám ô, không có ô Chờ xử lý đơn vị">
+          <text x="20" y="18" font-family="IBM Plex Sans, sans-serif" font-size="12" font-weight="600" fill="var(--ink-3)" letter-spacing="1.4">TRANG CHỦ · CHUYÊN VIÊN · LÃNH ĐẠO · THỦ TRƯỞNG · TRỢ LÝ · 8 Ô</text>
+          <g font-family="IBM Plex Sans, sans-serif">
+            <g><rect x="20" y="32" width="200" height="84" rx="7" fill="var(--card-2)" stroke="var(--line-2)"/><text x="36" y="70" font-size="26" font-weight="600" fill="var(--ink)">0</text><text x="36" y="94" font-size="13" fill="var(--ink-2)">Chờ tiếp nhận</text></g>
+            <g><rect x="236" y="32" width="200" height="84" rx="7" fill="var(--chg-soft)" stroke="var(--chg)" stroke-width="2"/><text x="252" y="70" font-size="26" font-weight="600" fill="var(--ink)">5</text><text x="252" y="94" font-size="13" fill="var(--ink-2)">Chờ xử lý cá nhân</text><rect x="352" y="42" width="72" height="18" rx="9" fill="var(--chg)"/><text x="388" y="55" font-size="10.5" font-weight="600" fill="var(--card)" text-anchor="middle" letter-spacing=".8">ĐỔI NHÃN</text></g>
+            <g><rect x="452" y="32" width="200" height="84" rx="7" fill="none" stroke="var(--stop)" stroke-width="1.5" stroke-dasharray="4 5"/><text x="552" y="68" font-size="13" font-weight="600" fill="var(--stop)" text-anchor="middle">Không có ô này</text><text x="552" y="88" font-size="12" fill="var(--ink-3)" text-anchor="middle">ô đơn vị bị ẩn hoàn toàn</text></g>
+            <g><rect x="668" y="32" width="200" height="84" rx="7" fill="var(--card-2)" stroke="var(--line-2)"/><text x="684" y="70" font-size="26" font-weight="600" fill="var(--ink)">1</text><text x="684" y="94" font-size="13" fill="var(--ink-2)">Sắp đến hạn</text></g>
+            <g><rect x="20" y="132" width="200" height="84" rx="7" fill="var(--card-2)" stroke="var(--line-2)"/><text x="36" y="170" font-size="26" font-weight="600" fill="var(--ink)">0</text><text x="36" y="194" font-size="13" fill="var(--ink-2)">Quá hạn</text></g>
+            <g><rect x="236" y="132" width="200" height="84" rx="7" fill="var(--card-2)" stroke="var(--line-2)"/><text x="252" y="170" font-size="26" font-weight="600" fill="var(--ink)">0</text><text x="252" y="194" font-size="13" fill="var(--ink-2)">Đề nghị trả lại</text></g>
+            <g><rect x="452" y="132" width="200" height="84" rx="7" fill="var(--card-2)" stroke="var(--line-2)"/><text x="468" y="170" font-size="26" font-weight="600" fill="var(--ink)">14</text><text x="468" y="194" font-size="13" fill="var(--ink-2)">Đã xử lý</text></g>
+            <g><rect x="668" y="132" width="200" height="84" rx="7" fill="var(--card-2)" stroke="var(--line-2)"/><text x="684" y="170" font-size="26" font-weight="600" fill="var(--ink)">31</text><text x="684" y="194" font-size="13" fill="var(--ink-2)">Đã hoàn thành</text></g>
+          </g>
+          <text x="20" y="252" font-family="IBM Plex Sans, sans-serif" font-size="12.5" fill="var(--ink-2)">Ô “Nhận để biết” nằm ở hàng kế tiếp. Với vai trò này, số và hành vi giữ y như hiện tại, chỉ đổi nhãn ô.</text>
+        </svg>
+      </div>
+      <figcaption><b>Hình 3.</b> Ô <i>Chờ xử lý đơn vị</i> không hiện số 0, mà <b>không tồn tại</b> với người không phải
+      văn thư. Khung nét đỏ chỉ là ghi chú cho designer, không vẽ vào Figma.</figcaption>
+    </figure>
+  </div>
+
+  <div class="block">
+    <h3>A4. Màn Cấu hình trang chủ</h3>
+    <figure>
+      <div class="scroller">
+        <svg viewBox="0 0 888 300" role="img" aria-label="Hai biến thể màn Cấu hình trang chủ, văn thư có hai dòng, chuyên viên có một dòng">
+          <g font-family="IBM Plex Sans, sans-serif">
+            <text x="20" y="18" font-size="12" font-weight="600" fill="var(--ink-3)" letter-spacing="1.4">VAI TRÒ VĂN THƯ</text>
+            <rect x="20" y="30" width="400" height="236" rx="8" fill="var(--card-2)" stroke="var(--line-2)"/>
+            <text x="38" y="56" font-size="13" font-weight="600" fill="var(--ink)">Cấu hình trang chủ</text>
+            <line x1="20" y1="68" x2="420" y2="68" stroke="var(--line-2)"/>
+            <text x="38" y="90" font-size="11.5" font-weight="600" fill="var(--ink-3)" letter-spacing="1">VĂN BẢN ĐẾN</text>
+            <g><rect x="38" y="104" width="16" height="16" rx="3" fill="var(--accent)"/><path d="M41 112l3.4 3.4 6-6.6" stroke="var(--card)" stroke-width="2" fill="none" stroke-linecap="round"/><text x="64" y="117" font-size="13" fill="var(--ink)">Chờ tiếp nhận</text></g>
+            <g><rect x="38" y="134" width="16" height="16" rx="3" fill="var(--accent)"/><path d="M41 142l3.4 3.4 6-6.6" stroke="var(--card)" stroke-width="2" fill="none" stroke-linecap="round"/><text x="64" y="147" font-size="13" font-weight="600" fill="var(--ink)">Chờ xử lý cá nhân</text><rect x="196" y="134" width="44" height="17" rx="8.5" fill="var(--new)"/><text x="218" y="146.5" font-size="10" font-weight="600" fill="var(--card)" text-anchor="middle" letter-spacing=".8">MỚI</text></g>
+            <g><rect x="38" y="164" width="16" height="16" rx="3" fill="var(--new)"/><path d="M41 172l3.4 3.4 6-6.6" stroke="var(--card)" stroke-width="2" fill="none" stroke-linecap="round"/><text x="64" y="177" font-size="13" font-weight="600" fill="var(--ink)">Chờ xử lý đơn vị</text><rect x="196" y="164" width="72" height="17" rx="8.5" fill="var(--chg)"/><text x="232" y="176.5" font-size="10" font-weight="600" fill="var(--card)" text-anchor="middle" letter-spacing=".8">ĐỔI NHÃN</text></g>
+            <g opacity=".75"><rect x="38" y="194" width="16" height="16" rx="3" fill="var(--accent)"/><path d="M41 202l3.4 3.4 6-6.6" stroke="var(--card)" stroke-width="2" fill="none" stroke-linecap="round"/><text x="64" y="207" font-size="13" fill="var(--ink-2)">Sắp đến hạn</text></g>
+            <g opacity=".75"><rect x="38" y="224" width="16" height="16" rx="3" fill="var(--accent)"/><path d="M41 232l3.4 3.4 6-6.6" stroke="var(--card)" stroke-width="2" fill="none" stroke-linecap="round"/><text x="64" y="237" font-size="13" fill="var(--ink-2)">Quá hạn · và các ô còn lại</text></g>
+
+            <text x="468" y="18" font-size="12" font-weight="600" fill="var(--ink-3)" letter-spacing="1.4">VAI TRÒ KHÁC</text>
+            <rect x="468" y="30" width="400" height="236" rx="8" fill="var(--card-2)" stroke="var(--line-2)"/>
+            <text x="486" y="56" font-size="13" font-weight="600" fill="var(--ink)">Cấu hình trang chủ</text>
+            <line x1="468" y1="68" x2="868" y2="68" stroke="var(--line-2)"/>
+            <text x="486" y="90" font-size="11.5" font-weight="600" fill="var(--ink-3)" letter-spacing="1">VĂN BẢN ĐẾN</text>
+            <g><rect x="486" y="104" width="16" height="16" rx="3" fill="var(--accent)"/><path d="M489 112l3.4 3.4 6-6.6" stroke="var(--card)" stroke-width="2" fill="none" stroke-linecap="round"/><text x="512" y="117" font-size="13" fill="var(--ink)">Chờ tiếp nhận</text></g>
+            <g><rect x="486" y="134" width="16" height="16" rx="3" fill="var(--accent)"/><path d="M489 142l3.4 3.4 6-6.6" stroke="var(--card)" stroke-width="2" fill="none" stroke-linecap="round"/><text x="512" y="147" font-size="13" font-weight="600" fill="var(--ink)">Chờ xử lý cá nhân</text></g>
+            <g><rect x="486" y="164" width="330" height="26" rx="5" fill="none" stroke="var(--stop)" stroke-dasharray="4 5"/><text x="651" y="181" font-size="12" fill="var(--stop)" text-anchor="middle">Không có dòng “Chờ xử lý đơn vị”</text></g>
+            <g opacity=".75"><rect x="486" y="200" width="16" height="16" rx="3" fill="var(--accent)"/><path d="M489 208l3.4 3.4 6-6.6" stroke="var(--card)" stroke-width="2" fill="none" stroke-linecap="round"/><text x="512" y="213" font-size="13" fill="var(--ink-2)">Sắp đến hạn · và các ô còn lại</text></g>
+          </g>
+          <text x="20" y="288" font-family="IBM Plex Sans, sans-serif" font-size="12.5" fill="var(--ink-2)">Cả hai ô mặc định đang bật. Văn thư vào đây để TẮT bớt, không phải để bật lên.</text>
+        </svg>
+      </div>
+      <figcaption><b>Hình 4.</b> Giữ đúng kiểu danh sách và kiểu checkbox của màn cấu hình hiện tại. Chỉ cần thêm một
+      dòng và đổi chữ một dòng.</figcaption>
+    </figure>
+  </div>
+
+  <div class="block">
+    <h3>A5. Điều hướng — bấm ô nào mở tab nào</h3>
+    <figure>
+      <div class="scroller">
+        <svg viewBox="0 0 888 330" role="img" aria-label="Bấm ô Chờ xử lý cá nhân mở tab Văn bản cá nhân, bấm ô Chờ xử lý đơn vị mở tab Văn bản đơn vị">
+          <g font-family="IBM Plex Sans, sans-serif">
+            <g><rect x="20" y="40" width="190" height="72" rx="7" fill="var(--chg-soft)" stroke="var(--chg)" stroke-width="2"/><text x="36" y="74" font-size="22" font-weight="600" fill="var(--ink)">3</text><text x="36" y="97" font-size="12.5" fill="var(--ink-2)">Chờ xử lý cá nhân</text></g>
+            <path d="M216 76h58" stroke="var(--ink-3)" stroke-width="1.6"/><path d="M274 76l-8-5v10z" fill="var(--ink-3)"/>
+            <rect x="286" y="28" width="582" height="96" rx="8" fill="var(--card-2)" stroke="var(--line-2)"/>
+            <text x="304" y="50" font-size="12.5" font-weight="600" fill="var(--ink)">Văn bản chờ xử lý</text>
+            <rect x="304" y="60" width="130" height="26" rx="4" fill="none" stroke="var(--line-2)"/><text x="369" y="77" font-size="12" fill="var(--ink-3)" text-anchor="middle">Văn bản đơn vị</text>
+            <rect x="442" y="60" width="140" height="26" rx="4" fill="var(--accent)"/><text x="512" y="77" font-size="12" font-weight="600" fill="var(--card)" text-anchor="middle">Văn bản cá nhân</text>
+            <text x="600" y="77" font-size="12" fill="var(--ink-2)">tab đang chọn · danh sách 3 văn bản</text>
+            <line x1="304" y1="98" x2="850" y2="98" stroke="var(--line-2)"/><line x1="304" y1="110" x2="700" y2="110" stroke="var(--line)"/>
+
+            <g><rect x="20" y="186" width="190" height="72" rx="7" fill="var(--new-soft)" stroke="var(--new)" stroke-width="2" stroke-dasharray="7 4"/><text x="36" y="220" font-size="22" font-weight="600" fill="var(--ink)">12</text><text x="36" y="243" font-size="12.5" fill="var(--ink-2)">Chờ xử lý đơn vị</text></g>
+            <path d="M216 222h58" stroke="var(--ink-3)" stroke-width="1.6"/><path d="M274 222l-8-5v10z" fill="var(--ink-3)"/>
+            <rect x="286" y="174" width="582" height="96" rx="8" fill="var(--card-2)" stroke="var(--line-2)"/>
+            <text x="304" y="196" font-size="12.5" font-weight="600" fill="var(--ink)">Văn bản chờ xử lý</text>
+            <rect x="304" y="206" width="130" height="26" rx="4" fill="var(--accent)"/><text x="369" y="223" font-size="12" font-weight="600" fill="var(--card)" text-anchor="middle">Văn bản đơn vị</text>
+            <rect x="442" y="206" width="140" height="26" rx="4" fill="none" stroke="var(--line-2)"/><text x="512" y="223" font-size="12" fill="var(--ink-3)" text-anchor="middle">Văn bản cá nhân</text>
+            <text x="600" y="223" font-size="12" fill="var(--ink-2)">tab đang chọn · danh sách 12 văn bản</text>
+            <line x1="304" y1="244" x2="850" y2="244" stroke="var(--line-2)"/><line x1="304" y1="256" x2="700" y2="256" stroke="var(--line)"/>
+          </g>
+          <text x="20" y="302" font-family="IBM Plex Sans, sans-serif" font-size="12.5" fill="var(--ink-2)">Người không phải văn thư không có hàng tab này: bấm ô cá nhân là mở thẳng danh sách như hiện nay.</text>
+          <text x="20" y="320" font-family="IBM Plex Sans, sans-serif" font-size="12.5" fill="var(--ink-2)">Sau khi mở, bộ lọc là bộ lọc mặc định của hộp việc, không mang theo gì từ trang chủ.</text>
+        </svg>
+      </div>
+      <figcaption><b>Hình 5.</b> Hàng tab đã có sẵn trong hệ thống. Thay đổi duy nhất là <b>tab nào được chọn sẵn</b> khi
+      vào từ ô cá nhân.</figcaption>
+    </figure>
+  </div>
+
+  <div class="block">
+    <h3>A6. Trạng thái của ô cần dựng</h3>
+    <figure>
+      <div class="scroller">
+        <svg viewBox="0 0 888 180" role="img" aria-label="Bốn trạng thái của ô: số 0, số bốn chữ số, có badge nhắc việc, trạng thái đang tải">
+          <g font-family="IBM Plex Sans, sans-serif">
+            <text x="20" y="18" font-size="12" font-weight="600" fill="var(--ink-3)" letter-spacing="1.4">BỐN TRẠNG THÁI PHẢI CÓ FRAME RIÊNG</text>
+            <g><rect x="20" y="32" width="200" height="84" rx="7" fill="var(--card-2)" stroke="var(--line-2)"/><text x="36" y="70" font-size="26" font-weight="600" fill="var(--ink)">0</text><text x="36" y="94" font-size="13" fill="var(--ink-2)">Chờ xử lý cá nhân</text></g>
+            <text x="20" y="136" font-size="12" fill="var(--ink-2)">Không có việc: vẫn hiện,</text><text x="20" y="152" font-size="12" fill="var(--ink-2)">giá trị 0, bấm được.</text>
+            <g><rect x="236" y="32" width="200" height="84" rx="7" fill="var(--card-2)" stroke="var(--line-2)"/><text x="252" y="70" font-size="26" font-weight="600" fill="var(--ink)">1248</text><text x="252" y="94" font-size="13" fill="var(--ink-2)">Chờ xử lý đơn vị</text></g>
+            <text x="236" y="136" font-size="12" fill="var(--ink-2)">Số 4 chữ số không được</text><text x="236" y="152" font-size="12" fill="var(--ink-2)">đè lên nhãn hay badge.</text>
+            <g><rect x="452" y="32" width="200" height="84" rx="7" fill="var(--card-2)" stroke="var(--line-2)"/><text x="468" y="70" font-size="26" font-weight="600" fill="var(--ink)">3</text><text x="468" y="94" font-size="13" fill="var(--ink-2)">Chờ xử lý cá nhân</text><rect x="604" y="42" width="34" height="20" rx="10" fill="var(--chg)"/><text x="621" y="56" font-size="11" font-weight="600" fill="var(--card)" text-anchor="middle">+2</text></g>
+            <text x="452" y="136" font-size="12" fill="var(--ink-2)">Badge nhắc việc, đúng kiểu</text><text x="452" y="152" font-size="12" fill="var(--ink-2)">badge đang dùng.</text>
+            <g><rect x="668" y="32" width="200" height="84" rx="7" fill="var(--card-2)" stroke="var(--line-2)"/><rect x="684" y="48" width="56" height="22" rx="4" fill="var(--line)"/><rect x="684" y="82" width="120" height="12" rx="4" fill="var(--line)"/></g>
+            <text x="668" y="136" font-size="12" fill="var(--ink-2)">Đang tải số: giữ đúng khung,</text><text x="668" y="152" font-size="12" fill="var(--ink-2)">không nhảy bố cục.</text>
+          </g>
+        </svg>
+      </div>
+      <figcaption><b>Hình 6.</b> Bốn trạng thái này dùng chung cho cả hai ô mới. Chế độ trang chủ đơn giản mô tả riêng ở mục A7.</figcaption>
+    </figure>
+  </div>
+
+  <div class="block">
+    <h3>A7. Trang chủ ở chế độ đơn giản</h3>
+    <p>Hệ thống có hai chế độ trang chủ và người dùng tự đổi ở khung người dùng. Chế độ đơn giản <b>không dùng</b> luật
+    hiển thị của chế độ đầy đủ: mỗi ô khai sẵn ai được thấy, và lựa chọn bật tắt của từng người bị bỏ qua.</p>
+    <figure>
+      <div class="scroller">
+        <svg viewBox="0 0 888 320" role="img" aria-label="Trang chủ ở chế độ đơn giản: văn thư thấy bốn ô, vai trò khác thấy hai ô">
+          <g font-family="IBM Plex Sans, sans-serif">
+            <text x="20" y="18" font-size="12" font-weight="600" fill="var(--ink-3)" letter-spacing="1.4">CHẾ ĐỘ ĐƠN GIẢN · NHÓM “VĂN BẢN ĐẾN” · VAI TRÒ VĂN THƯ · 4 Ô</text>
+            <g><rect x="20" y="32" width="200" height="84" rx="7" fill="var(--card-2)" stroke="var(--line-2)"/><text x="36" y="70" font-size="26" font-weight="600" fill="var(--ink)">12</text><text x="36" y="94" font-size="13" fill="var(--ink-2)">Chờ tiếp nhận</text></g>
+            <g><rect x="236" y="32" width="200" height="84" rx="7" fill="var(--new-soft)" stroke="var(--new)" stroke-width="2" stroke-dasharray="7 4"/><text x="252" y="70" font-size="26" font-weight="600" fill="var(--ink)">3</text><text x="252" y="94" font-size="13" fill="var(--ink-2)">Chờ xử lý cá nhân</text><rect x="376" y="42" width="44" height="18" rx="9" fill="var(--new)"/><text x="398" y="55" font-size="10.5" font-weight="600" fill="var(--card)" text-anchor="middle" letter-spacing=".8">MỚI</text></g>
+            <g><rect x="452" y="32" width="200" height="84" rx="7" fill="var(--chg-soft)" stroke="var(--chg)" stroke-width="2"/><text x="468" y="70" font-size="26" font-weight="600" fill="var(--ink)">12</text><text x="468" y="94" font-size="13" fill="var(--ink-2)">Chờ xử lý đơn vị</text><rect x="564" y="42" width="72" height="18" rx="9" fill="var(--chg)"/><text x="600" y="55" font-size="10.5" font-weight="600" fill="var(--card)" text-anchor="middle" letter-spacing=".8">ĐỔI NHÃN</text></g>
+            <g><rect x="668" y="32" width="200" height="84" rx="7" fill="var(--card-2)" stroke="var(--line-2)"/><text x="684" y="70" font-size="26" font-weight="600" fill="var(--ink)">1</text><text x="684" y="94" font-size="13" fill="var(--ink-2)">Đề nghị trả lại</text></g>
+            <text x="20" y="150" font-size="12" font-weight="600" fill="var(--ink-3)" letter-spacing="1.4">CHẾ ĐỘ ĐƠN GIẢN · VAI TRÒ KHÁC · 2 Ô</text>
+            <g><rect x="20" y="164" width="200" height="84" rx="7" fill="var(--new-soft)" stroke="var(--new)" stroke-width="2" stroke-dasharray="7 4"/><text x="36" y="202" font-size="26" font-weight="600" fill="var(--ink)">5</text><text x="36" y="226" font-size="13" fill="var(--ink-2)">Chờ xử lý cá nhân</text><rect x="160" y="174" width="44" height="18" rx="9" fill="var(--new)"/><text x="182" y="187" font-size="10.5" font-weight="600" fill="var(--card)" text-anchor="middle" letter-spacing=".8">MỚI</text></g>
+            <g><rect x="236" y="164" width="200" height="84" rx="7" fill="var(--card-2)" stroke="var(--line-2)"/><text x="252" y="202" font-size="26" font-weight="600" fill="var(--ink)">0</text><text x="252" y="226" font-size="13" fill="var(--ink-2)">Đề nghị trả lại</text></g>
+            <g><rect x="452" y="164" width="416" height="84" rx="7" fill="none" stroke="var(--stop)" stroke-width="1.5" stroke-dasharray="4 5"/>
+            <text x="660" y="198" font-size="13" font-weight="600" fill="var(--stop)" text-anchor="middle">Không có “Chờ tiếp nhận” và “Chờ xử lý đơn vị”</text>
+            <text x="660" y="220" font-size="12" fill="var(--ink-3)" text-anchor="middle">hai ô này khai là chỉ dành cho văn thư</text></g>
+          </g>
+          <text x="20" y="276" font-family="IBM Plex Sans, sans-serif" font-size="12.5" fill="var(--ink-2)">Chế độ đơn giản chỉ hiện 3 trong 9 ô của nhóm: Chờ tiếp nhận, Chờ xử lý, Đề nghị trả lại. Sáu ô còn lại không có ở chế độ này.</text>
+          <text x="20" y="296" font-family="IBM Plex Sans, sans-serif" font-size="12.5" fill="var(--chg)">Ở chế độ này hệ thống BỎ QUA bật / tắt của từng người và ẩn luôn nút Cấu hình trang chủ: ô đã tắt ở chế độ đầy đủ vẫn hiện ở đây.</text>
+        </svg>
+      </div>
+      <figcaption><b>Hình 7.</b> Nhóm “Văn bản đến” ở chế độ đơn giản. Ô <i>Chờ xử lý cá nhân</i> khai cho mọi người, ô
+      <i>Chờ xử lý đơn vị</i> khai chỉ văn thư, nên phân quyền hiển thị ở chế độ này có sẵn, không phải làm mới.</figcaption>
+    </figure>
+    <div class="t-scroll">
+      <table>
+        <thead><tr><th>Ô</th><th>Chế độ đầy đủ</th><th>Chế độ đơn giản</th><th>Ghi chú</th></tr></thead>
+        <tbody>
+          <tr><td>Chờ tiếp nhận</td><td>Mọi vai trò</td><td><b>Chỉ văn thư</b></td><td>Giữ nguyên khai báo hiện tại</td></tr>
+          <tr><td><b>Chờ xử lý cá nhân</b></td><td>Mọi vai trò</td><td><b>Mọi vai trò</b></td><td>Ô mới, khai “mọi người”</td></tr>
+          <tr><td><b>Chờ xử lý đơn vị</b></td><td>Chỉ văn thư</td><td><b>Chỉ văn thư</b></td><td>Ô cũ, đổi khai báo từ “mọi người” sang “chỉ văn thư”</td></tr>
+          <tr><td>Đề nghị trả lại</td><td>Mọi vai trò</td><td><b>Mọi vai trò</b></td><td>Giữ nguyên</td></tr>
+          <tr><td>Sắp đến hạn · Quá hạn · Đã xử lý · Đã hoàn thành · Nhận để biết</td><td>Mọi vai trò</td><td><b>Không hiện</b></td><td>Giữ nguyên, không khai cho chế độ đơn giản</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">
+      <h4>Ba điều dễ hiểu nhầm ở chế độ đơn giản</h4>
+      <p><b>Tắt ô rồi vẫn thấy ô.</b> Chế độ đơn giản bỏ qua lựa chọn bật tắt của từng người, nên văn thư tắt ô đơn vị ở
+      chế độ đầy đủ xong chuyển sang chế độ đơn giản thì ô vẫn hiện. Đây là hành vi sẵn có, không phải lỗi của yêu cầu này.</p>
+      <p><b>Không có nút cấu hình.</b> Ở chế độ đơn giản, nút Cấu hình trang chủ bị ẩn, nên hai dòng mới trong màn cấu
+      hình chỉ nhìn thấy khi đang ở chế độ đầy đủ.</p>
+      <p><b>Phân quyền hiển thị ở đây đã có sẵn.</b> Chế độ đơn giản vốn khai được “chỉ văn thư”, nên việc ẩn ô đơn vị
+      với vai trò khác chỉ phải làm mới cho <i>chế độ đầy đủ</i>.</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>A8. Nhãn và quy tắc hiển thị — chốt từng chữ</h3>
+    <div class="t-scroll">
+      <table>
+        <thead><tr><th>Ô</th><th>Nhãn hiển thị</th><th>Thứ tự</th><th>Ai thấy</th><th>Đếm gì</th><th>Tình trạng</th></tr></thead>
+        <tbody>
+          <tr><td>Chờ tiếp nhận</td><td>Chờ tiếp nhận</td><td class="num">1</td><td>Mọi vai trò</td><td>Văn bản gửi đơn vị chưa vào sổ</td><td><span class="chip keep">giữ nguyên</span></td></tr>
+          <tr><td>Chờ xử lý cá nhân</td><td><b>Chờ xử lý cá nhân</b></td><td class="num">2</td><td>Mọi vai trò</td><td>Văn bản gửi đích danh mình, đang chờ mình xử lý</td><td><span class="chip new">ô mới</span> với văn thư · với vai trò khác là ô đang có, chỉ đổi nhãn</td></tr>
+          <tr><td>Chờ xử lý đơn vị</td><td><b>Chờ xử lý đơn vị</b></td><td class="num">3</td><td><b>Chỉ văn thư</b></td><td>Văn bản gửi đơn vị mình làm văn thư, đã vào sổ, đang chờ xử lý</td><td><span class="chip chg">đổi nhãn</span> — chính là ô <i>Chờ xử lý</i> hiện tại của văn thư, giữ nguyên số và điều hướng</td></tr>
+          <tr><td>Sắp đến hạn</td><td>Sắp đến hạn</td><td class="num">4</td><td>Mọi vai trò</td><td>Không đổi</td><td><span class="chip keep">giữ nguyên</span></td></tr>
+          <tr><td>Quá hạn</td><td>Quá hạn</td><td class="num">5</td><td>Mọi vai trò</td><td>Không đổi</td><td><span class="chip keep">giữ nguyên</span></td></tr>
+          <tr><td>Đề nghị trả lại</td><td>Đề nghị trả lại</td><td class="num">6</td><td>Mọi vai trò</td><td>Không đổi</td><td><span class="chip keep">giữ nguyên</span></td></tr>
+          <tr><td>Đã xử lý</td><td>Đã xử lý</td><td class="num">7</td><td>Mọi vai trò</td><td>Không đổi</td><td><span class="chip keep">giữ nguyên</span></td></tr>
+          <tr><td>Đã hoàn thành</td><td>Đã hoàn thành</td><td class="num">8</td><td>Mọi vai trò</td><td>Không đổi</td><td><span class="chip keep">giữ nguyên</span></td></tr>
+          <tr><td>Nhận để biết</td><td>Nhận để biết</td><td class="num">9</td><td>Mọi vai trò</td><td>Không đổi</td><td><span class="chip keep">giữ nguyên</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">
+      <h4>Hai câu designer hay hỏi, trả lời sẵn</h4>
+      <p><b>Ô nào là ô cũ?</b> Tùy vai trò, vì một ô “Chờ xử lý” hiện nay đang mang hai ý nghĩa khác nhau. Với <b>văn thư</b>, ô đang có chính là <b>ô đơn vị</b>: nó đếm số của đơn vị và mở tab Văn bản đơn vị, nên ô đơn vị chỉ đổi nhãn còn ô cá nhân là ô thêm mới. Với <b>vai trò khác</b>, ô đang có lại chính là ô cá nhân, nên với họ chỉ là đổi nhãn.</p>
+      <p><b>Ô đơn vị với người không phải văn thư?</b> Không vẽ. Ô không tồn tại, không phải hiện số 0.</p>
+      <p><b>Có icon riêng cho hai ô không?</b> Không. Dùng đúng kiểu ô, màu ô và icon của ô <i>Chờ xử lý</i> hiện tại để
+      nhóm ô nhìn liền mạch. Thứ phân biệt hai ô là chữ trong nhãn.</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>A9. Danh sách frame cần có trong file Figma</h3>
+    <div class="t-scroll">
+      <table>
+        <thead><tr><th>Tên frame đề nghị</th><th>Nội dung</th><th>Dùng để</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">01_trangchu_vanthu_fullmode</td><td>9 ô: ô cá nhân (mới) đứng trước ô đơn vị (đổi nhãn)</td><td>Mốc chính cho DEV</td></tr>
+          <tr><td class="mono">02_trangchu_chuyenvien_fullmode</td><td>8 ô, không có ô đơn vị</td><td>Kiểm phân quyền hiển thị</td></tr>
+          <tr><td class="mono">03_trangchu_vanthu_simplemode</td><td>Chế độ đơn giản, văn thư: 4 ô (theo A7)</td><td>Kiểm chế độ đơn giản</td></tr>
+          <tr><td class="mono">04_trangchu_chuyenvien_simplemode</td><td>Chế độ đơn giản, vai trò khác: 2 ô (theo A7)</td><td>Kiểm chế độ đơn giản</td></tr>
+          <tr><td class="mono">05_cauhinh_trangchu_vanthu</td><td>Danh sách có 2 dòng chờ xử lý</td><td>Màn cấu hình</td></tr>
+          <tr><td class="mono">06_cauhinh_trangchu_vaitrokhac</td><td>Danh sách có 1 dòng</td><td>Màn cấu hình</td></tr>
+          <tr><td class="mono">07_dieuhuong_o_canhan</td><td>Hộp việc, tab Văn bản cá nhân đang chọn</td><td>Điều hướng</td></tr>
+          <tr><td class="mono">08_dieuhuong_o_donvi</td><td>Hộp việc, tab Văn bản đơn vị đang chọn</td><td>Điều hướng</td></tr>
+          <tr><td class="mono">09_trangthai_o</td><td>0 · 4 chữ số · có badge · đang tải</td><td>Trường hợp biên</td></tr>
+          <tr><td class="mono">10_mobile_trangchu</td><td>Chờ chốt TBD-04 rồi mới dựng</td><td>Ứng dụng di động</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>A10. Những gì KHÔNG đổi, đừng vẽ lại</h3>
+    <div class="note stop">
+      <ul class="tight">
+        <li>Sáu ô còn lại của nhóm “Văn bản đến”: giữ nguyên nhãn, số, màu, vị trí tương đối.</li>
+        <li>Nhóm ô của phân hệ khác: Văn bản đi, Phiếu trình, Nhiệm vụ, Lịch họp, Nhắc việc, KPI.</li>
+        <li>Hộp việc <i>Văn bản chờ xử lý</i>: cột, bộ lọc, nút, phân trang, hàng tab. Chỉ đổi tab được chọn sẵn.</li>
+        <li>Không thêm màn hình mới, không thêm popup, không thêm thông báo, không thêm nút trên văn bản.</li>
+        <li>Không đổi trạng thái văn bản và không đổi cách tính hộp việc.</li>
+      </ul>
+    </div>
+    <p>Bản đặc tả đầy đủ kèm 16 quy tắc nghiệp vụ, 21 tiêu chí nghiệm thu và 6 điểm cần chốt nằm ở
+    <code>AI Analysis/ba/yeu-cau/YC_NV_02-tach-cho-xu-ly-ca-nhan-don-vi/dac-ta.md</code>. Hình ở đây là cách thể hiện,
+    đặc tả là hợp đồng.</p>
+  </div>
+</section>
+
+<!-- ============================ PHẦN B ============================ -->
+<section class="part" id="phan-b">
+  <div class="part-head"><span class="num">PHẦN B</span><h2>Checklist DEV trước khi bàn giao</h2></div>
+  <p>Mọi mục dưới đây phải chạy <b>trên con test</b> bằng tài khoản thật của môi trường test, không phải trên máy cá
+  nhân. Mục nào chưa có bằng chứng thì coi như chưa làm. Mục tiêu của checklist là không gãy luồng đang chạy.</p>
+
+  <div class="bar">
+    <span class="prog" id="prog">0 / 0 mục</span>
+    <span class="track"><i id="trackbar"></i></span>
+    <button type="button" id="reset">Bỏ hết dấu tích</button>
+  </div>
+
+  <div class="ck">
+    <h3><span class="k">B0</span> Điều kiện vào, làm trước khi viết dòng code đầu tiên</h3>
+    <div class="ck-item"><input type="checkbox" id="b0-1"><div class="body"><div class="what">Đọc mục 4 của đặc tả và chốt ba điểm kỹ thuật TBD-01, TBD-02, TBD-03 với BA</div><div class="how">TBD-01 là mã và ID dòng danh mục ô, TBD-02 là số nhắc việc theo phạm vi cá nhân, TBD-03 là cách ẩn ô theo vai trò.</div><div class="ev"><b>Bằng chứng:</b> ba dòng kết luận điền vào mục 11 của <span class="mono">dac-ta.md</span>.</div></div></div>
+    <div class="ck-item"><input type="checkbox" id="b0-2"><div class="body"><div class="what">Tra ID lớn nhất đang dùng của bảng danh mục ô trên con test, chọn ID mới không trùng</div><div class="how">Script trong repo đang dùng tới ID 46. Không đoán, phải SELECT trên con test.</div><div class="ev"><b>Bằng chứng:</b> ảnh chụp kết quả SELECT kèm ngày.</div></div></div>
+    <div class="ck-item"><input type="checkbox" id="b0-3"><div class="body"><div class="what">Chụp mốc mã nguồn trước khi sửa</div><div class="how">Chạy <span class="mono">scripts/snapshot_code.ps1</span> để sau này đối soát đúng vùng đã sửa.</div><div class="ev"><b>Bằng chứng:</b> file manifest trong thư mục <span class="mono">.ai-snapshot/</span>.</div></div></div>
+    <div class="ck-item"><input type="checkbox" id="b0-4"><div class="body"><div class="what">Ghi lại số đo trước khi sửa trên con test</div><div class="how">Thời gian tải trang chủ và số của tám ô hiện tại, với ít nhất một tài khoản văn thư và một chuyên viên. Không có số trước thì không chứng minh được là không gãy.</div><div class="ev"><b>Bằng chứng:</b> bảng số đo trước, có ghi tài khoản và giờ đo.</div></div></div>
+  </div>
+
+  <div class="ck">
+    <h3><span class="k">B1</span> Dữ liệu danh mục trên con test</h3>
+    <div class="ck-item"><input type="checkbox" id="b1-1"><div class="body"><div class="what">Viết script thêm và sửa dòng danh mục ô, kèm script lùi lại</div><div class="how">Một script tiến, một script lùi. Theo mẫu <span class="mono">backend2.0/backendvoffice/sql/24122025_bi_tu_choi_insert_into_home_widget.sql</span>.</div><div class="ev"><b>Bằng chứng:</b> hai file script trong repo, có ghi thứ tự chạy.</div></div></div>
+    <div class="ck-item"><input type="checkbox" id="b1-2"><div class="body"><div class="what">Chạy script trên con test, kiểm lại bằng SELECT</div><div class="how">Đúng hai dòng chờ xử lý trong nhóm Văn bản đến, nhãn đúng từng chữ, cờ chế độ đơn giản đúng: ô cá nhân cho mọi người, ô đơn vị chỉ văn thư.</div><div class="ev"><b>Bằng chứng:</b> ảnh chụp kết quả SELECT sau khi chạy.</div></div></div>
+    <div class="ck-item"><input type="checkbox" id="b1-3"><div class="body"><div class="what">Thử chạy script lùi rồi chạy lại script tiến trên con test</div><div class="how">Chứng minh có đường lùi nếu bản phát hành phải rút lại. Sau khi lùi, trang chủ phải trở về đúng tám ô như cũ.</div><div class="ev"><b>Bằng chứng:</b> ảnh chụp trang chủ ở ba thời điểm: trước, sau khi lùi, sau khi chạy lại.</div></div></div>
+    <div class="ck-item"><input type="checkbox" id="b1-4"><div class="body"><div class="what">Không chạm vào dòng danh mục của ô khác và của phân hệ khác</div><div class="how">So số dòng bảng danh mục trước và sau: chỉ được lệch đúng số dòng mình thêm.</div><div class="ev"><b>Bằng chứng:</b> hai số đếm dòng, trước và sau.</div></div></div>
+  </div>
+
+  <div class="ck">
+    <h3><span class="k">B2</span> Code, ba chỗ dễ làm gãy luồng</h3>
+    <div class="ck-item"><input type="checkbox" id="b2-1"><div class="body"><div class="what">Sửa đủ <b>hai</b> chỗ dựng nhóm ô trang chủ</div><div class="how">Nhóm ô Văn bản đến được dựng ở hai nơi: <span class="mono">HomeWidgetRestController</span> và <span class="mono">HomeVM</span>. Sửa một chỗ thì hai luồng lệch nhau và sẽ gãy ở một trong hai đường vào trang chủ.</div><div class="ev"><b>Bằng chứng:</b> diff cho thấy cả hai file đều được sửa.</div></div></div>
+    <div class="ck-item"><input type="checkbox" id="b2-2"><div class="body"><div class="what">Thêm mã ô mới vào danh sách ô bật mặc định trong code</div><div class="how">Danh sách ô bật mặc định nằm trong code, không nằm trong bảng danh mục. Quên bước này thì ô mới không hiện với người chưa từng cấu hình. Nặng nhất với vai trò không phải văn thư: ô cũ nay là ô đơn vị và bị ẩn với họ, nên nếu ô cá nhân không bật mặc định thì họ mất trắng ô chờ xử lý trên trang chủ.</div><div class="ev"><b>Bằng chứng:</b> diff, và ảnh chụp trang chủ của một tài khoản chưa từng mở màn cấu hình.</div></div></div>
+    <div class="ck-item"><input type="checkbox" id="b2-3"><div class="body"><div class="what">Dùng số đếm cá nhân đã có sẵn ở máy chủ, không viết truy vấn mới</div><div class="how">Máy chủ đã tính số chờ xử lý cá nhân trong cùng lượt đếm. Viết thêm truy vấn mới là tự thêm tải cho trang chủ.</div><div class="ev"><b>Bằng chứng:</b> diff, và số lượt truy vấn khi mở trang chủ trước và sau khi sửa.</div></div></div>
+    <div class="ck-item"><input type="checkbox" id="b2-4"><div class="body"><div class="what">Nhãn hai ô lấy từ file tài nguyên ngôn ngữ, không viết cứng trong code</div><div class="how">Hệ thống có nhiều ngôn ngữ; nhãn viết cứng sẽ không đổi được và lệch với các ô còn lại.</div><div class="ev"><b>Bằng chứng:</b> khóa ngôn ngữ mới trong diff.</div></div></div>
+    <div class="ck-item"><input type="checkbox" id="b2-5"><div class="body"><div class="what">Điều kiện ẩn ô theo vai trò áp ở <b>cả hai</b> nơi: trang chủ và màn cấu hình trang chủ</div><div class="how">Chỉ ẩn ở trang chủ thì người không phải văn thư vẫn thấy dòng cấu hình vô nghĩa, bật lên rồi tưởng hệ thống lỗi.</div><div class="ev"><b>Bằng chứng:</b> hai ảnh chụp bằng tài khoản chuyên viên.</div></div></div>
+  </div>
+
+  <div class="ck">
+    <h3><span class="k">B3</span> Test theo vai trò trên con test, sáu tài khoản</h3>
+    <div class="ck-item"><input type="checkbox" id="b3-1"><div class="body"><div class="what">Văn thư một đơn vị</div><div class="how">Thấy đủ hai ô, số đúng, bấm từng ô mở đúng tab.</div><div class="ev"><b>Bằng chứng:</b> ảnh chụp trang chủ và hai ảnh hộp việc có thấy tab đang chọn.</div></div></div>
+    <div class="ck-item"><input type="checkbox" id="b3-2"><div class="body"><div class="what">Văn thư nhiều đơn vị</div><div class="how">Số trên ô đơn vị bằng tổng của các đơn vị mình làm văn thư, không phải của một đơn vị.</div><div class="ev"><b>Bằng chứng:</b> ảnh chụp kèm phép cộng ghi tay từng đơn vị.</div></div></div>
+    <div class="ck-item"><input type="checkbox" id="b3-3"><div class="body"><div class="what">Chuyên viên</div><div class="how">Chỉ một ô cá nhân, số và hành vi y như trước khi sửa. Đây là nhóm người dùng đông nhất, gãy ở đây là gãy to nhất.</div><div class="ev"><b>Bằng chứng:</b> ảnh chụp, so số với số đã đo ở B0.</div></div></div>
+    <div class="ck-item"><input type="checkbox" id="b3-4"><div class="body"><div class="what">Lãnh đạo và thủ trưởng</div><div class="how">Như chuyên viên. Thêm một bước: màn Theo dõi văn bản đến đơn vị vẫn mở và vẫn đúng số.</div><div class="ev"><b>Bằng chứng:</b> hai ảnh chụp.</div></div></div>
+    <div class="ck-item"><input type="checkbox" id="b3-5"><div class="body"><div class="what">Trợ lý lãnh đạo</div><div class="how">Văn bản nhận thay lãnh đạo vẫn nằm trong ô cá nhân của trợ lý, không bị mất.</div><div class="ev"><b>Bằng chứng:</b> ảnh chụp kèm một mã văn bản cụ thể.</div></div></div>
+    <div class="ck-item"><input type="checkbox" id="b3-6"><div class="body"><div class="what">Tài khoản vừa bị gỡ vai trò văn thư</div><div class="how">Ô đơn vị biến mất ở cả trang chủ và màn cấu hình, kể cả khi trước đó tài khoản này đã bật ô đó. Không được lỗi màn.</div><div class="ev"><b>Bằng chứng:</b> ảnh chụp trước khi gỡ và sau khi gỡ.</div></div></div>
+  </div>
+
+  <div class="ck">
+    <h3><span class="k">B4</span> Đối soát số, điều kiện nghiệm thu khắt khe nhất</h3>
+    <div class="ck-item"><input type="checkbox" id="b4-1"><div class="body"><div class="what">Số trên ô bằng đúng số dòng trong danh sách khi bấm vào, kiểm với cả hai ô</div><div class="how">Làm với ba tài khoản khác nhau. Lệch một dòng cũng là lỗi, thường do khác dải trạng thái hoặc khác giới hạn ngày.</div><div class="ev"><b>Bằng chứng:</b> bảng ba dòng: tài khoản, số trên ô, số dòng đếm được.</div></div></div>
+    <div class="ck-item"><input type="checkbox" id="b4-2"><div class="body"><div class="what">Tổng hai ô mới bằng số cũ cộng phần cá nhân của văn thư</div><div class="how">Với tài khoản văn thư đã đo ở B0: số ô đơn vị phải bằng số ô Chờ xử lý cũ. Nếu khác thì hoặc số cũ sai, hoặc số mới sai, phải truy ra nguyên nhân.</div><div class="ev"><b>Bằng chứng:</b> so sánh số trước và sau, có kết luận.</div></div></div>
+    <div class="ck-item"><input type="checkbox" id="b4-3"><div class="body"><div class="what">Văn bản gửi đơn vị nhưng chưa vào sổ không bị đếm vào ô đơn vị</div><div class="how">Tạo tình huống trên con test: gửi văn bản cho đơn vị, chưa tiếp nhận. Số ô Chờ tiếp nhận tăng 1, số ô Chờ xử lý đơn vị không đổi.</div><div class="ev"><b>Bằng chứng:</b> ảnh chụp trước và sau, kèm mã văn bản test.</div></div></div>
+    <div class="ck-item"><input type="checkbox" id="b4-4"><div class="body"><div class="what">Văn bản bị trả lại vẫn được đếm đúng ô</div><div class="how">Hộp chờ xử lý vốn gộp cả văn bản bị trả lại. Bỏ sót nhóm này là làm số nhỏ hơn thực tế.</div><div class="ev"><b>Bằng chứng:</b> một tình huống trả lại trên con test, kèm số trước và sau.</div></div></div>
+    <div class="ck-item"><input type="checkbox" id="b4-5"><div class="body"><div class="what">Dọn sạch dữ liệu test đã tạo</div><div class="how">Dữ liệu test đặt tiền tố thống nhất và xóa sau khi xong. Con test là môi trường dùng chung của cả nhóm.</div><div class="ev"><b>Bằng chứng:</b> danh sách mã dữ liệu test đã tạo và đã dọn.</div></div></div>
+  </div>
+
+  <div class="ck">
+    <h3><span class="k">B5</span> Regression, phần chống gãy luồng</h3>
+    <div class="ck-item"><input type="checkbox" id="b5-1"><div class="body"><div class="what">Sáu ô còn lại của nhóm Văn bản đến giữ nguyên nhãn, số và điều hướng</div><div class="how">So từng ô với số đã đo ở B0, cùng tài khoản, cùng ngày.</div><div class="ev"><b>Bằng chứng:</b> bảng sáu dòng, trước và sau.</div></div></div>
+    <div class="ck-item"><input type="checkbox" id="b5-2"><div class="body"><div class="what">Các nhóm ô của phân hệ khác vẫn hiện và vẫn đúng số</div><div class="how">Văn bản đi, Phiếu trình, Nhiệm vụ, Lịch họp, Nhắc việc, KPI. Trang chủ dựng một lượt, sửa một nhóm có thể làm hỏng cả trang.</div><div class="ev"><b>Bằng chứng:</b> một ảnh chụp cả trang chủ.</div></div></div>
+    <div class="ck-item"><input type="checkbox" id="b5-3"><div class="body"><div class="what">Mở hộp Văn bản chờ xử lý <b>từ menu</b> vẫn vào tab mặc định như cũ</div><div class="how">Với văn thư, vào từ menu vẫn phải là tab Văn bản đơn vị. Đây là chỗ dễ gãy nhất vì cùng sửa một chỗ trong code.</div><div class="ev"><b>Bằng chứng:</b> ảnh chụp hộp việc mở từ menu.</div></div></div>
+    <div class="ck-item"><input type="checkbox" id="b5-4"><div class="body"><div class="what">Đổi tab qua lại giữa Văn bản đơn vị và Văn bản cá nhân vẫn chạy</div><div class="how">Đổi tab ba lần, mỗi lần danh sách phải đúng phạm vi, không bị trộn.</div><div class="ev"><b>Bằng chứng:</b> hai ảnh chụp sau khi đổi tab.</div></div></div>
+    <div class="ck-item"><input type="checkbox" id="b5-5"><div class="body"><div class="what">Màn Cấu hình trang chủ: bật, tắt, và tạo ô riêng của nhóm khác vẫn chạy</div><div class="how">Tạo một ô riêng, bật tắt vài ô, lưu, mở lại trang chủ. Việc thêm dòng mới không được làm hỏng màn này.</div><div class="ev"><b>Bằng chứng:</b> ảnh chụp trước và sau khi lưu.</div></div></div>
+    <div class="ck-item"><input type="checkbox" id="b5-6"><div class="body"><div class="what">Đổi qua lại chế độ trang chủ đơn giản và đầy đủ</div><div class="how">Hai chế độ dùng hai nhánh code khác nhau. Kiểm với cả văn thư và chuyên viên: bốn tổ hợp. Ở chế độ đơn giản, văn thư phải thấy 4 ô (Chờ tiếp nhận, Chờ xử lý cá nhân, Chờ xử lý đơn vị, Đề nghị trả lại), vai trò khác chỉ thấy 2 ô (Chờ xử lý cá nhân, Đề nghị trả lại). Thêm một ca: tắt một ô ở chế độ đầy đủ rồi chuyển sang chế độ đơn giản, ô đó vẫn phải hiện.</div><div class="ev"><b>Bằng chứng:</b> bốn ảnh chụp.</div></div></div>
+    <div class="ck-item"><input type="checkbox" id="b5-7"><div class="body"><div class="what">Trang chủ ứng dụng di động vẫn chạy bình thường sau khi đổi danh mục phía web</div><div class="how">Di động dùng danh mục riêng. Nếu đợt này chỉ phát hành web thì di động phải không đổi và không lỗi.</div><div class="ev"><b>Bằng chứng:</b> ảnh chụp trang chủ trên ứng dụng di động trỏ vào con test.</div></div></div>
+    <div class="ck-item"><input type="checkbox" id="b5-8"><div class="body"><div class="what">Chạy lại bộ test tự động của vùng ảnh hưởng, rồi chạy bộ đầy đủ</div><div class="how">Chạy vùng ảnh hưởng trước cho nhanh, sau đó chạy đầy đủ để bắt cái cả người lẫn máy sót. Báo cáo tách rõ số pass, fail và số ca không tự động hóa được.</div><div class="ev"><b>Bằng chứng:</b> log kết quả chạy, kèm giờ chạy và môi trường.</div></div></div>
+  </div>
+
+  <div class="ck">
+    <h3><span class="k">B6</span> Cache và khởi động lại</h3>
+    <div class="ck-item"><input type="checkbox" id="b6-1"><div class="body"><div class="what">Xóa cache cấu hình rồi mở lại trang chủ</div><div class="how">Cấu hình trang chủ của từng người nằm trong bộ nhớ tạm. Sau khi xóa, văn thư phải thấy cả hai ô, vai trò khác chỉ thấy ô cá nhân.</div><div class="ev"><b>Bằng chứng:</b> ảnh chụp sau khi xóa cache, với hai tài khoản.</div></div></div>
+    <div class="ck-item"><input type="checkbox" id="b6-2"><div class="body"><div class="what">Khởi động lại ứng dụng trên con test rồi mở lại trang chủ</div><div class="how">Hạn lưu cấu hình là một ngày và mất khi khởi động lại. Phải chắc rằng lúc đó trang chủ về đúng mặc định, không phải về trạng thái trống.</div><div class="ev"><b>Bằng chứng:</b> ảnh chụp sau khi khởi động lại.</div></div></div>
+    <div class="ck-item"><input type="checkbox" id="b6-3"><div class="body"><div class="what">Tài khoản có cấu hình cũ lưu từ trước khi lên bản mới</div><div class="how">Cấu hình cũ còn ghi ô Chờ xử lý theo mã cũ. Mở trang chủ không được mất ô, không được lỗi, không được hiện ô trùng.</div><div class="ev"><b>Bằng chứng:</b> ảnh chụp của một tài khoản đã cấu hình trước khi cài bản mới.</div></div></div>
+  </div>
+
+  <div class="ck">
+    <h3><span class="k">B7</span> Hiệu năng và bảo mật</h3>
+    <div class="ck-item"><input type="checkbox" id="b7-1"><div class="body"><div class="what">Thời gian tải trang chủ không tăng quá một phần mười so với số đo ở B0</div><div class="how">Đo ba lần trên cùng tài khoản văn thư có nhiều văn bản, lấy trung bình.</div><div class="ev"><b>Bằng chứng:</b> bảng ba lần đo, trước và sau.</div></div></div>
+    <div class="ck-item"><input type="checkbox" id="b7-2"><div class="body"><div class="what">Người không phải văn thư không lấy được số của đơn vị bằng bất kỳ đường nào</div><div class="how">Thử gọi trực tiếp đường lấy số của trang chủ bằng phiên của chuyên viên. Kết quả không được chứa số của đơn vị.</div><div class="ev"><b>Bằng chứng:</b> kết quả gọi, đã che thông tin phiên.</div></div></div>
+    <div class="ck-item"><input type="checkbox" id="b7-3"><div class="body"><div class="what">Không có lỗi trên bảng điều khiển trình duyệt và không có lỗi mới trong log máy chủ</div><div class="how">Mở trang chủ, bấm hai ô, mở màn cấu hình, lưu, rồi đọc log.</div><div class="ev"><b>Bằng chứng:</b> đoạn log tương ứng khoảng thời gian thao tác.</div></div></div>
+  </div>
+
+  <div class="ck">
+    <h3><span class="k">B8</span> Hồ sơ bàn giao</h3>
+    <div class="ck-item"><input type="checkbox" id="b8-1"><div class="body"><div class="what">Danh sách file đã sửa và danh sách script phải chạy, kèm thứ tự</div><div class="how">Ghi rõ script nào chạy trước khi khởi động ứng dụng, script nào chạy sau.</div><div class="ev"><b>Bằng chứng:</b> một trang hướng dẫn phát hành.</div></div></div>
+    <div class="ck-item"><input type="checkbox" id="b8-2"><div class="body"><div class="what">Điều kiện rút lại bản phát hành</div><div class="how">Nêu rõ dấu hiệu nào thì rút, và các bước rút gồm script lùi đã thử ở B1.</div><div class="ev"><b>Bằng chứng:</b> mục rollback trong hướng dẫn phát hành.</div></div></div>
+    <div class="ck-item"><input type="checkbox" id="b8-3"><div class="body"><div class="what">Toàn bộ ảnh chụp và log của Phần B gom về một chỗ, đặt tên theo mã mục</div><div class="how">Người kiểm bàn giao phải tra được từng mục mà không phải hỏi lại.</div><div class="ev"><b>Bằng chứng:</b> thư mục bằng chứng kèm bảng đối chiếu mã mục.</div></div></div>
+    <div class="ck-item"><input type="checkbox" id="b8-4"><div class="body"><div class="what">Những gì chưa làm được, nói rõ thay vì để trống</div><div class="how">Ví dụ phần ứng dụng di động nếu chưa chốt hai điểm chặn. Ghi rõ đã bỏ gì và vì sao.</div><div class="ev"><b>Bằng chứng:</b> mục “ngoài phạm vi đợt này” trong hướng dẫn phát hành.</div></div></div>
+  </div>
+
+  <div class="note">
+    <h4>Hai điểm chặn còn mở, không phải việc của DEV</h4>
+    <p>Phần ứng dụng di động cần BA chốt ô tương ứng trên trang chủ di động và lịch phát hành ứng dụng. Trang chủ di động
+    dùng danh mục riêng và cần một bản phát hành ứng dụng mới, nên không đi cùng bản web được nếu hai điểm này còn mở.</p>
+    <p>Riêng việc cấu hình bật tắt ô tự trở về mặc định sau một ngày là hạn chế sẵn có của hệ thống, BA đang xác nhận lại.
+    DEV không tự thêm bảng để lưu bền khi chưa có yêu cầu riêng.</p>
+  </div>
+</section>
+
+<footer>
+  YC_NV_02 · Nguồn: đặc tả <span class="mono">dac-ta.md</span> và tri thức hệ thống trong <span class="mono">AI Analysis/ba/knowledge/</span> ·
+  Hình trong tài liệu này là wireframe mô tả nghiệp vụ, không phải thiết kế cuối.
+</footer>
+
+</div>
+
+<script>
+(function(){
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('.ck-item input[type=checkbox]'));
+  var KEY = 'yc_nv_02_checklist_v1';
+  var prog = document.getElementById('prog');
+  var bar = document.getElementById('trackbar');
+
+  function render(){
+    var done = boxes.filter(function(b){ return b.checked; }).length;
+    prog.textContent = done + ' / ' + boxes.length + ' mục';
+    bar.style.width = boxes.length ? (done / boxes.length * 100) + '%' : '0';
+  }
+  function save(){
+    try{
+      var state = {};
+      boxes.forEach(function(b){ if (b.checked) state[b.id] = 1; });
+      localStorage.setItem(KEY, JSON.stringify(state));
+    }catch(e){}
+  }
+  function load(){
+    try{
+      var raw = localStorage.getItem(KEY);
+      if (!raw) return;
+      var state = JSON.parse(raw) || {};
+      boxes.forEach(function(b){ b.checked = !!state[b.id]; });
+    }catch(e){}
+  }
+
+  load();
+  render();
+  boxes.forEach(function(b){ b.addEventListener('change', function(){ save(); render(); }); });
+  document.getElementById('reset').addEventListener('click', function(){
+    boxes.forEach(function(b){ b.checked = false; });
+    save(); render();
+  });
+})();
+</script>

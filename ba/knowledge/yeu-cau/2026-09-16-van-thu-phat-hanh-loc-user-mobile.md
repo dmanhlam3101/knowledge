@@ -1,4 +1,15 @@
-# MOBILE — lọc danh sách cá nhân theo phạm vi khi văn thư phát hành chuyển VB đi
+# ~~MOBILE — lọc danh sách cá nhân theo phạm vi khi văn thư phát hành chuyển VB đi~~ — **ĐÃ HỦY**
+
+> # ⛔ TÀI LIỆU NÀY ĐÃ HỦY — 2026-10-07
+>
+> Yêu cầu "văn thư phát hành chuyển VB đi" **chỉ áp dụng khi chuyển cho ĐƠN VỊ**. Phần **cá nhân giữ nguyên như trước khi phát triển YC** — không lọc, không ẩn ai.
+> **Mobile: KHÔNG làm theo tài liệu này.** Giữ màn chọn cá nhân y như cũ.
+> Web đã gỡ code tương ứng. Phía BE: `userOrgIds`, `userRootOrg`, `findDocManagerUserParentOrg` **không có trong backend2.0** (đã revert trước đó) — đừng trông vào chúng. Endpoint `get-doc-manager-transfer-org-ids` vẫn còn nhưng **không ai nên gọi nữa**.
+> Phạm vi ĐƠN VỊ vẫn hiệu lực: xem `2026-09-16-van-thu-phat-hanh-chuyen-vb-di-mobile.md`.
+> Giữ lại nội dung bên dưới **chỉ để tra lịch sự**, không phải đặc tả đang hiệu lực.
+
+---
+
 
 **Phân hệ:** `van-ban/di` · **Ngày:** 2026-09-16 · Cây đơn vị: `2026-09-16-van-thu-phat-hanh-chuyen-vb-di-mobile.md` · Code web đối chiếu: `2026-09-16-van-thu-phat-hanh-chuyen-vb-di-web.md`
 

@@ -6,6 +6,10 @@
 
 > **Cập nhật 2026-10-02 (2) — phạm vi CÁ NHÂN tách riêng, hẹp hơn đơn vị:** cá nhân chỉ trong **đơn vị ban hành + con cháu**; riêng đơn vị ban hành là **VPUB** (`sysOrganization.id.vpub` = `9133615`) thì thêm cá nhân của **chính đơn vị cha trực tiếp (UBND tỉnh)** — **không** lấy các Sở/đơn vị con khác của UBND. `scope` thêm `userOrgIds`, `userRootOrg`; `org-ids` giờ trả theo phạm vi cá nhân. Chi tiết: `2026-09-16-van-thu-phat-hanh-loc-user-mobile.md`.
 
+> **Cập nhật 2026-10-07 — BỎ phần CÁ NHÂN, YC chỉ còn áp dụng cho ĐƠN VỊ:** phạm vi trong tài liệu này **chỉ áp cho cây/danh sách ĐƠN VỊ**. Màn chọn **cá nhân** giữ nguyên như trước khi làm YC — **không** lọc theo đơn vị ban hành, **không** cần gọi `org-ids`, **không** dùng `userOrgIds`/`userRootOrg`. Web đã gỡ phần này. **BE không đổi gì trong lần này**; nhưng kiểm lại code BE thì `userOrgIds`/`userRootOrg` **chưa bao giờ được merge** (đã revert trước đó) — mobile đừng trông vào 2 field này. Endpoint `org-ids` vẫn còn nhưng không cần gọi nữa.
+>
+> **Một ngoại lệ web đang có mà mobile CHƯA có — cần quyết:** văn thư **VPUB** (Văn phòng UBND tỉnh) ở tab Cá nhân trên web được chọn thêm **cá nhân của chính đơn vị cha (UBND tỉnh)**, không lấy Sở khác của UBND. Luật này cài **riêng ở web** (`MultiTypeObjectLookupVM.addVpubParentOrg`), **BE không có API nào trả phạm vi này**. Mobile muốn giống web thì phải mở CR riêng (BE cần viết mới). Tài liệu `2026-09-16-van-thu-phat-hanh-loc-user-mobile.md` đã **HỦY**.
+
 ## 1. Khi nào áp dụng
 
 Áp dụng **đúng** khi tất cả điều kiện sau đúng (mobile tự xét, BE không xét):
@@ -137,14 +141,13 @@ Kiểm tra nhanh 1 đơn vị bất kỳ có hợp lệ không, không cần lis
 
 ```
 mở màn chọn đối tượng (đã thỏa mục 1)
- ├─ scope(builtOrgId)                 → giữ selectableOrgIds, descendantOrgIds, builtOrg.path, userOrgIds, userRootOrg
+ ├─ scope(builtOrgId)                 → giữ selectableOrgIds, descendantOrgIds, builtOrg.path   (userOrgIds/userRootOrg: KHONG dung nua)
  ├─ children(builtOrgId, null)        → node gốc
  └─ với mỗi id trong builtOrg.path (trừ chính nó): children(builtOrgId, id) → tự mở đến đơn vị ban hành
 user mở node X (isLeaf=0)             → children(builtOrgId, X)   (cache)
-màn cá nhân                           → cây riêng, gốc = userRootOrg, lọc con theo userOrgIds (VPUB: UBND tỉnh → chỉ VPUB)
-user chọn node X để xem cá nhân       → org-ids(builtOrgId, X) → lấy user theo đúng tập id (ẩn user ngoài phạm vi)
+màn cá nhân                           → GIỮ NGUYÊN như trước YC (cây + danh sách cũ, không lọc, không gọi org-ids)
 user tick                              → chỉ cho tick node selectable=true
-user gõ tìm nhanh                      → đơn vị: tập đơn vị; cá nhân: userOrgIds (mục 3.3)
+user gõ tìm nhanh                      → đơn vị: tập đơn vị; cá nhân: như cũ, không áp phạm vi
 bấm Chuyển                             → validate theo tập hợp lệ rồi gọi API chuyển như hiện tại
 ```
 
